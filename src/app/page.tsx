@@ -11,14 +11,18 @@ export default function HomePage() {
     <>
       <Navbar />
 
-      <main>
+      <main className="min-h-screen">
         <Container>
+          {/* HERO */}
           <HeroSection />
 
+          {/* JOBS */}
           <JobsSection />
 
+          {/* UNIVERSITIES */}
           <UniversitiesSection />
 
+          {/* FOOTER */}
           <Footer />
         </Container>
       </main>

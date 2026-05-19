@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { getJobs } from "@/services/jobs";
 
 export async function JobsSection() {
@@ -20,37 +22,39 @@ export async function JobsSection() {
       {/* JOBS */}
       <div className="mt-10 flex gap-6 overflow-x-auto pb-4 scrollbar-hide">
         {jobs.map((job) => (
-          <article
+          <Link
             key={job.id}
-            className="group min-w-[340px] rounded-3xl border border-zinc-800 bg-zinc-900/30 p-7 transition duration-300 hover:-translate-y-1 hover:border-red-500/30 hover:bg-zinc-900/50"
+            href={`/jobs/${job.slug}`}
           >
-            {/* CATEGORY */}
-            <div className="mb-4 inline-flex rounded-full border border-zinc-800 px-3 py-1 text-xs text-zinc-400">
-              {job.category || "Job"}
-            </div>
+            <article className="group min-w-[340px] rounded-3xl border border-zinc-800 bg-zinc-900/30 p-7 transition duration-300 hover:-translate-y-1 hover:border-red-500/30 hover:bg-zinc-900/50">
+              {/* CATEGORY */}
+              <div className="mb-4 inline-flex rounded-full border border-zinc-800 px-3 py-1 text-xs text-zinc-400">
+                {job.category || "Job"}
+              </div>
 
-            {/* TITLE */}
-            <h3 className="text-lg font-semibold leading-7 transition group-hover:text-red-400">
-              {job.title}
-            </h3>
+              {/* TITLE */}
+              <h3 className="text-lg font-semibold leading-7 transition group-hover:text-red-400">
+                {job.title}
+              </h3>
 
-            {/* DESCRIPTION */}
-            <p className="mt-4 text-sm leading-6 text-zinc-400">
-              {job.description ||
-                "No description available."}
-            </p>
+              {/* DESCRIPTION */}
+              <p className="mt-4 text-sm leading-6 text-zinc-400">
+                {job.description ||
+                  "No description available."}
+              </p>
 
-            {/* FOOTER */}
-            <div className="mt-6 flex items-center justify-between text-sm text-zinc-500">
-              <span>{job.source}</span>
+              {/* FOOTER */}
+              <div className="mt-6 flex items-center justify-between text-sm text-zinc-500">
+                <span>{job.source}</span>
 
-              <span>
-                {new Date(
-                  job.created_at,
-                ).toLocaleDateString()}
-              </span>
-            </div>
-          </article>
+                <span>
+                  {new Date(
+                    job.created_at,
+                  ).toLocaleDateString()}
+                </span>
+              </div>
+            </article>
+          </Link>
         ))}
       </div>
 

@@ -17,3 +17,22 @@ export async function getJobs() {
 
   return data;
 }
+
+export async function getJobBySlug(
+  slug: string,
+) {
+  const { data, error } =
+    await supabase
+      .from("jobs")
+      .select("*")
+      .eq("slug", slug)
+      .single();
+
+  if (error) {
+    console.error(error);
+
+    return null;
+  }
+
+  return data;
+}
