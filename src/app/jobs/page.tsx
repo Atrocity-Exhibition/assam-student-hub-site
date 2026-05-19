@@ -15,7 +15,26 @@ export const metadata: Metadata = {
     "Browse latest Assam government jobs, university vacancies, internships, and recruitment notifications.",
 };
 
-export default function JobsPage() {
+type PageProps = {
+  searchParams: Promise<{
+    search?: string;
+  }>;
+};
+
+export default async function JobsPage({
+  searchParams,
+}: PageProps) {
+  const resolvedSearchParams =
+    await searchParams;
+
+  const search =
+    resolvedSearchParams.search || "";
+
+  console.log(
+    "PAGE SEARCH:",
+    search,
+  );
+
   return (
     <>
       <Navbar />
@@ -40,7 +59,9 @@ export default function JobsPage() {
             </p>
           </div>
 
-          <JobsList />
+          <JobsList
+            search={search}
+          />
         </Container>
 
         <Footer />

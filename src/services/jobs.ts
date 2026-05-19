@@ -1,13 +1,33 @@
 import { supabase } from "@/lib/supabase";
 
-export async function getJobs() {
+type GetJobsOptions = {
+  search?: string;
+};
+
+export async function getJobs(
+  options?: GetJobsOptions,
+) {
+  let query = supabase
+    .from("jobs")
+    .select("*")
+    .order("created_at", {
+      ascending: false,
+    });
+
+  /* SEARCH */
+
+  if (
+    options?.search &&
+    options.search.trim() !== ""
+  ) {
+    query = query.ilike(
+      "title",
+      `%${options.search}%`,
+    );
+  }
+
   const { data, error } =
-    await supabase
-      .from("jobs")
-      .select("*")
-      .order("created_at", {
-        ascending: false,
-      });
+    await query;
 
   if (error) {
     console.error(error);
@@ -15,7 +35,7 @@ export async function getJobs() {
     return [];
   }
 
-  return data;
+  return data || [];
 }
 
 export async function getJobBySlug(
