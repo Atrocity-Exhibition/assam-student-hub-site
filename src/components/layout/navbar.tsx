@@ -80,16 +80,14 @@ export function Navbar() {
 
       {/* MOBILE DRAWER */}
       <div
-        className={`fixed inset-0 z-60 transition duration-300 ${
-          mobileMenuOpen
-            ? "pointer-events-auto bg-black/50 opacity-100"
-            : "pointer-events-none opacity-0"
-        }`}
+        className={`fixed inset-0 z-60 transition duration-300 ${mobileMenuOpen
+          ? "pointer-events-auto bg-black/50 opacity-100"
+          : "pointer-events-none opacity-0"
+          }`}
       >
         <div
-          className={`absolute right-0 top-0 h-full w-75 border-l border-zinc-800 bg-black transition-transform duration-300 ${
-            mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+          className={`absolute right-0 top-0 h-full w-75 border-l border-zinc-800 bg-black transition-transform duration-300 ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+            }`}
         >
           {/* HEADER */}
           <div className="flex items-center justify-between border-b border-zinc-800 p-4">
