@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import type { Job } from "@/types/job";
 import { getJobs } from "@/services/jobs";
 
 import { JobsSearch } from "./jobs-search";
@@ -123,7 +124,7 @@ export async function JobsList({
       {jobs.length > 0 && (
         <>
           <div className="mt-10 grid gap-6 lg:grid-cols-2">
-            {jobs.map((job) => (
+            {jobs.map((job: Job) => (
               <Link
                 key={job.id}
                 href={`/jobs/${job.slug}`}
