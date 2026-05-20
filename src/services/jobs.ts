@@ -2,17 +2,34 @@ import { supabase } from "@/lib/supabase";
 
 type GetJobsOptions = {
   search?: string;
+
+  category?: string;
+
+  page?: number;
+
+  sort?: string;
 };
+
+const PAGE_SIZE = 6;
 
 export async function getJobs(
   options?: GetJobsOptions,
 ) {
+  const page =
+    options?.page || 1;
+
+  const from =
+    (page - 1) * PAGE_SIZE;
+
+  const to =
+    from + PAGE_SIZE - 1;
+
   let query = supabase
     .from("jobs")
-    .select("*")
-    .order("created_at", {
-      ascending: false,
-    });
+    .select("*", {
+      count: "exact",
+    })
+    .range(from, to);
 
   /* SEARCH */
 
@@ -20,22 +37,83 @@ export async function getJobs(
     options?.search &&
     options.search.trim() !== ""
   ) {
-    query = query.ilike(
-      "title",
-      `%${options.search}%`,
+    query = query.or(
+      `
+      title.ilike.%${options.search}%,
+      description.ilike.%${options.search}%,
+      category.ilike.%${options.search}%,
+      source.ilike.%${options.search}%
+    `,
     );
   }
 
-  const { data, error } =
-    await query;
+  /* CATEGORY */
+
+  if (
+    options?.category &&
+    options.category !== "All"
+  ) {
+    query = query.eq(
+      "category",
+      options.category,
+    );
+  }
+
+  /* SORTING */
+
+  switch (options?.sort) {
+    case "oldest":
+      query = query.order(
+        "created_at",
+        {
+          ascending: true,
+        },
+      );
+      break;
+
+    case "alphabetical":
+      query = query.order(
+        "title",
+        {
+          ascending: true,
+        },
+      );
+      break;
+
+    default:
+      query = query.order(
+        "created_at",
+        {
+          ascending: false,
+        },
+      );
+  }
+
+  const {
+    data,
+    error,
+    count,
+  } = await query;
 
   if (error) {
     console.error(error);
 
-    return [];
+    return {
+      jobs: [],
+      totalPages: 1,
+    };
   }
 
-  return data || [];
+  return {
+    jobs: data || [],
+
+    totalPages: Math.max(
+      1,
+      Math.ceil(
+        (count || 0) / PAGE_SIZE,
+      ),
+    ),
+  };
 }
 
 export async function getJobBySlug(

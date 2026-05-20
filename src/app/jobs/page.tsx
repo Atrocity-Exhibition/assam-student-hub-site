@@ -18,22 +18,33 @@ export const metadata: Metadata = {
 type PageProps = {
   searchParams: Promise<{
     search?: string;
+
+    category?: string;
+
+    page?: string;
+
+    sort?: string;
   }>;
 };
 
 export default async function JobsPage({
   searchParams,
 }: PageProps) {
-  const resolvedSearchParams =
+  const params =
     await searchParams;
 
   const search =
-    resolvedSearchParams.search || "";
+    params.search || "";
 
-  console.log(
-    "PAGE SEARCH:",
-    search,
+  const category =
+    params.category || "All";
+
+  const page = Number(
+    params.page || "1",
   );
+
+  const sort =
+    params.sort || "newest";
 
   return (
     <>
@@ -61,6 +72,9 @@ export default async function JobsPage({
 
           <JobsList
             search={search}
+            category={category}
+            page={page}
+            sort={sort}
           />
         </Container>
 

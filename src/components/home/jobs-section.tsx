@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getJobs } from "@/services/jobs";
 
 export async function JobsSection() {
-  const jobs = await getJobs();
+  const { jobs } = await getJobs();
 
   return (
     <section className="py-16">
