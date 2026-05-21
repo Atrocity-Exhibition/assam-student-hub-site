@@ -8,6 +8,8 @@ import { Container } from "@/components/layout/container";
 import { Navbar } from "@/components/layout/navbar";
 
 import { getJobBySlug } from "@/services/jobs";
+import { createClient } from "@/lib/supabase/server";
+import { SaveJobButton } from "@/components/jobs/save-job-button";
 
 type MetadataProps = {
   params: Promise<{
@@ -62,6 +64,27 @@ export default async function JobPage({
 
   if (!job) {
     notFound();
+  }
+
+  const supabase =
+    await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let isSaved = false;
+
+  if (user && job) {
+    const { data } =
+      await supabase
+        .from("saved_jobs")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("job_id", job.id)
+        .maybeSingle();
+
+    isSaved = !!data;
   }
 
   return (
@@ -169,15 +192,22 @@ export default async function JobPage({
             {/* SIDEBAR */}
             <aside>
               <div className="sticky top-24 rounded-3xl border border-zinc-800 bg-zinc-900/40 p-6">
-                <a
-                  href={
-                    job.apply_url || "#"
-                  }
-                  target="_blank"
-                  className="block rounded-full bg-red-500 px-6 py-4 text-center font-medium text-white transition hover:bg-red-400"
-                >
-                  Apply Now
-                </a>
+                <div className="flex gap-4">
+                  <a
+                    href={job.apply_url || "#"}
+                    target="_blank"
+                    className="flex-1 rounded-2xl bg-red-500 px-6 py-3 text-center font-medium text-white transition hover:bg-red-400"
+                  >
+                    Apply Now
+                  </a>
+
+                  {user && job && (
+                    <SaveJobButton
+                      jobId={job.id}
+                      isSaved={isSaved}
+                    />
+                  )}
+                </div>
 
                 <div className="mt-8 space-y-6">
                   <div>
