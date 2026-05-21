@@ -4,8 +4,8 @@ import { revalidatePath } from "next/cache";
 
 import { createClient } from "@/lib/supabase/server";
 
-export async function saveJob(
-  jobId: number,
+export async function saveNotice(
+  noticeId: number,
 ) {
   const supabase =
     await createClient();
@@ -19,17 +19,18 @@ export async function saveJob(
   }
 
   await supabase
-    .from("saved_jobs")
+    .from("saved_notices")
     .insert({
       user_id: user.id,
-      job_id: jobId,
+      notice_id: noticeId,
     });
 
-  revalidatePath("/jobs");
+  revalidatePath("/notices");
+  revalidatePath("/saved-notices");
 }
 
-export async function unsaveJob(
-  jobId: number,
+export async function unsaveNotice(
+  noticeId: number,
 ) {
   const supabase =
     await createClient();
@@ -43,10 +44,11 @@ export async function unsaveJob(
   }
 
   await supabase
-    .from("saved_jobs")
+    .from("saved_notices")
     .delete()
     .eq("user_id", user.id)
-    .eq("job_id", jobId);
+    .eq("notice_id", noticeId);
 
-  revalidatePath("/jobs");
+  revalidatePath("/notices");
+  revalidatePath("/saved-notices");
 }

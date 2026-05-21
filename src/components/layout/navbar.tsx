@@ -13,8 +13,8 @@ const navigationItems = [
     href: "/",
   },
   {
-    name: "Jobs",
-    href: "/jobs",
+    name: "Notices",
+    href: "/notices",
   },
   {
     name: "Institutions",
@@ -22,13 +22,14 @@ const navigationItems = [
   },
   {
     name: "Exams",
-    href: "/exams",
+    href: "/categories/exams",
   },
   {
     name: "Scholarships",
-    href: "/scholarships",
+    href: "/categories/scholarships",
   },
 ];
+
 
 export async function Navbar() {
   const supabase =
@@ -70,11 +71,20 @@ export async function Navbar() {
           {/* RIGHT */}
           <div className="flex items-center gap-2">
             {user ? (
-              <form action={logout}>
-                <button className="rounded-full border border-zinc-800 px-5 py-2 text-sm transition hover:border-red-500/40 hover:bg-zinc-900">
-                  Logout
-                </button>
-              </form>
+              <>
+                <Link
+                  href="/saved-notices"
+                  className="rounded-full border border-zinc-800 px-5 py-2 text-sm transition hover:border-red-500/40 hover:bg-zinc-900"
+                >
+                  Saved
+                </Link>
+
+                <form action={logout}>
+                  <button className="rounded-full border border-zinc-800 px-5 py-2 text-sm transition hover:border-red-500/40 hover:bg-zinc-900">
+                    Logout
+                  </button>
+                </form>
+              </>
             ) : (
               <Link
                 href="/login"

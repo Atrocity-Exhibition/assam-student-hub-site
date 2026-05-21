@@ -22,18 +22,14 @@ export async function createClient() {
         },
 
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(
-            ({
-              name,
-              value,
-              options,
-            }) =>
-              cookieStore.set(
-                name,
-                value,
-                options,
-              ),
-          );
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options),
+            );
+          } catch {
+            // Called from a Server Component — cookie writes are not allowed here.
+            // The session will be refreshed by the next Server Action or Route Handler.
+          }
         },
       },
     },

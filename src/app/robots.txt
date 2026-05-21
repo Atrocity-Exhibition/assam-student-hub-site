@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /monitoring
+Disallow: /auth/
+Disallow: /login
+
+Sitemap: https://assamstudenthub.com/sitemap.xml

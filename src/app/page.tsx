@@ -4,13 +4,14 @@ import { Container } from "@/components/layout/container";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/home/footer";
 import { HeroSection } from "@/components/home/hero-section";
-import { JobsSection } from "@/components/home/jobs-section";
+import { NoticesSection } from "@/components/home/notices-section";
 import { UniversitiesSection } from "@/components/home/universities-section";
+import { TrendingSearches } from "@/components/shared/trending-searches";
 
 export const metadata: Metadata = {
   title: "AssamStudentHub | Student Portal for Assam",
   description:
-    "Discover Assam government jobs, university notices, scholarships, and student updates in one place.",
+    "Discover Assam government updates, university notices, scholarships, and student announcements in one place.",
 };
 
 export default function HomePage() {
@@ -21,7 +22,8 @@ export default function HomePage() {
       <main className="min-h-screen">
         <Container>
           <HeroSection />
-          <JobsSection />
+          <TrendingSearches />
+          <NoticesSection />
           <UniversitiesSection />
         </Container>
 
