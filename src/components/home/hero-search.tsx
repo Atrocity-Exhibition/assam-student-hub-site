@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export function HeroSearch() {
   const router = useRouter();
@@ -36,7 +37,7 @@ export function HeroSearch() {
 
   return (
     <form onSubmit={onSubmit} className="w-full">
-      <div className="relative flex items-center rounded-3xl border border-zinc-200 bg-white/70 dark:border-zinc-800/80 dark:bg-zinc-950/40 p-1.5 focus-within:border-emerald-500/50 focus-within:shadow-[0_0_25px_rgba(16,185,129,0.06)] dark:focus-within:shadow-[0_0_25px_rgba(16,185,129,0.08)] transition-all duration-300">
+      <div className="relative flex items-center rounded-3xl border border-border bg-card/50 p-1.5 focus-within:border-brand-border focus-within:ring-2 focus-within:ring-brand/15 dark:focus-within:ring-brand/20 transition-all duration-300">
         <Search className="ml-4 h-5 w-5 text-zinc-500 dark:text-zinc-400 shrink-0" />
         <input
           ref={inputRef}
@@ -49,17 +50,18 @@ export function HeroSearch() {
         
         {/* Keyboard shortcut indicator */}
         <div className="absolute right-28 mr-3 hidden sm:flex items-center pointer-events-none">
-          <kbd className="h-5 px-1.5 flex items-center justify-center rounded border border-zinc-200 bg-zinc-100 dark:border-zinc-800 bg-zinc-900/60 text-[10px] font-medium text-zinc-500 font-mono">
+          <kbd className="h-5 px-1.5 flex items-center justify-center rounded border border-border bg-card/55 text-[10px] font-medium text-muted font-mono">
             /
           </kbd>
         </div>
 
-        <button
+        <Button
           type="submit"
-          className="rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3 text-sm font-semibold text-white transition-all duration-300 hover:opacity-95 active:scale-[0.98] shadow-md shadow-emerald-500/10 shrink-0"
+          variant="primary"
+          className="px-6 py-3 text-sm font-semibold shrink-0"
         >
           Search
-        </button>
+        </Button>
       </div>
     </form>
   );

@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { saveNotice, unsaveNotice } from "@/app/notices/actions";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   noticeId: number;
@@ -22,14 +23,11 @@ export function SaveNoticeButton({ noticeId, isSaved }: Props) {
   };
 
   return (
-    <button
+    <Button
       onClick={handleToggle}
       disabled={isPending}
-      className={`rounded-2xl border px-4 py-2 text-sm font-medium transition duration-300 backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-red-500/50 disabled:opacity-50 ${
-        isSaved
-          ? "border-red-500 bg-red-500/20 text-red-400 hover:bg-red-500/30"
-          : "border-zinc-800 bg-zinc-900/40 text-zinc-300 hover:border-zinc-700 hover:bg-zinc-900/60 hover:text-white"
-      }`}
+      variant={isSaved ? "critical" : "secondary"}
+      className="backdrop-blur-md"
     >
       {isPending ? (
         <span className="flex items-center gap-2">
@@ -44,6 +42,6 @@ export function SaveNoticeButton({ noticeId, isSaved }: Props) {
       ) : (
         "Save Notice"
       )}
-    </button>
+    </Button>
   );
 }

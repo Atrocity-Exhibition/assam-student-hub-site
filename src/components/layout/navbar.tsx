@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 
 import { logout } from "@/app/login/actions";
 
+import { Button } from "@/components/ui/button";
 import { Container } from "./container";
 import { MobileMenu } from "./mobile-menu";
 import { ThemeToggle } from "./theme-toggle";
@@ -64,7 +65,7 @@ export async function Navbar() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="rounded-full px-4 py-2 text-sm text-zinc-600 hover:text-emerald-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/80 dark:hover:text-emerald-400 transition-all duration-200"
+                className="rounded-full px-4 py-2 text-sm text-zinc-600 hover:text-brand dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/80 dark:hover:text-brand transition-all duration-200"
               >
                 {item.name}
               </Link>
@@ -77,25 +78,23 @@ export async function Navbar() {
 
             {user ? (
               <>
-                <Link
-                  href="/saved-notices"
-                  className="flex h-9 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800 px-5 text-sm font-medium text-zinc-700 dark:text-zinc-300 transition-all duration-200 hover:border-emerald-500/30 hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:hover:text-emerald-400"
-                >
-                  Saved
+                <Link href="/saved-notices">
+                  <Button variant="secondary" size="sm">
+                    Saved
+                  </Button>
                 </Link>
 
                 <form action={logout} className="flex items-center">
-                  <button className="flex h-9 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800 px-5 text-sm font-medium text-zinc-700 dark:text-zinc-300 transition-all duration-200 hover:border-emerald-500/30 hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:hover:text-emerald-400">
+                  <Button variant="secondary" size="sm">
                     Logout
-                  </button>
+                  </Button>
                 </form>
               </>
             ) : (
-              <Link
-                href="/login"
-                className="flex h-9 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800 px-5 text-sm font-medium text-zinc-700 dark:text-zinc-300 transition-all duration-200 hover:border-emerald-500/30 hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:hover:text-emerald-400"
-              >
-                Login
+              <Link href="/login">
+                <Button variant="secondary" size="sm">
+                  Login
+                </Button>
               </Link>
             )}
 

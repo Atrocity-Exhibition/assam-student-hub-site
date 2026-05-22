@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
+
 export function ThemeToggle() {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [mounted, setMounted] = useState(false);
@@ -36,14 +38,22 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <div className="h-9 w-9 rounded-full border border-zinc-200 dark:border-zinc-800 bg-transparent" />
+      <Button
+        variant="secondary"
+        size="sm"
+        className="h-9 w-9 p-0 rounded-full"
+        disabled
+        aria-label="Theme toggle loading placeholder"
+      />
     );
   }
 
   return (
-    <button
+    <Button
       onClick={toggleTheme}
-      className="flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-600 transition-all duration-300 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:bg-zinc-900/60 dark:hover:text-zinc-200 shadow-sm"
+      variant="secondary"
+      size="sm"
+      className="h-9 w-9 p-0 rounded-full"
       aria-label="Toggle light/dark theme"
     >
       {theme === "light" ? (
@@ -51,6 +61,6 @@ export function ThemeToggle() {
       ) : (
         <Sun className="h-4.5 w-4.5 transition-transform duration-300 rotate-0 hover:rotate-45" />
       )}
-    </button>
+    </Button>
   );
 }

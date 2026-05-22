@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   initialSearch?: string;
@@ -39,9 +39,9 @@ export function JobsSearch({
   return (
     <form
       onSubmit={handleSearch}
-      className="rounded-3xl border border-zinc-800 bg-zinc-900/40 p-3"
+      className="relative rounded-3xl border border-border bg-card/50 p-1.5 focus-within:border-brand-border focus-within:ring-2 focus-within:ring-brand/15 dark:focus-within:ring-brand/20 transition-all duration-300"
     >
-      <div className="flex gap-3">
+      <div className="flex items-center gap-3">
         <input
           type="text"
           value={search}
@@ -51,15 +51,16 @@ export function JobsSearch({
             )
           }
           placeholder="Search jobs..."
-          className="h-14 w-full bg-transparent px-4 text-white outline-none placeholder:text-zinc-500"
+          className="h-12 w-full bg-transparent px-4 text-foreground outline-none placeholder:text-muted/65 text-sm sm:text-base"
         />
 
-        <button
+        <Button
           type="submit"
-          className="rounded-2xl bg-red-500 px-6 font-medium text-white transition hover:bg-red-400"
+          variant="primary"
+          className="px-6 py-3 text-sm font-semibold shrink-0"
         >
           Search
-        </button>
+        </Button>
       </div>
     </form>
   );

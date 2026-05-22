@@ -4,6 +4,7 @@ import { getNotices } from "@/services/notices";
 import { NoticesSearch } from "./notices-search";
 import { NoticesSort } from "./notices-sort";
 import { getRelativeTime } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const categories = [
   "All",
@@ -38,7 +39,7 @@ export function getCategoryStyles(category: string | null) {
     case "scholarship":
       return "border-pink-550/20 bg-pink-500/10 text-pink-600 dark:text-pink-400";
     default:
-      return "border-zinc-200 bg-zinc-100/50 text-zinc-650 dark:border-zinc-800 dark:bg-zinc-900/50 dark:text-zinc-400";
+      return "border-border bg-card/40 text-foreground";
   }
 }
 
@@ -79,7 +80,7 @@ export function getCategoryHoverClasses(category: string | null) {
       return {
         border: "hover:border-zinc-300 dark:hover:border-zinc-800 hover:shadow-[0_0_30px_rgba(0,0,0,0.02)] dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.01)]",
         text: "group-hover:text-zinc-900 dark:group-hover:text-zinc-200",
-        badge: "border-zinc-200 bg-zinc-100/50 text-zinc-650 dark:border-zinc-800 dark:bg-zinc-900/50 dark:text-zinc-400",
+        badge: "border-border bg-card/40 text-foreground",
       };
   }
 }
@@ -143,8 +144,8 @@ export async function NoticesList({
               href={`/notices?${params.toString()}`}
               className={`shrink-0 rounded-full border px-4 py-1.5 text-xs font-bold transition-all duration-300 ${
                 isActive
-                  ? "border-emerald-500 bg-emerald-500 text-zinc-950 dark:text-zinc-950 shadow shadow-emerald-500/10"
-                  : "border-zinc-200 bg-white/50 text-zinc-600 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900/30 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:bg-zinc-900/40 dark:hover:text-zinc-200"
+                  ? "border-brand bg-brand text-primary-foreground shadow shadow-brand/10"
+                  : "border-border bg-card/40 text-foreground hover:border-zinc-350 dark:hover:border-zinc-700 hover:bg-card"
               }`}
             >
               {item}
@@ -155,18 +156,17 @@ export async function NoticesList({
 
       {/* EMPTY STATE */}
       {notices.length === 0 && (
-        <div className="mt-12 rounded-3xl border border-zinc-200 bg-white/70 dark:border-zinc-800/80 dark:bg-zinc-900/10 backdrop-blur-sm p-12 text-center shadow-sm max-w-2xl mx-auto">
+        <div className="mt-12 rounded-3xl border border-border bg-card/50 backdrop-blur-sm p-12 text-center shadow-sm max-w-2xl mx-auto">
           <div className="text-4xl mb-4">🔍</div>
           <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-200 transition-colors duration-200">No notices found</h2>
           <p className="mt-3 text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed">
             We couldn&apos;t find any announcements matching your current search or category filter. Try using different keywords, checking the spelling, or clearing filters.
           </p>
           {(search || category !== "All") && (
-            <Link
-              href="/notices"
-              className="mt-6 inline-flex rounded-full bg-emerald-500 hover:bg-emerald-600 text-zinc-950 font-bold px-6 py-2.5 text-xs transition-colors duration-250 shadow"
-            >
-              Clear Filters
+            <Link href="/notices">
+              <Button variant="secondary" size="sm" className="mt-6">
+                Clear Filters
+              </Button>
             </Link>
           )}
         </div>
@@ -183,7 +183,7 @@ export async function NoticesList({
 
               return (
                 <Link key={notice.id} href={`/notices/${notice.slug}`}>
-                  <article className={`group h-full flex flex-col justify-between rounded-3xl border border-zinc-200 bg-white/70 dark:border-zinc-900 dark:bg-zinc-950/40 p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-zinc-50 dark:hover:bg-zinc-900/10 shadow-sm ${hoverClasses.border}`}>
+                  <article className={`group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/50 p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-card/75 shadow-sm ${hoverClasses.border}`}>
                     <div className="flex gap-4">
                       {/* Left accent strip */}
                       <div className={`w-1 shrink-0 rounded-full ${accentColor} opacity-90 group-hover:scale-y-[1.03] transition-transform duration-300`} />
@@ -200,7 +200,7 @@ export async function NoticesList({
                             </span>
                           )}
                         </div>
-
+ 
                         <h2 className={`text-base sm:text-lg font-extrabold leading-snug text-zinc-900 dark:text-zinc-150 transition-colors duration-300 line-clamp-2 ${hoverClasses.text}`}>
                           {notice.title}
                         </h2>
@@ -211,7 +211,7 @@ export async function NoticesList({
                       </div>
                     </div>
 
-                    <div className="mt-6 flex items-center justify-between border-t border-zinc-150 dark:border-zinc-900/80 pt-3.5 text-xs text-zinc-550 dark:text-zinc-400 font-semibold uppercase tracking-wider transition-colors duration-200">
+                    <div className="mt-6 flex items-center justify-between border-t border-border pt-3.5 text-xs text-zinc-550 dark:text-zinc-400 font-semibold uppercase tracking-wider transition-colors duration-200">
                       <span>{notice.source}</span>
                       <span>{formattedDate}</span>
                     </div>
@@ -244,16 +244,13 @@ export async function NoticesList({
                 params.set("page", String(pageNumber));
 
                 return (
-                  <Link
-                    key={pageNumber}
-                    href={`/notices?${params.toString()}`}
-                    className={`flex h-9 w-9 items-center justify-center rounded-xl border text-xs font-bold transition-all duration-300 ${
-                      isActive
-                        ? "border-emerald-500 bg-emerald-500 text-zinc-950 dark:text-zinc-950 shadow shadow-emerald-500/10"
-                        : "border-zinc-200 bg-white text-zinc-650 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900/30 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:bg-zinc-900/40 dark:hover:text-zinc-200"
-                    }`}
-                  >
-                    {pageNumber}
+                  <Link key={pageNumber} href={`/notices?${params.toString()}`}>
+                    <Button
+                      variant={isActive ? "primary" : "secondary"}
+                      className="h-9 w-9 p-0 text-xs font-bold rounded-xl"
+                    >
+                      {pageNumber}
+                    </Button>
                   </Link>
                 );
               })}

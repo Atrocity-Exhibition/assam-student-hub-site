@@ -60,7 +60,7 @@ export async function HeroSection() {
         </div>
 
         {/* HEADING */}
-        <h1 className="text-4xl font-extrabold leading-[1.12] tracking-tight sm:text-5xl md:text-6xl text-zinc-900 dark:text-zinc-100 max-w-4xl transition-colors duration-200">
+        <h1 className="text-3xl font-extrabold leading-[1.12] tracking-tight sm:text-5xl md:text-6xl text-zinc-900 dark:text-zinc-100 max-w-4xl transition-colors duration-200">
           Assam&apos;s Unified Academic &amp; Recruitment Notice Platform
         </h1>
 
