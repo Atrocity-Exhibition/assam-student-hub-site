@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MapPin } from "lucide-react";
 
 import { Navbar } from "@/components/layout/navbar";
 import { Container } from "@/components/layout/container";
@@ -53,8 +54,9 @@ export default async function InstitutionsPage() {
                   </p>
 
                   <div className="mt-8 flex items-center justify-between text-xs text-muted font-semibold uppercase tracking-wider">
-                    <span>
-                      📍 {institution.location || "Assam, India"}
+                    <span className="flex items-center gap-1">
+                      <MapPin className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                      <span>{institution.location || "Assam, India"}</span>
                     </span>
 
                     <span className="group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">

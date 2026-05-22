@@ -2,6 +2,49 @@ import { supabase } from "@/lib/supabase";
 import type { Notice } from "@/types/notice";
 import { logSearch } from "./search-analytics";
 
+export const EXCLUDED_ACADEMIC_SLUGS = ["gauhati-university", "cotton-university", "dibrugarh-university"];
+
+/**
+ * Checks if a category is a competitive exam/result category that requires partitioning academic notices.
+ */
+export function isCompetitiveCategory(category?: string | null): boolean {
+  if (!category) return false;
+  const catLower = category.toLowerCase();
+  return catLower === "exam" || catLower === "result";
+}
+
+/**
+ * Applies the competitive exam query filter to a PostgREST query.
+ * If the category is competitive and no specific institution is requested,
+ * it excludes university academic notices.
+ */
+export function applyCompetitiveExamFilters<T extends any>(
+  query: T,
+  category?: string,
+  options?: { institutionSlug?: string; institutionId?: number }
+): T {
+  if (isCompetitiveCategory(category) && !options?.institutionSlug && !options?.institutionId) {
+    return (query as any).not("institution_slug", "in", `("${EXCLUDED_ACADEMIC_SLUGS.join(",")}")`);
+  }
+  return query;
+}
+
+/**
+ * Applies the competitive exam filter to in-memory notices array (useful for RPC results).
+ */
+export function filterCompetitiveExamNotices(
+  notices: Notice[],
+  category?: string,
+  options?: { institutionSlug?: string; institutionId?: number }
+): Notice[] {
+  if (isCompetitiveCategory(category) && !options?.institutionSlug && !options?.institutionId) {
+    return notices.filter(
+      (n) => !n.institution_slug || !EXCLUDED_ACADEMIC_SLUGS.includes(n.institution_slug)
+    );
+  }
+  return notices;
+}
+
 type GetNoticesOptions = {
   search?: string;
   category?: string;
@@ -54,10 +97,12 @@ export async function getNotices(options?: GetNoticesOptions) {
           instMap[row.id] = row.institutions;
         });
 
-        const notices = (ftsData as Notice[]).map((n) => ({
+        let notices = (ftsData as Notice[]).map((n) => ({
           ...n,
           institutions: instMap[n.id] ?? null,
         })) as Notice[];
+
+        notices = filterCompetitiveExamNotices(notices, category, options);
 
         // Fire-and-forget analytics log
         logSearch({ query: search, resultsCount: notices.length, searchType: "fts", durationMs, category, userId: options?.userId });
@@ -91,10 +136,12 @@ export async function getNotices(options?: GetNoticesOptions) {
           instMap[row.id] = row.institutions;
         });
 
-        const notices = (fuzzyData as Notice[]).map((n) => ({
+        let notices = (fuzzyData as Notice[]).map((n) => ({
           ...n,
           institutions: instMap[n.id] ?? null,
         })) as Notice[];
+
+        notices = filterCompetitiveExamNotices(notices, category, options);
 
         logSearch({ query: search, resultsCount: notices.length, searchType: "fuzzy", durationMs, category, userId: options?.userId });
 
@@ -126,6 +173,8 @@ export async function getNotices(options?: GetNoticesOptions) {
   if (category) {
     query = query.ilike("category", category);
   }
+
+  query = applyCompetitiveExamFilters(query, category, options);
 
   if (options?.institutionSlug) {
     query = query.eq("institution_slug", options.institutionSlug);

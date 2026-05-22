@@ -5,6 +5,19 @@ import {
   XCircle,
   Database,
   AlertCircle,
+  Trophy,
+  Shield,
+  School,
+  GraduationCap,
+  FlaskConical,
+  Briefcase,
+  Calendar,
+  HeartPulse,
+  Settings,
+  Globe,
+  Leaf,
+  BookOpen,
+  Search,
 } from "lucide-react";
 
 import { Navbar } from "@/components/layout/navbar";
@@ -14,22 +27,22 @@ import { getRecentRuns, getScraperSummaries } from "@/services/scrapers";
 
 export const revalidate = 60; // Revalidate every 60 seconds
 
-const SCRAPER_DISPLAY_INFO: Record<string, { label: string; icon: string }> = {
-  apsc: { label: "APSC Official", icon: "🏆" },
-  slprb: { label: "SLPRB Assam", icon: "👮" },
-  gauhati: { label: "Gauhati University", icon: "🏛️" },
-  cotton: { label: "Cotton University", icon: "🎓" },
-  dibrugarh: { label: "Dibrugarh University", icon: "🔬" },
-  assam_career: { label: "Assam Career", icon: "💼" },
-  daily_assam_job: { label: "Daily Assam Job", icon: "📅" },
-  nhm_assam: { label: "NHM Assam", icon: "🏥" },
-  aesrb: { label: "AESRB Assam", icon: "⚙️" },
-  ncs_portal: { label: "NCS Portal", icon: "🌐" },
-  tezpur: { label: "Tezpur University", icon: "🏫" },
-  bodoland: { label: "Bodoland University", icon: "🌿" },
-  mangaldai: { label: "Mangaldai College", icon: "🏫" },
-  ahsec: { label: "AHSEC Board", icon: "📝" },
-  seba: { label: "SEBA Board", icon: "📝" },
+const SCRAPER_DISPLAY_INFO: Record<string, { label: string; icon: React.ComponentType<{ className?: string }> }> = {
+  apsc: { label: "APSC Official", icon: Trophy },
+  slprb: { label: "SLPRB Assam", icon: Shield },
+  gauhati: { label: "Gauhati University", icon: School },
+  cotton: { label: "Cotton University", icon: GraduationCap },
+  dibrugarh: { label: "Dibrugarh University", icon: FlaskConical },
+  assam_career: { label: "Assam Career", icon: Briefcase },
+  daily_assam_job: { label: "Daily Assam Job", icon: Calendar },
+  nhm_assam: { label: "NHM Assam", icon: HeartPulse },
+  aesrb: { label: "AESRB Assam", icon: Settings },
+  ncs_portal: { label: "NCS Portal", icon: Globe },
+  tezpur: { label: "Tezpur University", icon: School },
+  bodoland: { label: "Bodoland University", icon: Leaf },
+  mangaldai: { label: "Mangaldai College", icon: School },
+  ahsec: { label: "AHSEC Board", icon: BookOpen },
+  seba: { label: "SEBA Board", icon: BookOpen },
 };
 
 function formatTimeAgo(dateString: string | null): string {
@@ -113,14 +126,15 @@ export default async function MonitoringPage() {
                     {staleScrapers.map((s) => {
                       const info = SCRAPER_DISPLAY_INFO[s.scraper_name] || {
                         label: s.scraper_name,
-                        icon: "🔍",
+                        icon: Search,
                       };
+                      const InfoIcon = info.icon;
                       return (
                         <span
                           key={s.scraper_name}
                           className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3.5 py-1 text-xs font-semibold text-amber-600 dark:text-amber-300"
                         >
-                          <span>{info.icon}</span>
+                          <InfoIcon className="h-3.5 w-3.5 shrink-0" />
                           <span>{info.label}</span>
                         </span>
                       );
@@ -217,8 +231,9 @@ export default async function MonitoringPage() {
                 {summaries.map((summary) => {
                   const info = SCRAPER_DISPLAY_INFO[summary.scraper_name] || {
                     label: summary.scraper_name,
-                    icon: "🔍",
+                    icon: Search,
                   };
+                  const InfoIcon = info.icon;
                   const lastRun = summary.last_run;
                   const isStale = summary.is_stale;
 
@@ -259,8 +274,8 @@ export default async function MonitoringPage() {
                         {/* TOP: Name & Status */}
                         <div className="flex justify-between items-start gap-4">
                           <div className="flex items-center gap-3">
-                            <span className="text-2xl bg-card/90 p-2.5 rounded-2xl border border-border shrink-0">
-                              {info.icon}
+                            <span className="flex items-center justify-center h-11 w-11 bg-card/90 rounded-2xl border border-border shrink-0 text-muted-foreground">
+                              <InfoIcon className="h-5 w-5 shrink-0 text-emerald-500 dark:text-emerald-400" />
                             </span>
                             <div className="min-w-0">
                               <h3 className="text-base font-bold text-foreground group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-200 truncate">
@@ -406,8 +421,9 @@ export default async function MonitoringPage() {
                       recentRuns.map((run) => {
                         const info = SCRAPER_DISPLAY_INFO[run.scraper_name] || {
                           label: run.scraper_name,
-                          icon: "🔍",
+                          icon: Search,
                         };
+                        const InfoIcon = info.icon;
 
                         let statusColor = "bg-muted text-muted-foreground border-border/50";
                         if (run.status === "completed") {
@@ -427,8 +443,8 @@ export default async function MonitoringPage() {
                             className="hover:bg-card/40 transition-colors duration-150 group"
                           >
                             <td className="px-6 py-4 font-semibold text-foreground">
-                              <div className="flex items-center gap-2">
-                                <span className="text-lg shrink-0">{info.icon}</span>
+                              <div className="flex items-center gap-2.5">
+                                <InfoIcon className="h-4.5 w-4.5 shrink-0 text-muted-foreground" />
                                 <div>
                                   <span className="group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-200">
                                     {info.label}

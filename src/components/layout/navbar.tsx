@@ -15,7 +15,7 @@ const navigationItems = [
     href: "/",
   },
   {
-    name: "Notices",
+    name: "Jobs",
     href: "/notices",
   },
   {

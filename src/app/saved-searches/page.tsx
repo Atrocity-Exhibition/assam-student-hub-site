@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Search, Trash2, History } from "lucide-react";
+import { Search, Trash2, History, Star } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { Navbar } from "@/components/layout/navbar";
@@ -60,7 +60,12 @@ export default async function SavedSearchesPage() {
                   <Link href="/notices" className="text-emerald-600 hover:underline dark:text-emerald-400 font-semibold">
                     notices page
                   </Link>{" "}
-                  and click <strong className="text-foreground">☆ Save this search</strong> to store your favorite queries here.
+                  and click{" "}
+                  <strong className="text-foreground inline-flex items-center gap-1">
+                    <Star className="h-3.5 w-3.5 fill-current text-amber-500 shrink-0" />
+                    Save this search
+                  </strong>{" "}
+                  to store your favorite queries here.
                 </p>
               </div>
             ) : (

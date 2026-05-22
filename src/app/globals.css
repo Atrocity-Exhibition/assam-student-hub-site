@@ -63,6 +63,7 @@
   --critical: #f87171;
   --critical-border: rgba(248, 113, 113, 0.2);
   --color-critical-bg-var: rgba(248, 113, 113, 0.05);
+  --bg-dots: rgba(255, 255, 255, 0.035);
 }
 
 :root.light {
@@ -82,6 +83,7 @@
   --critical: #b91c1c;
   --critical-border: rgba(185, 28, 28, 0.15);
   --color-critical-bg-var: rgba(185, 28, 28, 0.04);
+  --bg-dots: rgba(15, 23, 42, 0.03);
 }
 
 * {
@@ -93,7 +95,9 @@ html {
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
+  background-image: radial-gradient(var(--bg-dots) 1px, transparent 1px);
+  background-size: 24px 24px;
   color: var(--foreground);
 
   font-family:

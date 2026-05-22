@@ -1,39 +1,44 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type Props = {
   initialSearch?: string;
 };
 
-export function JobsSearch({
-  initialSearch = "",
-}: Props) {
+export function JobsSearch({ initialSearch = "" }: Props) {
   const router = useRouter();
+  const [search, setSearch] = useState(initialSearch);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const [search, setSearch] =
-    useState(initialSearch);
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if user is already typing in an input or textarea
+      if (
+        e.key === "/" &&
+        document.activeElement?.tagName !== "INPUT" &&
+        document.activeElement?.tagName !== "TEXTAREA"
+      ) {
+        e.preventDefault();
+        inputRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
-  function handleSearch(
-    event: React.FormEvent,
-  ) {
+  function handleSearch(event: React.FormEvent) {
     event.preventDefault();
-
-    const params =
-      new URLSearchParams();
+    const params = new URLSearchParams();
 
     if (search.trim()) {
-      params.set(
-        "search",
-        search,
-      );
+      params.set("search", search.trim());
     }
 
-    router.push(
-      `/jobs?${params.toString()}`,
-    );
+    router.push(`/jobs?${params.toString()}`);
   }
 
   return (
@@ -42,17 +47,22 @@ export function JobsSearch({
       className="relative rounded-3xl border border-border bg-card/50 p-1.5 focus-within:border-brand-border focus-within:ring-2 focus-within:ring-brand/15 dark:focus-within:ring-brand/20 transition-all duration-300"
     >
       <div className="flex items-center gap-3">
+        <Search className="ml-3 h-5 w-5 text-zinc-500 dark:text-zinc-400 shrink-0" />
         <input
+          ref={inputRef}
           type="text"
           value={search}
-          onChange={(event) =>
-            setSearch(
-              event.target.value,
-            )
-          }
+          onChange={(event) => setSearch(event.target.value)}
           placeholder="Search jobs..."
-          className="h-12 w-full bg-transparent px-4 text-foreground outline-none placeholder:text-muted/65 text-sm sm:text-base"
+          className="h-12 w-full bg-transparent px-1 text-foreground outline-none placeholder:text-muted/65 text-sm sm:text-base"
         />
+
+        {/* Keyboard shortcut indicator */}
+        <div className="mr-3 hidden sm:flex items-center pointer-events-none shrink-0">
+          <kbd className="h-5 px-1.5 flex items-center justify-center rounded border border-border bg-card/55 text-[10px] font-medium text-muted font-mono">
+            /
+          </kbd>
+        </div>
 
         <Button
           type="submit"
@@ -65,3 +75,4 @@ export function JobsSearch({
     </form>
   );
 }
+

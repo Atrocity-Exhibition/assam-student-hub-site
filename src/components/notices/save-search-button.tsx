@@ -4,6 +4,7 @@ import { useState } from "react";
 import { saveSearchAction } from "@/app/saved-searches/actions";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Star } from "lucide-react";
 
 type Props = {
   query: string;
@@ -19,9 +20,10 @@ export function SaveSearchButton({ query, category, isAuthenticated }: Props) {
     return (
       <a
         href="/login"
-        className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-border px-4 py-1.5 text-xs font-medium text-muted transition-all duration-200 hover:border-zinc-350 dark:hover:border-zinc-700 hover:text-foreground"
+        className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-border px-4 py-1.5 text-xs font-medium text-muted transition-all duration-200 hover:border-zinc-400 dark:hover:border-zinc-700 hover:text-foreground"
       >
-        ☆ Save this search
+        <Star className="h-3.5 w-3.5 shrink-0" />
+        Save this search
       </a>
     );
   }
@@ -29,7 +31,8 @@ export function SaveSearchButton({ query, category, isAuthenticated }: Props) {
   if (saved) {
     return (
       <Badge variant="brand" className="gap-1.5 px-4 py-1.5">
-        ★ Search saved
+        <Star className="h-3.5 w-3.5 fill-current shrink-0" />
+        Search saved
       </Badge>
     );
   }
@@ -51,7 +54,8 @@ export function SaveSearchButton({ query, category, isAuthenticated }: Props) {
       size="sm"
       className="gap-1.5"
     >
-      {loading ? "Saving…" : "☆ Save this search"}
+      <Star className="h-3.5 w-3.5 shrink-0" />
+      {loading ? "Saving…" : "Save this search"}
     </Button>
   );
 }

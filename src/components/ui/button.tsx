@@ -19,11 +19,11 @@ export function Button({
     primary:
       "bg-primary text-primary-foreground border border-primary hover:bg-primary/95 shadow-sm active:scale-[0.98]",
     secondary:
-      "border border-border bg-card/45 text-foreground hover:bg-card hover:border-zinc-350 dark:hover:border-zinc-700 active:scale-[0.98]",
+      "border border-border bg-card/45 text-foreground hover:bg-card hover:border-zinc-400 dark:hover:border-zinc-700 active:scale-[0.98]",
     critical:
       "border border-critical-border bg-critical-bg text-critical hover:bg-critical-bg/80 hover:border-critical/30 active:scale-[0.98]",
     ghost:
-      "border border-transparent bg-transparent text-muted hover:bg-zinc-150/80 dark:hover:bg-zinc-900/60 hover:text-foreground",
+      "border border-transparent bg-transparent text-muted hover:bg-zinc-200/80 dark:hover:bg-zinc-900/60 hover:text-foreground",
   };
 
   const sizes = {

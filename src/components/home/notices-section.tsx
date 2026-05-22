@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { getNotices } from "@/services/notices";
 import { getCategoryStyles, getCategoryHoverClasses } from "@/components/notices/notices-list";
-import { getRelativeTime } from "@/lib/utils";
+import { getRelativeTime, extractSalary } from "@/lib/utils";
+import { Banknote } from "lucide-react";
 
 const categoryAccentColors: Record<string, string> = {
   recruitment: "bg-emerald-500",
@@ -117,7 +118,7 @@ export async function NoticesSection() {
                             {featuredNotice.category || "Job"}
                           </span>
                           {featuredNotice.institutions?.name && (
-                            <span className="text-xs text-zinc-550 dark:text-zinc-400 font-semibold uppercase tracking-wider truncate max-w-[200px] sm:max-w-[300px]">
+                            <span className="text-xs text-zinc-500 dark:text-zinc-400 font-semibold uppercase tracking-wider truncate max-w-[200px] sm:max-w-[300px]">
                               {featuredNotice.institutions.name}
                             </span>
                           )}
@@ -127,19 +128,29 @@ export async function NoticesSection() {
                           {featuredNotice.title}
                         </h3>
 
-                        <p className="mt-3 text-sm leading-relaxed text-zinc-650 dark:text-zinc-400 line-clamp-3 transition-colors duration-200">
+                        <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400 line-clamp-3 transition-colors duration-200">
                           {featuredNotice.description || "No description available. Click to view the official recruitment details."}
                         </p>
+
+                        {(() => {
+                          const salary = extractSalary(featuredNotice.title, featuredNotice.description, featuredNotice.metadata);
+                          return salary ? (
+                            <div className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-600 dark:bg-emerald-500/5 dark:text-emerald-400 border border-emerald-500/20">
+                              <Banknote className="h-3.5 w-3.5 shrink-0" />
+                              <span>Salary/Stipend: {salary}</span>
+                            </div>
+                          ) : null;
+                        })()}
                       </div>
                     </div>
 
                     <div className="mt-6 pt-5 border-t border-border flex items-center justify-between flex-wrap gap-3">
-                      <span className="text-xs font-semibold text-zinc-550 dark:text-zinc-400 uppercase tracking-wider transition-colors duration-200">
+                      <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider transition-colors duration-200">
                         Source: {featuredNotice.source}
                       </span>
                       
                       <div className="flex items-center gap-4">
-                        <span className="text-xs text-zinc-550 dark:text-zinc-400 font-semibold tracking-wide transition-colors duration-200">
+                        <span className="text-xs text-zinc-500 dark:text-zinc-400 font-semibold tracking-wide transition-colors duration-200">
                           {formattedDate}
                         </span>
                         <span className={`inline-flex items-center gap-1 text-xs font-bold ${hoverClasses.text} transition-all duration-300`}>
@@ -156,7 +167,7 @@ export async function NoticesSection() {
           {/* COMPACT STACK FEED (Col span 1) */}
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between pb-2 border-b border-border">
-              <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-450 transition-colors duration-200">
+              <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 transition-colors duration-200">
                 Recent Jobs
               </h3>
             </div>
@@ -187,10 +198,20 @@ export async function NoticesSection() {
                               <span className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 shrink-0">{dateStr}</span>
                             </div>
                             
-                            <h4 className={`text-xs sm:text-sm font-bold leading-snug text-zinc-800 dark:text-zinc-250 line-clamp-2 transition-colors duration-300 ${hoverClasses.text}`}>
+                            <h4 className={`text-xs sm:text-sm font-bold leading-snug text-zinc-800 dark:text-zinc-300 line-clamp-2 transition-colors duration-300 ${hoverClasses.text}`}>
                               {notice.title}
                             </h4>
                             
+                            {(() => {
+                              const salary = extractSalary(notice.title, notice.description, notice.metadata);
+                              return salary ? (
+                                <div className="mt-2 inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                                  <Banknote className="h-3 w-3 shrink-0" />
+                                  <span>{salary}</span>
+                                </div>
+                              ) : null;
+                            })()}
+
                             <p className="mt-1.5 text-[9px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 truncate">
                               {notice.institutions?.name || notice.source}
                             </p>
@@ -210,7 +231,7 @@ export async function NoticesSection() {
       <div className="mt-6 md:mt-8 flex justify-center">
         <Link
           href="/notices?category=recruitment"
-          className="rounded-full border border-border bg-card/45 px-6 py-2.5 text-xs sm:text-sm font-semibold text-foreground transition-all duration-300 hover:border-zinc-350 dark:hover:border-zinc-700 hover:bg-card hover:text-brand shadow-sm hover:shadow"
+          className="rounded-full border border-border bg-card/45 px-6 py-2.5 text-xs sm:text-sm font-semibold text-foreground transition-all duration-300 hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-card hover:text-brand shadow-sm hover:shadow"
         >
           Browse All Job Opportunities
         </Link>

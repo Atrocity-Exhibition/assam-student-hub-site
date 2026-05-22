@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { MapPin } from "lucide-react";
 
 import { Navbar } from "@/components/layout/navbar";
 import { Container } from "@/components/layout/container";
@@ -96,8 +97,9 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
             </p>
 
             <div className="mt-8 flex flex-wrap gap-4 items-center">
-              <div className="rounded-2xl border border-border bg-card/30 backdrop-blur-sm px-5 py-3 text-sm text-muted font-medium">
-                📍 {institution.location || "Assam, India"}
+              <div className="rounded-2xl border border-border bg-card/30 backdrop-blur-sm px-5 py-3 text-sm text-muted font-medium flex items-center gap-1.5">
+                <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <span>{institution.location || "Assam, India"}</span>
               </div>
 
               {institution.website && (

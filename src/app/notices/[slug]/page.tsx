@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { MapPin, FileText, Link2 } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { Navbar } from "@/components/layout/navbar";
@@ -170,7 +171,7 @@ export default async function NoticePage({ params }: PageProps) {
                   Announcement Details
                 </h2>
 
-                <p className="mt-6 leading-8 text-foreground/90 text-sm whitespace-pre-wrap">
+                <p className="mt-6 leading-8 text-foreground/90 text-sm sm:text-base whitespace-pre-wrap">
                   {notice.description || "No further text description is available for this notice. Please consult the official attached PDF or URL source link for full details."}
                 </p>
               </div>
@@ -191,7 +192,8 @@ export default async function NoticePage({ params }: PageProps) {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-emerald-500"
                     >
-                      📁 View Attachment PDF
+                      <FileText className="h-4 w-4 shrink-0" />
+                      View Attachment PDF
                     </a>
                   </div>
                 </div>
@@ -257,8 +259,9 @@ export default async function NoticePage({ params }: PageProps) {
                         {notice.institutions.name}
                       </p>
                       {notice.institutions.location && (
-                        <p className="mt-1 text-xs text-muted">
-                          📍 {notice.institutions.location}
+                        <p className="mt-1 text-xs text-muted flex items-center gap-1">
+                          <MapPin className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                          <span>{notice.institutions.location}</span>
                         </p>
                       )}
                     </div>
@@ -298,8 +301,9 @@ export default async function NoticePage({ params }: PageProps) {
               {/* RELATED NOTICES */}
               {relatedNotices.length > 0 && (
                 <div className="mt-6 rounded-3xl border border-border bg-card/60 backdrop-blur-sm p-6 shadow-xl">
-                  <h3 className="text-sm font-bold text-foreground uppercase tracking-wider border-b border-border pb-3 mb-4">
-                    🔗 Related Notices
+                  <h3 className="text-sm font-bold text-foreground uppercase tracking-wider border-b border-border pb-3 mb-4 flex items-center gap-2">
+                    <Link2 className="h-4 w-4 text-emerald-500 shrink-0" />
+                    <span>Related Notices</span>
                   </h3>
                   <div className="space-y-4">
                     {relatedNotices.map((related) => (

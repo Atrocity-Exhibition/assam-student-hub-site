@@ -1,7 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 type SearchProps = {
   initialSearch?: string;
@@ -11,6 +13,23 @@ type SearchProps = {
 export function CategorySearch({ initialSearch = "", categorySlug }: SearchProps) {
   const router = useRouter();
   const [search, setSearch] = useState(initialSearch);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if user is already typing in an input or textarea
+      if (
+        e.key === "/" &&
+        document.activeElement?.tagName !== "INPUT" &&
+        document.activeElement?.tagName !== "TEXTAREA"
+      ) {
+        e.preventDefault();
+        inputRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   function handleSearch(event: React.FormEvent) {
     event.preventDefault();
@@ -26,23 +45,33 @@ export function CategorySearch({ initialSearch = "", categorySlug }: SearchProps
   return (
     <form
       onSubmit={handleSearch}
-      className="rounded-3xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-sm p-2 shadow-xl focus-within:border-zinc-700/80 transition-all duration-300"
+      className="relative rounded-3xl border border-border bg-card/50 p-1.5 focus-within:border-brand-border focus-within:ring-2 focus-within:ring-brand/15 dark:focus-within:ring-brand/20 transition-all duration-300"
     >
-      <div className="flex gap-3">
+      <div className="flex items-center gap-3">
+        <Search className="ml-3 h-5 w-5 text-zinc-500 dark:text-zinc-400 shrink-0" />
         <input
+          ref={inputRef}
           type="text"
           value={search}
           onChange={(event) => setSearch(event.target.value)}
           placeholder="Search within this category..."
-          className="h-12 w-full bg-transparent px-4 text-white outline-none placeholder:text-zinc-500 text-sm"
+          className="h-12 w-full bg-transparent px-1 text-zinc-900 dark:text-white outline-none placeholder:text-zinc-500 dark:placeholder:text-zinc-500 text-sm"
         />
 
-        <button
+        {/* Keyboard shortcut indicator */}
+        <div className="mr-3 hidden sm:flex items-center pointer-events-none shrink-0">
+          <kbd className="h-5 px-1.5 flex items-center justify-center rounded border border-border bg-card/55 text-[10px] font-medium text-muted font-mono">
+            /
+          </kbd>
+        </div>
+
+        <Button
           type="submit"
-          className="rounded-2xl bg-red-500 px-6 py-2 text-sm font-medium text-white transition-all duration-300 hover:bg-red-400 active:scale-95 shadow-md shadow-red-500/10"
+          variant="primary"
+          className="px-6 py-3 text-sm font-semibold shrink-0"
         >
           Search
-        </button>
+        </Button>
       </div>
     </form>
   );
@@ -75,7 +104,7 @@ export function CategorySort({ currentSort, search, categorySlug }: SortProps) {
     <select
       value={currentSort || "newest"}
       onChange={(event) => handleChange(event.target.value)}
-      className="h-12 rounded-2xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-sm px-4 text-sm text-zinc-300 outline-none transition-all duration-300 hover:border-zinc-700/80 cursor-pointer"
+      className="h-[60px] rounded-3xl border border-border bg-card/45 px-4 text-sm text-foreground outline-none transition-all duration-200 hover:border-zinc-400 dark:hover:border-zinc-700 cursor-pointer focus-visible:border-brand-border focus-visible:ring-2 focus-visible:ring-brand/15 dark:focus-visible:ring-brand/20"
     >
       <option value="newest">Latest Posted</option>
       <option value="oldest">Oldest Posted</option>
@@ -83,3 +112,4 @@ export function CategorySort({ currentSort, search, categorySlug }: SortProps) {
     </select>
   );
 }
+

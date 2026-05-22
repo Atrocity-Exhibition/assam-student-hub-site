@@ -29,7 +29,7 @@ export async function TrendingSearches() {
           <Link
             key={query}
             href={`/notices?search=${encodeURIComponent(query)}`}
-            className="rounded-full border border-border bg-card/40 px-4 py-1.5 text-xs font-medium text-zinc-400 backdrop-blur-sm transition-all duration-200 hover:border-zinc-350 dark:hover:border-zinc-700 hover:bg-card hover:text-foreground capitalize"
+            className="rounded-full border border-border bg-card/40 px-4 py-1.5 text-xs font-medium text-zinc-400 backdrop-blur-sm transition-all duration-200 hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-card hover:text-foreground capitalize"
           >
             {query}
           </Link>

@@ -3,8 +3,9 @@ import type { Notice } from "@/types/notice";
 import { getNotices } from "@/services/notices";
 import { NoticesSearch } from "./notices-search";
 import { NoticesSort } from "./notices-sort";
-import { getRelativeTime } from "@/lib/utils";
+import { getRelativeTime, extractSalary } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Banknote, Search } from "lucide-react";
 
 const categories = [
   "All",
@@ -145,7 +146,7 @@ export async function NoticesList({
               className={`shrink-0 rounded-full border px-4 py-1.5 text-xs font-bold transition-all duration-300 ${
                 isActive
                   ? "border-brand bg-brand text-primary-foreground shadow shadow-brand/10"
-                  : "border-border bg-card/40 text-foreground hover:border-zinc-350 dark:hover:border-zinc-700 hover:bg-card"
+                  : "border-border bg-card/40 text-foreground hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-card"
               }`}
             >
               {item}
@@ -157,7 +158,7 @@ export async function NoticesList({
       {/* EMPTY STATE */}
       {notices.length === 0 && (
         <div className="mt-12 rounded-3xl border border-border bg-card/50 backdrop-blur-sm p-12 text-center shadow-sm max-w-2xl mx-auto">
-          <div className="text-4xl mb-4">🔍</div>
+          <Search className="h-10 w-10 text-muted mx-auto mb-4" />
           <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-200 transition-colors duration-200">No notices found</h2>
           <p className="mt-3 text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed">
             We couldn&apos;t find any announcements matching your current search or category filter. Try using different keywords, checking the spelling, or clearing filters.
@@ -180,6 +181,7 @@ export async function NoticesList({
               const hoverClasses = getCategoryHoverClasses(notice.category);
               const formattedDate = getRelativeTime(notice.posted_at || notice.created_at);
               const accentColor = categoryAccentColors[(notice.category || "").toLowerCase()] || "bg-zinc-500";
+              const salary = extractSalary(notice.title, notice.description, notice.metadata);
 
               return (
                 <Link key={notice.id} href={`/notices/${notice.slug}`}>
@@ -195,23 +197,30 @@ export async function NoticesList({
                           </div>
                           
                           {notice.institutions?.name && (
-                            <span className="text-xs text-zinc-550 dark:text-zinc-400 font-bold uppercase tracking-wider truncate max-w-[200px] transition-colors duration-200">
+                            <span className="text-xs text-zinc-500 dark:text-zinc-400 font-bold uppercase tracking-wider truncate max-w-[200px] transition-colors duration-200">
                               {notice.institutions.name}
                             </span>
                           )}
                         </div>
  
-                        <h2 className={`text-base sm:text-lg font-extrabold leading-snug text-zinc-900 dark:text-zinc-150 transition-colors duration-300 line-clamp-2 ${hoverClasses.text}`}>
+                        <h2 className={`text-base sm:text-lg font-extrabold leading-snug text-zinc-900 dark:text-zinc-200 transition-colors duration-300 line-clamp-2 ${hoverClasses.text}`}>
                           {notice.title}
                         </h2>
 
-                        <p className="mt-2.5 line-clamp-2 text-xs sm:text-sm leading-relaxed text-zinc-550 dark:text-zinc-400 transition-colors duration-200">
+                        <p className="mt-2.5 line-clamp-2 text-xs sm:text-sm leading-relaxed text-zinc-500 dark:text-zinc-400 transition-colors duration-200">
                           {notice.description || "No description provided. Click to view the full announcement details and official attachments."}
                         </p>
+
+                        {salary && (
+                          <div className="mt-3.5 inline-flex items-center gap-1.5 rounded-lg bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-600 dark:bg-emerald-500/5 dark:text-emerald-400 border border-emerald-500/20">
+                            <Banknote className="h-3.5 w-3.5 shrink-0" />
+                            <span>Salary/Stipend: {salary}</span>
+                          </div>
+                        )}
                       </div>
                     </div>
 
-                    <div className="mt-6 flex items-center justify-between border-t border-border pt-3.5 text-xs text-zinc-550 dark:text-zinc-400 font-semibold uppercase tracking-wider transition-colors duration-200">
+                    <div className="mt-6 flex items-center justify-between border-t border-border pt-3.5 text-xs text-zinc-500 dark:text-zinc-400 font-semibold uppercase tracking-wider transition-colors duration-200">
                       <span>{notice.source}</span>
                       <span>{formattedDate}</span>
                     </div>

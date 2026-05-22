@@ -63,12 +63,12 @@ export function Footer() {
                 <Link href="/monitoring" className="hover:text-foreground transition-colors">
                   Scraper Health
                 </Link>
-                <a href="#" className="hover:text-foreground transition-colors">
+                <Link href="/api-docs" className="hover:text-foreground transition-colors">
                   API Docs
-                </a>
-                <a href="#" className="hover:text-foreground transition-colors">
+                </Link>
+                <Link href="/changelog" className="hover:text-foreground transition-colors">
                   Changelog
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -100,9 +100,9 @@ export function Footer() {
             © {new Date().getFullYear()} AssamStudentHub. Sourced from official websites.
           </div>
           <div className="flex gap-4">
-            <a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a>
+            <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
             <span>·</span>
-            <a href="#" className="hover:text-foreground transition-colors">Terms of Service</a>
+            <Link href="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link>
           </div>
         </div>
       </Container>

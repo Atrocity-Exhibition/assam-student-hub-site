@@ -5,12 +5,14 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/layout/container";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/home/footer";
-import { getNotices } from "@/services/notices";
+import { getNotices, applyCompetitiveExamFilters } from "@/services/notices";
 import { getCategoryStyles, getCategoryHoverClasses } from "@/components/notices/notices-list";
 import { CategorySearch, CategorySort } from "./category-controls";
 import { supabase } from "@/lib/supabase";
 import type { Notice } from "@/types/notice";
-import { getRelativeTime } from "@/lib/utils";
+import { getRelativeTime, extractSalary } from "@/lib/utils";
+import { TrendingUp, Clock, Banknote } from "lucide-react";
+
 
 type Props = {
   params: Promise<{
@@ -109,11 +111,15 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   // 2. Fetch sidebar: Trending Institutions (Most active notices in this category)
   let trendingInstitutions: { name: string; slug: string; count: number }[] = [];
   try {
-    const { data: noticesForCategory } = await supabase
+    let trendingQuery = supabase
       .from("notices")
       .select("institution, institution_slug, institution_id")
       .ilike("category", dbCategory)
       .eq("is_active", true);
+
+    trendingQuery = applyCompetitiveExamFilters(trendingQuery, dbCategory);
+
+    const { data: noticesForCategory } = await trendingQuery;
 
     const instCounts: { [id: number]: { name: string; slug: string; count: number } } = {};
     noticesForCategory?.forEach((n) => {
@@ -139,11 +145,15 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   // 3. Fetch sidebar: Recent Updates (Newest 5 notices in this category)
   let recentUpdates: Partial<Notice>[] = [];
   try {
-    const { data: recentData } = await supabase
+    let recentQuery = supabase
       .from("notices")
       .select("title, slug, posted_at, created_at")
       .ilike("category", dbCategory)
-      .eq("is_active", true)
+      .eq("is_active", true);
+
+    recentQuery = applyCompetitiveExamFilters(recentQuery, dbCategory);
+
+    const { data: recentData } = await recentQuery
       .order("posted_at", { ascending: false, nullsFirst: false })
       .limit(5);
     recentUpdates = recentData || [];
@@ -247,6 +257,16 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                                   {notice.description ||
                                     "No description provided. Click to view the full announcement details and official attachments."}
                                 </p>
+
+                                {(() => {
+                                  const salary = extractSalary(notice.title, notice.description, notice.metadata);
+                                  return salary ? (
+                                    <div className="mt-3.5 inline-flex items-center gap-1.5 rounded-lg bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-600 dark:bg-emerald-500/5 dark:text-emerald-400 border border-emerald-500/20">
+                                      <Banknote className="h-3.5 w-3.5 shrink-0" />
+                                      <span>Salary/Stipend: {salary}</span>
+                                    </div>
+                                  ) : null;
+                                })()}
                               </div>
                             </div>
 
@@ -303,8 +323,9 @@ export default async function CategoryPage({ params, searchParams }: Props) {
               {/* Trending Institutions */}
               {trendingInstitutions.length > 0 && (
                 <div className="rounded-3xl border border-border bg-card/60 backdrop-blur-sm p-6 shadow-xl">
-                  <h3 className="text-sm font-bold text-foreground uppercase tracking-wider border-b border-border pb-3 mb-4">
-                    🔥 Trending Institutions
+                  <h3 className="text-sm font-bold text-foreground uppercase tracking-wider border-b border-border pb-3 mb-4 flex items-center gap-2">
+                    <TrendingUp className="h-4 w-4 text-emerald-500" />
+                    Trending Institutions
                   </h3>
                   <div className="space-y-4">
                     {trendingInstitutions.map((inst) => (
@@ -328,8 +349,9 @@ export default async function CategoryPage({ params, searchParams }: Props) {
               {/* Recent Updates */}
               {recentUpdates.length > 0 && (
                 <div className="rounded-3xl border border-border bg-card/60 backdrop-blur-sm p-6 shadow-xl">
-                  <h3 className="text-sm font-bold text-foreground uppercase tracking-wider border-b border-border pb-3 mb-4">
-                    🕒 Recent Updates
+                  <h3 className="text-sm font-bold text-foreground uppercase tracking-wider border-b border-border pb-3 mb-4 flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-emerald-500" />
+                    Recent Updates
                   </h3>
                   <div className="space-y-4">
                     {recentUpdates.map((notice) => (

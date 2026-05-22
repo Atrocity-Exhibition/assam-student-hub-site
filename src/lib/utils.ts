@@ -43,3 +43,57 @@ export function getRelativeTime(dateInput: string | Date | null): string {
     });
   }
 }
+
+export function extractSalary(
+  title: string,
+  description?: string | null,
+  metadata?: Record<string, any> | null
+): string | null {
+  if (metadata) {
+    if (typeof metadata.salary === "string" && metadata.salary.trim()) {
+      return metadata.salary.trim();
+    }
+    if (typeof metadata.salary_range === "string" && metadata.salary_range.trim()) {
+      return metadata.salary_range.trim();
+    }
+    if (typeof metadata.pay_scale === "string" && metadata.pay_scale.trim()) {
+      return metadata.pay_scale.trim();
+    }
+  }
+
+  const combined = `${title} ${description || ""}`;
+  
+  const regexes = [
+    // Rs. 15,000 - Rs. 50,000 or similar
+    { pattern: /(?:Rs\.?|INR)\s*(\d{1,3}(?:,\d{3})*(?:\/[-–—])?)\s*[-–—]\s*(?:Rs\.?|INR)?\s*(\d{1,3}(?:,\d{3})*(?:\/[-–—])?)/i, type: "range" },
+    // Pay scale with range
+    { pattern: /(?:Scale of Pay|Pay Scale|Salary|Stipend|Pay|Scale)\s*(?:of|is|:)?\s*(?:Rs\.?|INR)?\s*(\d{1,3}(?:,\d{3})*(?:\/[-–—])?)\s*[-–—]\s*(?:Rs\.?|INR)?\s*(\d{1,3}(?:,\d{3})*(?:\/[-–—])?)/i, type: "range" },
+    // 15k - 35k range
+    { pattern: /\b(\d{1,3})\s*[kK]\s*[-–—]\s*(\d{1,3})\s*[kK]\b/, type: "range-k" },
+    // Rs. 30,000 pm
+    { pattern: /(?:Rs\.?|INR)\s*(\d{1,3}(?:,\d{3})*(?:\/[-–—])?)\s*(?:per month|pm|p\.m\.)/i, type: "single" },
+    // Stipend/Salary of 10000
+    { pattern: /(?:Stipend|Salary|Pay|Honorarium|Consolidated Pay)\s*(?:of|is|:)?\s*(?:Rs\.?|INR)?\s*(\d{1,3}(?:,\d{3})*(?:\/[-–—])?)\s*(?:per month|pm|p\.m\.|p\/m|\/-)?/i, type: "single" },
+    // 25k pm / 25K single
+    { pattern: /\b(\d{1,3})\s*[kK]\s*(?:pm|p\.m\.|per month)?\b/i, type: "single-k" },
+    // Rs. 30,000
+    { pattern: /(?:Rs\.?|INR)\s*(\d{1,3}(?:,\d{3})*(?:\/[-–—])?)/i, type: "single" }
+  ];
+
+  for (const item of regexes) {
+    const match = combined.match(item.pattern);
+    if (match) {
+      if (item.type === "range") {
+        return `₹${match[1].replace(/\/[-–—]/, "")} - ₹${match[2].replace(/\/[-–—]/, "")}`;
+      } else if (item.type === "range-k") {
+        return `₹${match[1]}K - ₹${match[2]}K`;
+      } else if (item.type === "single-k") {
+        return `₹${match[1]}K`;
+      } else {
+        return `₹${match[1].replace(/\/[-–—]/, "")}`;
+      }
+    }
+  }
+
+  return null;
+}
