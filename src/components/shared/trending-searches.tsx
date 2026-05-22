@@ -22,7 +22,7 @@ export async function TrendingSearches() {
   return (
     <div className="mt-8">
       <p className="text-xs font-semibold text-zinc-500 uppercase tracking-widest mb-3">
-        🔍 Trending searches
+        TRENDING SEARCHES...
       </p>
       <div className="flex flex-wrap gap-2">
         {displayTrends.map((query) => (

@@ -299,3 +299,21 @@ export async function getPlatformStats() {
     };
   }
 }
+
+export async function getAcademicNotices(limit: number = 5): Promise<Notice[]> {
+  const { data, error } = await supabase
+    .from("notices")
+    .select("*, institutions(*)")
+    .eq("is_active", true)
+    .is("merged_into_notice_id", null)
+    .neq("category", "recruitment")
+    .order("posted_at", { ascending: false, nullsFirst: false })
+    .limit(limit);
+
+  if (error) {
+    console.error("Error in getAcademicNotices:", error);
+    return [];
+  }
+
+  return (data as Notice[]) || [];
+}

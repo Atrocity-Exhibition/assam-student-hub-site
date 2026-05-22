@@ -6,7 +6,6 @@ import { Footer } from "@/components/home/footer";
 import { HeroSection } from "@/components/home/hero-section";
 import { NoticesSection } from "@/components/home/notices-section";
 import { UniversitiesSection } from "@/components/home/universities-section";
-import { TrendingSearches } from "@/components/shared/trending-searches";
 
 export const metadata: Metadata = {
   title: "AssamStudentHub | Student Portal for Assam",
@@ -19,10 +18,9 @@ export default function HomePage() {
     <>
       <Navbar />
 
-      <main className="min-h-screen">
+      <main className="min-h-screen bg-background text-foreground transition-colors duration-200">
         <Container>
           <HeroSection />
-          <TrendingSearches />
           <NoticesSection />
           <UniversitiesSection />
         </Container>

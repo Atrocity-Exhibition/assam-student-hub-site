@@ -11,6 +11,7 @@ import { getCategoryStyles } from "@/components/notices/notices-list";
 import { SaveNoticeButton } from "@/components/notices/save-notice-button";
 import { NoticeStructuredData } from "@/components/shared/structured-data";
 import { supabase } from "@/lib/supabase";
+import { getRelativeTime } from "@/lib/utils";
 
 type MetadataProps = {
   params: Promise<{
@@ -108,21 +109,21 @@ export default async function NoticePage({ params }: PageProps) {
 
       <Navbar />
 
-      <main className="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-red-500/30 selection:text-red-400">
+      <main className="min-h-screen bg-background text-foreground transition-colors duration-200 selection:bg-emerald-500/30 selection:text-emerald-500">
         {/* Canonical Link Tag */}
         <link rel="canonical" href={canonicalUrl} />
         <Container className="py-14">
           {/* BREADCRUMB */}
-          <div className="mb-8 flex items-center gap-2 text-sm text-zinc-500">
-            <Link href="/" className="hover:text-white transition">
+          <div className="mb-8 flex items-center gap-2 text-sm text-muted">
+            <Link href="/" className="hover:text-foreground transition-colors">
               Home
             </Link>
             <span>/</span>
-            <Link href="/notices" className="hover:text-white transition">
+            <Link href="/notices" className="hover:text-foreground transition-colors">
               Notices
             </Link>
             <span>/</span>
-            <span className="text-zinc-400 truncate max-w-[240px] md:max-w-md">
+            <span className="text-foreground/70 truncate max-w-[240px] md:max-w-md">
               {notice.title}
             </span>
           </div>
@@ -136,26 +137,16 @@ export default async function NoticePage({ params }: PageProps) {
               </div>
 
               {/* TITLE */}
-              <h1 className="max-w-4xl text-3xl sm:text-4xl font-black leading-tight tracking-tight text-zinc-100">
+              <h1 className="max-w-4xl text-3xl sm:text-4xl font-black leading-tight tracking-tight text-foreground">
                 {notice.title}
               </h1>
 
               {/* META INFO */}
-              <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-zinc-500 font-semibold uppercase tracking-wider">
+              <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-muted font-semibold uppercase tracking-wider">
                 <span>{notice.source}</span>
-                <span className="text-zinc-700">•</span>
+                <span className="text-border">•</span>
                 <span>
-                  {notice.posted_at
-                    ? new Date(notice.posted_at).toLocaleDateString("en-US", {
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
-                      })
-                    : new Date(notice.created_at).toLocaleDateString("en-US", {
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
+                  {getRelativeTime(notice.posted_at || notice.created_at)}
                 </span>
               </div>
 
@@ -165,7 +156,7 @@ export default async function NoticePage({ params }: PageProps) {
                   {notice.tags.map((tag: string) => (
                     <div
                       key={tag}
-                      className="rounded-xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-sm px-3.5 py-1.5 text-xs font-medium text-zinc-300"
+                      className="rounded-xl border border-border bg-card/50 backdrop-blur-sm px-3.5 py-1.5 text-xs font-medium text-foreground/80"
                     >
                       {tag}
                     </div>
@@ -174,23 +165,23 @@ export default async function NoticePage({ params }: PageProps) {
               )}
 
               {/* DESCRIPTION */}
-              <div className="mt-12 rounded-3xl border border-zinc-800 bg-zinc-900/10 backdrop-blur-sm p-8 shadow-xl">
-                <h2 className="text-xl font-bold text-zinc-200 border-b border-zinc-800/60 pb-3">
+              <div className="mt-12 rounded-3xl border border-border bg-card/30 backdrop-blur-sm p-8 shadow-xl">
+                <h2 className="text-xl font-bold text-foreground border-b border-border pb-3">
                   Announcement Details
                 </h2>
 
-                <p className="mt-6 leading-8 text-zinc-300 text-sm whitespace-pre-wrap">
+                <p className="mt-6 leading-8 text-foreground/90 text-sm whitespace-pre-wrap">
                   {notice.description || "No further text description is available for this notice. Please consult the official attached PDF or URL source link for full details."}
                 </p>
               </div>
 
               {/* ATTACHMENT INFO */}
               {notice.attachment_url && (
-                <div className="mt-6 rounded-3xl border border-zinc-800 bg-zinc-900/10 backdrop-blur-sm p-8 shadow-xl">
-                  <h2 className="text-xl font-bold text-zinc-200 border-b border-zinc-800/60 pb-3">
+                <div className="mt-6 rounded-3xl border border-border bg-card/30 backdrop-blur-sm p-8 shadow-xl">
+                  <h2 className="text-xl font-bold text-foreground border-b border-border pb-3">
                     Attached Document
                   </h2>
-                  <p className="mt-4 text-zinc-400 text-sm leading-relaxed">
+                  <p className="mt-4 text-muted text-sm leading-relaxed">
                     An official document is attached to this notice. You can view or download it directly to view schedules, guidelines, and tables.
                   </p>
                   <div className="mt-6">
@@ -198,7 +189,7 @@ export default async function NoticePage({ params }: PageProps) {
                       href={notice.attachment_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-2xl bg-zinc-800 px-5 py-3 text-sm font-semibold text-zinc-200 transition-all duration-300 hover:bg-zinc-700 hover:text-white"
+                      className="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-emerald-500"
                     >
                       📁 View Attachment PDF
                     </a>
@@ -208,15 +199,15 @@ export default async function NoticePage({ params }: PageProps) {
             </div>
 
             {/* SIDEBAR */}
-            <aside>
-              <div className="sticky top-24 rounded-3xl border border-zinc-800 bg-zinc-900/20 backdrop-blur-sm p-6 shadow-xl space-y-6">
+            <aside className="lg:sticky lg:top-24 h-fit space-y-6">
+              <div className="rounded-3xl border border-border bg-card/60 backdrop-blur-sm p-6 shadow-xl space-y-6">
                 <div className="flex flex-col gap-3">
                   {notice.attachment_url ? (
                     <a
                       href={notice.attachment_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full block rounded-2xl bg-red-500 px-6 py-3.5 text-center text-sm font-semibold text-white transition-all duration-300 hover:bg-red-400 hover:shadow-lg hover:shadow-red-500/10"
+                      className="w-full block rounded-2xl bg-emerald-600 px-6 py-3.5 text-center text-sm font-semibold text-white transition-all duration-300 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/10"
                     >
                       Download PDF
                     </a>
@@ -228,8 +219,8 @@ export default async function NoticePage({ params }: PageProps) {
                     rel="noopener noreferrer"
                     className={`w-full block rounded-2xl px-6 py-3.5 text-center text-sm font-semibold transition-all duration-300 ${
                       notice.attachment_url
-                        ? "border border-zinc-800 bg-zinc-900/30 text-zinc-300 hover:border-zinc-700 hover:bg-zinc-900/60 hover:text-zinc-100"
-                        : "bg-red-500 text-white hover:bg-red-400 hover:shadow-lg hover:shadow-red-500/10"
+                        ? "border border-border bg-background text-foreground hover:bg-muted/10"
+                        : "bg-emerald-600 text-white hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/10"
                     }`}
                   >
                     Official Source Website
@@ -240,33 +231,33 @@ export default async function NoticePage({ params }: PageProps) {
                   ) : (
                     <Link
                       href="/login"
-                      className="w-full block rounded-2xl border border-dashed border-zinc-800 bg-zinc-950/20 px-6 py-3.5 text-center text-sm font-medium text-zinc-400 hover:border-zinc-700 hover:text-zinc-200 transition-all duration-300"
+                      className="w-full block rounded-2xl border border-dashed border-border bg-card/20 px-6 py-3.5 text-center text-sm font-medium text-muted hover:border-foreground/30 hover:text-foreground transition-all duration-300"
                     >
                       Sign in to save notice
                     </Link>
                   )}
                 </div>
 
-                <div className="border-t border-zinc-800/60 pt-6 space-y-5">
+                <div className="border-t border-border pt-6 space-y-5">
                   <div>
-                    <p className="text-xs text-zinc-500 font-semibold uppercase tracking-wider">
+                    <p className="text-xs text-muted font-semibold uppercase tracking-wider">
                       Publishing Source
                     </p>
-                    <p className="mt-2 text-zinc-200 text-sm font-medium">
+                    <p className="mt-2 text-foreground text-sm font-medium">
                       {notice.source}
                     </p>
                   </div>
 
                   {notice.institutions?.name && (
                     <div>
-                      <p className="text-xs text-zinc-500 font-semibold uppercase tracking-wider">
+                      <p className="text-xs text-muted font-semibold uppercase tracking-wider">
                         Institution
                       </p>
-                      <p className="mt-2 text-zinc-200 text-sm font-medium">
+                      <p className="mt-2 text-foreground text-sm font-medium">
                         {notice.institutions.name}
                       </p>
                       {notice.institutions.location && (
-                        <p className="mt-1 text-xs text-zinc-400">
+                        <p className="mt-1 text-xs text-muted">
                           📍 {notice.institutions.location}
                         </p>
                       )}
@@ -274,39 +265,29 @@ export default async function NoticePage({ params }: PageProps) {
                   )}
 
                   <div>
-                    <p className="text-xs text-zinc-500 font-semibold uppercase tracking-wider">
+                    <p className="text-xs text-muted font-semibold uppercase tracking-wider">
                       Category
                     </p>
-                    <p className="mt-2 text-zinc-200 text-sm font-medium capitalize">
+                    <p className="mt-2 text-foreground text-sm font-medium capitalize">
                       {notice.category}
                     </p>
                   </div>
 
                   <div>
-                    <p className="text-xs text-zinc-500 font-semibold uppercase tracking-wider">
+                    <p className="text-xs text-muted font-semibold uppercase tracking-wider">
                       Published Date
                     </p>
-                    <p className="mt-2 text-zinc-200 text-sm font-medium">
-                      {notice.posted_at
-                        ? new Date(notice.posted_at).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          })
-                        : new Date(notice.created_at).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          })}
+                    <p className="mt-2 text-foreground text-sm font-medium">
+                      {getRelativeTime(notice.posted_at || notice.created_at)}
                     </p>
                   </div>
 
                   {notice.scraper_name && (
                     <div>
-                      <p className="text-xs text-zinc-500 font-semibold uppercase tracking-wider">
+                      <p className="text-xs text-muted font-semibold uppercase tracking-wider">
                         Aggregator Node
                       </p>
-                      <p className="mt-2 text-zinc-400 text-xs font-medium">
+                      <p className="mt-2 text-muted text-xs font-medium">
                         {notice.scraper_name.toUpperCase()} Scraper
                       </p>
                     </div>
@@ -316,8 +297,8 @@ export default async function NoticePage({ params }: PageProps) {
 
               {/* RELATED NOTICES */}
               {relatedNotices.length > 0 && (
-                <div className="mt-6 rounded-3xl border border-zinc-800 bg-zinc-900/20 backdrop-blur-sm p-6 shadow-xl">
-                  <h3 className="text-sm font-bold text-zinc-300 uppercase tracking-wider border-b border-zinc-800/60 pb-3 mb-4">
+                <div className="mt-6 rounded-3xl border border-border bg-card/60 backdrop-blur-sm p-6 shadow-xl">
+                  <h3 className="text-sm font-bold text-foreground uppercase tracking-wider border-b border-border pb-3 mb-4">
                     🔗 Related Notices
                   </h3>
                   <div className="space-y-4">
@@ -327,19 +308,16 @@ export default async function NoticePage({ params }: PageProps) {
                         href={`/notices/${related.slug}`}
                         className="group block space-y-1"
                       >
-                        <h4 className="text-xs font-semibold text-zinc-400 group-hover:text-red-400 transition-colors duration-200 line-clamp-2">
+                        <h4 className="text-xs font-semibold text-foreground/80 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-200 line-clamp-2">
                           {related.title}
                         </h4>
-                        <div className="flex items-center gap-2 text-zinc-600 text-xs">
+                        <div className="flex items-center gap-2 text-muted text-xs">
                           <span className="capitalize">{related.category}</span>
                           {related.posted_at && (
                             <>
                               <span>·</span>
                               <span>
-                                {new Date(related.posted_at).toLocaleDateString("en-US", {
-                                  month: "short",
-                                  day: "numeric",
-                                })}
+                                {getRelativeTime(related.posted_at)}
                               </span>
                             </>
                           )}

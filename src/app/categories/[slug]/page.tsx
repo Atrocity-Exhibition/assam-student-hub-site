@@ -6,10 +6,11 @@ import { Container } from "@/components/layout/container";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/home/footer";
 import { getNotices } from "@/services/notices";
-import { getCategoryStyles } from "@/components/notices/notices-list";
+import { getCategoryStyles, getCategoryHoverClasses } from "@/components/notices/notices-list";
 import { CategorySearch, CategorySort } from "./category-controls";
 import { supabase } from "@/lib/supabase";
 import type { Notice } from "@/types/notice";
+import { getRelativeTime } from "@/lib/utils";
 
 type Props = {
   params: Promise<{
@@ -20,6 +21,15 @@ type Props = {
     page?: string;
     sort?: string;
   }>;
+};
+
+const categoryAccentColors: Record<string, string> = {
+  recruitment: "bg-emerald-500",
+  result: "bg-blue-500",
+  exam: "bg-amber-500",
+  admission: "bg-purple-500",
+  scholarship: "bg-pink-500",
+  notice: "bg-zinc-500",
 };
 
 // Map URL slug to DB category casing
@@ -102,7 +112,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     const { data: noticesForCategory } = await supabase
       .from("notices")
       .select("institution, institution_slug, institution_id")
-      .eq("category", dbCategory.toLowerCase())
+      .ilike("category", dbCategory)
       .eq("is_active", true);
 
     const instCounts: { [id: number]: { name: string; slug: string; count: number } } = {};
@@ -132,7 +142,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     const { data: recentData } = await supabase
       .from("notices")
       .select("title, slug, posted_at, created_at")
-      .eq("category", dbCategory.toLowerCase())
+      .ilike("category", dbCategory)
       .eq("is_active", true)
       .order("posted_at", { ascending: false, nullsFirst: false })
       .limit(5);
@@ -156,19 +166,19 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-red-500/30 selection:text-red-400">
+      <main className="min-h-screen bg-background text-foreground transition-colors duration-200 selection:bg-emerald-500/30 selection:text-emerald-500">
         <Container className="py-14">
           {/* HEADER */}
           <div className="max-w-3xl mb-12">
-            <div className="inline-flex rounded-full border border-zinc-800 bg-zinc-900/40 backdrop-blur-sm px-4 py-1.5 text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+            <div className="inline-flex rounded-full border border-border bg-card/50 px-4 py-1.5 text-xs font-semibold text-muted uppercase tracking-wider">
               Category Announcements
             </div>
             <h1 className="mt-6 text-4xl sm:text-5xl font-black tracking-tight leading-tight">
               {getCategoryTitle(slug)}
             </h1>
-            <p className="mt-6 text-base sm:text-lg leading-relaxed text-zinc-400 max-w-2xl">
+            <p className="mt-6 text-base sm:text-lg leading-relaxed text-muted max-w-2xl">
               Discover verified notifications, official announcements, schedules, and circulars for{" "}
-              <strong className="text-zinc-200">{dbCategory.toLowerCase()}</strong> sourced directly from university
+              <strong className="text-foreground">{dbCategory.toLowerCase()}</strong> sourced directly from university
               boards and government web portals in Assam.
             </p>
           </div>
@@ -189,9 +199,9 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
               {/* EMPTY STATE */}
               {notices.length === 0 && (
-                <div className="mt-12 rounded-3xl border border-zinc-800/80 bg-zinc-900/30 backdrop-blur-sm p-12 text-center">
-                  <h2 className="text-2xl font-bold text-zinc-200">No notices found</h2>
-                  <p className="mt-4 text-zinc-500 text-sm max-w-md mx-auto">
+                <div className="mt-12 rounded-3xl border border-border bg-card/30 backdrop-blur-sm p-12 text-center shadow-md">
+                  <h2 className="text-2xl font-bold text-foreground">No notices found</h2>
+                  <p className="mt-4 text-muted text-sm max-w-md mx-auto">
                     We couldn&apos;t find any announcements matching your query in this category. Try adjusting your search query.
                   </p>
                 </div>
@@ -201,55 +211,53 @@ export default async function CategoryPage({ params, searchParams }: Props) {
               {notices.length > 0 && (
                 <>
                   <div className="mt-10 grid gap-6 md:grid-cols-2">
-                    {notices.map((notice: Notice) => (
-                      <Link key={notice.id} href={`/notices/${notice.slug}`}>
-                        <article className="group h-full flex flex-col justify-between rounded-3xl border border-zinc-800/60 bg-zinc-900/30 backdrop-blur-sm p-7 transition-all duration-300 hover:-translate-y-1 hover:border-zinc-700/80 hover:bg-zinc-900/45 hover:shadow-2xl hover:shadow-black/35">
-                          <div>
-                            <div className="flex items-center justify-between gap-4 mb-4">
-                              <div
-                                className={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wider ${getCategoryStyles(
-                                  notice.category
-                                )}`}
-                              >
-                                {notice.category || "Notice"}
-                              </div>
+                    {notices.map((notice: Notice) => {
+                      const hoverClasses = getCategoryHoverClasses(notice.category);
+                      const accentColor = categoryAccentColors[(notice.category || "").toLowerCase()] || "bg-zinc-500";
+                      
+                      return (
+                        <Link key={notice.id} href={`/notices/${notice.slug}`}>
+                          <article className={`group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/40 backdrop-blur-sm p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-muted/5 shadow-sm ${hoverClasses.border}`}>
+                            <div className="flex gap-4">
+                              {/* Left accent strip */}
+                              <div className={`w-1 shrink-0 rounded-full ${accentColor} opacity-90 group-hover:scale-y-[1.03] transition-transform duration-300`} />
+                              
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between gap-4 mb-3.5">
+                                  <div
+                                    className={`inline-flex rounded-full border px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider ${getCategoryStyles(
+                                      notice.category
+                                    )}`}
+                                  >
+                                    {notice.category || "Notice"}
+                                  </div>
 
-                              {notice.institutions?.name && (
-                                <span className="text-xs text-zinc-500 font-medium truncate max-w-[200px]">
-                                  {notice.institutions.name}
-                                </span>
-                              )}
+                                  {notice.institutions?.name && (
+                                    <span className="text-xs text-muted font-medium truncate max-w-[200px]">
+                                      {notice.institutions.name}
+                                    </span>
+                                  )}
+                                </div>
+
+                                <h2 className={`text-base sm:text-lg font-extrabold leading-snug text-foreground transition-colors duration-300 line-clamp-2 ${hoverClasses.text}`}>
+                                  {notice.title}
+                                </h2>
+
+                                <p className="mt-2.5 line-clamp-2 text-xs sm:text-sm leading-relaxed text-muted transition-colors duration-200">
+                                  {notice.description ||
+                                    "No description provided. Click to view the full announcement details and official attachments."}
+                                </p>
+                              </div>
                             </div>
 
-                            <h2 className="text-xl font-bold leading-snug text-zinc-100 group-hover:text-red-400 transition-colors duration-300">
-                              {notice.title}
-                            </h2>
-
-                            <p className="mt-4 line-clamp-3 text-sm leading-relaxed text-zinc-400">
-                              {notice.description ||
-                                "No description provided. Click to view the full announcement details and official attachments."}
-                            </p>
-                          </div>
-
-                          <div className="mt-8 flex items-center justify-between border-t border-zinc-800/40 pt-4 text-xs text-zinc-500 font-medium">
-                            <span>{notice.source}</span>
-                            <span>
-                              {notice.posted_at
-                                ? new Date(notice.posted_at).toLocaleDateString("en-US", {
-                                    month: "short",
-                                    day: "numeric",
-                                    year: "numeric",
-                                  })
-                                : new Date(notice.created_at).toLocaleDateString("en-US", {
-                                    month: "short",
-                                    day: "numeric",
-                                    year: "numeric",
-                                  })}
-                            </span>
-                          </div>
-                        </article>
-                      </Link>
-                    ))}
+                            <div className="mt-6 flex items-center justify-between border-t border-border/60 pt-3.5 text-xs text-muted font-semibold uppercase tracking-wider">
+                              <span>{notice.source}</span>
+                              <span>{getRelativeTime(notice.posted_at || notice.created_at)}</span>
+                            </div>
+                          </article>
+                        </Link>
+                      );
+                    })}
                   </div>
 
                   {/* PAGINATION */}
@@ -276,8 +284,8 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                             href={`/categories/${slug}?${params.toString()}`}
                             className={`flex h-10 w-10 items-center justify-center rounded-xl border text-sm font-medium transition-all duration-300 ${
                               isActive
-                                ? "border-red-500 bg-red-500 text-white shadow-lg shadow-red-500/10"
-                                : "border-zinc-800 bg-zinc-900/30 text-zinc-400 hover:border-zinc-700 hover:bg-zinc-900/40 hover:text-zinc-200"
+                                ? "border-emerald-600 bg-emerald-600 text-white shadow-lg shadow-emerald-600/10"
+                                : "border-border bg-card text-muted hover:border-foreground/30 hover:bg-muted/10 hover:text-foreground"
                             }`}
                           >
                             {pageNumber}
@@ -294,8 +302,8 @@ export default async function CategoryPage({ params, searchParams }: Props) {
             <aside className="space-y-8">
               {/* Trending Institutions */}
               {trendingInstitutions.length > 0 && (
-                <div className="rounded-3xl border border-zinc-800 bg-zinc-900/20 backdrop-blur-sm p-6 shadow-xl">
-                  <h3 className="text-sm font-bold text-zinc-300 uppercase tracking-wider border-b border-zinc-800/60 pb-3 mb-4">
+                <div className="rounded-3xl border border-border bg-card/60 backdrop-blur-sm p-6 shadow-xl">
+                  <h3 className="text-sm font-bold text-foreground uppercase tracking-wider border-b border-border pb-3 mb-4">
                     🔥 Trending Institutions
                   </h3>
                   <div className="space-y-4">
@@ -305,10 +313,10 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                         href={`/institutions/${inst.slug}`}
                         className="group flex items-center justify-between gap-3 text-sm transition-all duration-300"
                       >
-                        <span className="text-zinc-400 group-hover:text-zinc-200 group-hover:underline truncate max-w-[200px]">
+                        <span className="text-muted group-hover:text-foreground group-hover:underline truncate max-w-[200px]">
                           {inst.name}
                         </span>
-                        <span className="rounded-full bg-zinc-900 border border-zinc-800 px-2 py-0.5 text-xs text-zinc-500 font-semibold group-hover:border-zinc-700 group-hover:text-zinc-400">
+                        <span className="rounded-full bg-background border border-border px-2 py-0.5 text-xs text-muted font-semibold group-hover:border-foreground/30 group-hover:text-foreground">
                           {inst.count}
                         </span>
                       </Link>
@@ -319,8 +327,8 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
               {/* Recent Updates */}
               {recentUpdates.length > 0 && (
-                <div className="rounded-3xl border border-zinc-800 bg-zinc-900/20 backdrop-blur-sm p-6 shadow-xl">
-                  <h3 className="text-sm font-bold text-zinc-300 uppercase tracking-wider border-b border-zinc-800/60 pb-3 mb-4">
+                <div className="rounded-3xl border border-border bg-card/60 backdrop-blur-sm p-6 shadow-xl">
+                  <h3 className="text-sm font-bold text-foreground uppercase tracking-wider border-b border-border pb-3 mb-4">
                     🕒 Recent Updates
                   </h3>
                   <div className="space-y-4">
@@ -330,21 +338,11 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                         href={`/notices/${notice.slug}`}
                         className="group block text-xs space-y-1"
                       >
-                        <h4 className="font-semibold text-zinc-400 group-hover:text-red-400 transition-colors duration-200 line-clamp-2">
+                        <h4 className="font-semibold text-muted group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-200 line-clamp-2">
                           {notice.title}
                         </h4>
-                        <span className="text-zinc-600 block">
-                          {notice.posted_at
-                            ? new Date(notice.posted_at).toLocaleDateString("en-US", {
-                                month: "short",
-                                day: "numeric",
-                                year: "numeric",
-                              })
-                            : new Date(notice.created_at!).toLocaleDateString("en-US", {
-                                month: "short",
-                                day: "numeric",
-                                year: "numeric",
-                              })}
+                        <span className="text-muted/60 block">
+                          {getRelativeTime(notice.posted_at || notice.created_at || null)}
                         </span>
                       </Link>
                     ))}
@@ -355,14 +353,14 @@ export default async function CategoryPage({ params, searchParams }: Props) {
           </div>
 
           {/* RELATED CATEGORIES */}
-          <div className="mt-16 border-t border-zinc-900 pt-10">
-            <h3 className="text-sm font-bold text-zinc-300 uppercase tracking-wider mb-6">Related Categories</h3>
+          <div className="mt-16 border-t border-border pt-10">
+            <h3 className="text-sm font-bold text-foreground uppercase tracking-wider mb-6">Related Categories</h3>
             <div className="flex flex-wrap gap-4">
               {relatedCategories.map((cat) => (
                 <Link
                   key={cat.slug}
                   href={`/categories/${cat.slug}`}
-                  className="rounded-2xl border border-zinc-850 bg-zinc-900/20 px-5 py-3 text-sm font-semibold text-zinc-400 transition-all duration-300 hover:border-zinc-700 hover:bg-zinc-900/50 hover:text-zinc-200"
+                  className="rounded-2xl border border-border bg-card px-5 py-3 text-sm font-semibold text-muted transition-all duration-300 hover:border-foreground/30 hover:bg-muted/10 hover:text-foreground"
                 >
                   {cat.name}
                 </Link>

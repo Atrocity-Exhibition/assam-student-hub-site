@@ -48,10 +48,10 @@ export async function HeroSection() {
   ];
 
   return (
-    <section className="border-b border-zinc-900/60 pb-16 pt-20">
+    <section className="border-b border-zinc-200/80 dark:border-zinc-900/60 pb-10 pt-12 transition-colors duration-200">
       <div className="max-w-5xl w-full">
         {/* TAG */}
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-4 py-1 text-xs font-semibold text-emerald-400">
+        <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-4 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -60,18 +60,18 @@ export async function HeroSection() {
         </div>
 
         {/* HEADING */}
-        <h1 className="text-4xl font-extrabold leading-[1.15] tracking-tight sm:text-5xl md:text-6xl text-zinc-100 max-w-4xl">
+        <h1 className="text-4xl font-extrabold leading-[1.12] tracking-tight sm:text-5xl md:text-6xl text-zinc-900 dark:text-zinc-100 max-w-4xl transition-colors duration-200">
           Assam&apos;s Unified Academic &amp; Recruitment Notice Platform
         </h1>
 
         {/* SUBTITLE */}
-        <p className="mt-6 max-w-2xl text-base sm:text-lg leading-relaxed text-zinc-400">
+        <p className="mt-4 max-w-2xl text-base sm:text-lg leading-relaxed text-zinc-600 dark:text-zinc-400 transition-colors duration-200">
           Search official Assam government jobs, university notices, scholarships,
           admissions, exam updates, and student opportunities in one place.
         </p>
 
         {/* SEARCH */}
-        <div className="mt-10 max-w-3xl">
+        <div className="mt-6 max-w-3xl">
           <HeroSearch />
         </div>
 
@@ -81,15 +81,15 @@ export async function HeroSection() {
         </div>
 
         {/* QUICK LINKS */}
-        <div className="mt-8 flex flex-wrap items-center gap-2.5">
-          <span className="text-xs font-semibold text-zinc-500 uppercase tracking-widest mr-1">
+        <div className="mt-5 flex flex-wrap items-center gap-2">
+          <span className="text-[10px] font-bold text-zinc-500 dark:text-zinc-500 uppercase tracking-widest mr-1.5">
             Browse By:
           </span>
           {quickLinks.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className="rounded-full border border-zinc-800 bg-zinc-900/30 px-4 py-1.5 text-xs font-medium text-zinc-300 transition-all duration-200 hover:border-emerald-500/30 hover:bg-emerald-500/5 hover:text-emerald-300"
+              className="rounded-full border border-zinc-200 bg-white/50 dark:border-zinc-800 dark:bg-zinc-900/30 px-3.5 py-1 text-xs font-semibold text-zinc-700 dark:text-zinc-300 transition-all duration-200 hover:border-emerald-500/30 hover:bg-emerald-500/5 hover:text-emerald-600 dark:hover:text-emerald-300"
             >
               {item.name}
             </Link>
@@ -97,13 +97,13 @@ export async function HeroSection() {
         </div>
 
         {/* LIVE PLATFORM STATS */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
           {statItems.map((item) => {
             const Icon = item.icon;
             return (
               <div
                 key={item.label}
-                className="animate-fade-in relative overflow-hidden rounded-2xl border border-zinc-900 bg-zinc-950/40 p-5 transition-all duration-300 hover:border-zinc-800/80 hover:bg-zinc-900/10"
+                className="animate-fade-in relative overflow-hidden rounded-2xl border border-zinc-200 bg-white/70 dark:border-zinc-900 dark:bg-zinc-950/40 p-4 transition-all duration-300 hover:border-zinc-300 dark:hover:border-zinc-800/80 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/10 shadow-sm"
                 style={{
                   animationDelay: item.delay,
                   animationFillMode: "both",
@@ -111,10 +111,10 @@ export async function HeroSection() {
               >
                 <div className="flex items-center justify-between gap-4">
                   <div className="min-w-0">
-                    <p className="text-[10px] sm:text-xs font-bold text-zinc-500 uppercase tracking-wider truncate">
+                    <p className="text-[9px] sm:text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider truncate">
                       {item.label}
                     </p>
-                    <p className="mt-1.5 text-xl sm:text-2xl font-bold text-zinc-100 tracking-tight">
+                    <p className="mt-1 text-lg sm:text-2xl font-black text-zinc-900 dark:text-zinc-100 tracking-tight transition-colors duration-200">
                       {item.value}
                     </p>
                   </div>

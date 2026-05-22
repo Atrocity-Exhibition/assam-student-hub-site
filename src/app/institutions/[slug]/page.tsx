@@ -7,8 +7,18 @@ import { Container } from "@/components/layout/container";
 import { Footer } from "@/components/home/footer";
 import { getInstitutionBySlug, getInstitutions } from "@/services/institutions";
 import { getNotices } from "@/services/notices";
-import { getCategoryStyles } from "@/components/notices/notices-list";
+import { getCategoryStyles, getCategoryHoverClasses } from "@/components/notices/notices-list";
 import { InstitutionStructuredData } from "@/components/shared/structured-data";
+import { getRelativeTime } from "@/lib/utils";
+
+const categoryAccentColors: Record<string, string> = {
+  recruitment: "bg-emerald-500",
+  result: "bg-blue-500",
+  exam: "bg-amber-500",
+  admission: "bg-purple-500",
+  scholarship: "bg-pink-500",
+  notice: "bg-zinc-500",
+};
 
 type Props = {
   params: Promise<{
@@ -69,11 +79,11 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
 
       <Navbar />
 
-      <main className="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-red-500/30 selection:text-red-400">
+      <main className="min-h-screen bg-background text-foreground transition-colors duration-200 selection:bg-emerald-500/30 selection:text-emerald-500">
         <Container className="py-14">
           {/* HERO */}
           <div className="max-w-4xl">
-            <div className="inline-flex rounded-full border border-zinc-800 bg-zinc-900/40 backdrop-blur-sm px-4 py-1.5 text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+            <div className="inline-flex rounded-full border border-border bg-card/50 px-4 py-1.5 text-xs font-semibold text-muted uppercase tracking-wider">
               Institution Profile
             </div>
 
@@ -81,12 +91,12 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
               {institution.name}
             </h1>
 
-            <p className="mt-6 text-base sm:text-lg leading-relaxed text-zinc-400">
+            <p className="mt-6 text-base sm:text-lg leading-relaxed text-muted">
               {institution.description || "Official educational board or government department of the State of Assam."}
             </p>
 
             <div className="mt-8 flex flex-wrap gap-4 items-center">
-              <div className="rounded-2xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-sm px-5 py-3 text-sm text-zinc-400 font-medium">
+              <div className="rounded-2xl border border-border bg-card/30 backdrop-blur-sm px-5 py-3 text-sm text-muted font-medium">
                 📍 {institution.location || "Assam, India"}
               </div>
 
@@ -95,7 +105,7 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
                   href={institution.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-2xl bg-red-500 px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-red-400 hover:shadow-lg hover:shadow-red-500/10"
+                  className="rounded-2xl bg-emerald-600 px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/10"
                 >
                   Visit Official Website
                 </a>
@@ -105,24 +115,24 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
 
           {/* ACTIVE UPDATES FEED */}
           <section className="mt-20">
-            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-zinc-200">
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
               Active Updates & Announcements
             </h2>
-            <p className="mt-2 text-sm text-zinc-500">
+            <p className="mt-2 text-sm text-muted">
               Real-time feed of parsed announcements retrieved from {institution.name}.
             </p>
 
             {notices.length === 0 ? (
-              <div className="mt-8 rounded-3xl border border-zinc-800/80 bg-zinc-900/10 backdrop-blur-sm p-10 text-center">
-                <h3 className="text-xl font-bold text-zinc-300">No active updates found</h3>
-                <p className="mt-3 text-zinc-500 text-sm max-w-xl mx-auto leading-relaxed">
+              <div className="mt-8 rounded-3xl border border-border bg-card/30 backdrop-blur-sm p-10 text-center shadow-md">
+                <h3 className="text-xl font-bold text-foreground">No active updates found</h3>
+                <p className="mt-3 text-muted text-sm max-w-xl mx-auto leading-relaxed">
                   We currently haven&apos;t scraped any active alerts, results, or exam routines for this institution. Check back soon as our automated pipeline indexes portals daily.
                 </p>
                 <div className="mt-8 flex justify-center gap-2 flex-wrap">
                   {["Admissions", "Exam Routines", "Results", "Recruitment", "Scholarships"].map((cat) => (
                     <span
                       key={cat}
-                      className="rounded-full border border-zinc-800/60 bg-zinc-900/20 px-3 py-1.5 text-xs text-zinc-500"
+                      className="rounded-full border border-border bg-card/25 px-3 py-1.5 text-xs text-muted"
                     >
                       {cat}
                     </span>
@@ -132,44 +142,42 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
             ) : (
               <>
                 <div className="mt-8 grid gap-6 md:grid-cols-2">
-                  {notices.map((notice) => (
-                    <Link key={notice.id} href={`/notices/${notice.slug}`}>
-                      <article className="group h-full flex flex-col justify-between rounded-3xl border border-zinc-800/60 bg-zinc-900/30 backdrop-blur-sm p-7 transition-all duration-300 hover:-translate-y-1 hover:border-zinc-700/80 hover:bg-zinc-900/45 hover:shadow-2xl hover:shadow-black/35">
-                        <div>
-                          <div className="mb-4">
-                            <div className={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wider ${getCategoryStyles(notice.category)}`}>
-                              {notice.category || "Notice"}
+                  {notices.map((notice) => {
+                    const hoverClasses = getCategoryHoverClasses(notice.category);
+                    const accentColor = categoryAccentColors[(notice.category || "").toLowerCase()] || "bg-zinc-500";
+                    
+                    return (
+                      <Link key={notice.id} href={`/notices/${notice.slug}`}>
+                        <article className={`group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/40 backdrop-blur-sm p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-muted/5 shadow-sm ${hoverClasses.border}`}>
+                          <div className="flex gap-4">
+                            {/* Left accent strip */}
+                            <div className={`w-1 shrink-0 rounded-full ${accentColor} opacity-90 group-hover:scale-y-[1.03] transition-transform duration-300`} />
+                            
+                            <div className="flex-1 min-w-0">
+                              <div className="mb-3.5 flex items-center justify-between gap-4">
+                                <div className={`inline-flex rounded-full border px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider ${getCategoryStyles(notice.category)}`}>
+                                  {notice.category || "Notice"}
+                                </div>
+                              </div>
+
+                              <h3 className={`text-base sm:text-lg font-extrabold leading-snug text-foreground transition-colors duration-300 line-clamp-2 ${hoverClasses.text}`}>
+                                {notice.title}
+                              </h3>
+
+                              <p className="mt-2.5 line-clamp-2 text-xs sm:text-sm leading-relaxed text-muted transition-colors duration-200">
+                                {notice.description || "No description provided. Click to view the full announcement details and official attachments."}
+                              </p>
                             </div>
                           </div>
 
-                          <h3 className="text-lg font-bold leading-snug text-zinc-200 group-hover:text-red-400 transition-colors duration-300">
-                            {notice.title}
-                          </h3>
-
-                          <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-zinc-400">
-                            {notice.description || "No description provided. Click to view the full announcement details and official attachments."}
-                          </p>
-                        </div>
-
-                        <div className="mt-6 flex items-center justify-between border-t border-zinc-800/40 pt-4 text-xs text-zinc-500 font-medium">
-                          <span>{notice.source}</span>
-                          <span>
-                            {notice.posted_at
-                              ? new Date(notice.posted_at).toLocaleDateString("en-US", {
-                                  month: "short",
-                                  day: "numeric",
-                                  year: "numeric",
-                                })
-                              : new Date(notice.created_at).toLocaleDateString("en-US", {
-                                  month: "short",
-                                  day: "numeric",
-                                  year: "numeric",
-                                })}
-                          </span>
-                        </div>
-                      </article>
-                    </Link>
-                  ))}
+                          <div className="mt-6 flex items-center justify-between border-t border-border/60 pt-3.5 text-xs text-muted font-semibold uppercase tracking-wider">
+                            <span>{notice.source}</span>
+                            <span>{getRelativeTime(notice.posted_at || notice.created_at)}</span>
+                          </div>
+                        </article>
+                      </Link>
+                    );
+                  })}
                 </div>
 
                 {/* PAGINATION CONTROLS */}
@@ -178,35 +186,35 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
                     {currentPage > 1 ? (
                       <Link
                         href={`/institutions/${slug}?page=${currentPage - 1}`}
-                        className="rounded-2xl border border-zinc-800 bg-zinc-900/40 px-5 py-3 text-sm font-semibold text-zinc-300 transition hover:border-zinc-700 hover:bg-zinc-900/60 hover:text-white"
+                        className="rounded-2xl border border-border bg-card/40 px-5 py-3 text-sm font-semibold text-muted transition hover:border-foreground/30 hover:bg-card/60 hover:text-foreground"
                       >
                         Previous
                       </Link>
                     ) : (
                       <button
                         disabled
-                        className="rounded-2xl border border-zinc-900 bg-zinc-950 px-5 py-3 text-sm font-semibold text-zinc-600 cursor-not-allowed opacity-50"
+                        className="rounded-2xl border border-border bg-muted/10 px-5 py-3 text-sm font-semibold text-muted/40 cursor-not-allowed opacity-50"
                       >
                         Previous
                       </button>
                     )}
 
-                    <div className="text-sm font-medium text-zinc-400">
-                      Page <span className="text-zinc-200">{currentPage}</span> of{" "}
-                      <span className="text-zinc-200">{totalPages}</span>
+                    <div className="text-sm font-medium text-muted">
+                      Page <span className="text-foreground">{currentPage}</span> of{" "}
+                      <span className="text-foreground">{totalPages}</span>
                     </div>
 
                     {currentPage < totalPages ? (
                       <Link
                         href={`/institutions/${slug}?page=${currentPage + 1}`}
-                        className="rounded-2xl border border-zinc-800 bg-zinc-900/40 px-5 py-3 text-sm font-semibold text-zinc-300 transition hover:border-zinc-700 hover:bg-zinc-900/60 hover:text-white"
+                        className="rounded-2xl border border-border bg-card/40 px-5 py-3 text-sm font-semibold text-muted transition hover:border-foreground/30 hover:bg-card/60 hover:text-foreground"
                       >
                         Next
                       </Link>
                     ) : (
                       <button
                         disabled
-                        className="rounded-2xl border border-zinc-900 bg-zinc-950 px-5 py-3 text-sm font-semibold text-zinc-600 cursor-not-allowed opacity-50"
+                        className="rounded-2xl border border-border bg-muted/10 px-5 py-3 text-sm font-semibold text-muted/40 cursor-not-allowed opacity-50"
                       >
                         Next
                       </button>

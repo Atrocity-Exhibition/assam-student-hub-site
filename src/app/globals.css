@@ -1,16 +1,63 @@
 @import "tailwindcss";
 
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  /* Nvidia Green overrides for emerald */
+  --color-emerald-50: #f4fbe5;
+  --color-emerald-100: #e6f6cb;
+  --color-emerald-200: #ceec9b;
+  --color-emerald-300: #adde62;
+  --color-emerald-400: #93cb32;
+  --color-emerald-500: #76b900;
+  --color-emerald-600: #5b9200;
+  --color-emerald-700: #456f03;
+  --color-emerald-800: #385907;
+  --color-emerald-900: #304c0b;
+  --color-emerald-950: #182b01;
+
+  /* Nvidia Green overrides for green */
+  --color-green-50: #f4fbe5;
+  --color-green-100: #e6f6cb;
+  --color-green-200: #ceec9b;
+  --color-green-300: #adde62;
+  --color-green-400: #93cb32;
+  --color-green-500: #76b900;
+  --color-green-600: #5b9200;
+  --color-green-700: #456f03;
+  --color-green-800: #385907;
+  --color-green-900: #304c0b;
+  --color-green-950: #182b01;
+}
+
 :root {
+  /* Default Dark Mode (premium muted dashboard feel) */
   --background: #09090b;
   --foreground: #fafafa;
-
   --card: #111111;
-  --border: #27272a;
-
+  --border: #1e1e24;
   --muted: #a1a1aa;
-
   --primary: #ffffff;
   --primary-foreground: #09090b;
+}
+
+:root.light {
+  /* Light Mode (Notion/Linear/Vercel style - soft zinc/slate editorial tones) */
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --muted: #64748b;
+  --primary: #0f172a;
+  --primary-foreground: #ffffff;
 }
 
 * {

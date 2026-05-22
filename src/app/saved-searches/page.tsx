@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Search, Trash2, History } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { Navbar } from "@/components/layout/navbar";
@@ -8,6 +9,7 @@ import { Footer } from "@/components/home/footer";
 import { getSavedSearches } from "@/services/saved-searches";
 import { createClient } from "@/lib/supabase/server";
 import { deleteSearchAction } from "./actions";
+import { getRelativeTime } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Saved Searches | AssamStudentHub",
@@ -28,17 +30,17 @@ export default async function SavedSearchesPage() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-red-500/30 selection:text-red-400">
+      <main className="min-h-screen bg-background text-foreground transition-colors duration-200 selection:bg-emerald-500/30 selection:text-emerald-500">
         <Container className="py-14">
           {/* HEADER */}
           <div className="max-w-2xl">
-            <div className="inline-flex rounded-full border border-zinc-800 bg-zinc-900/40 backdrop-blur-sm px-4 py-1.5 text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+            <div className="inline-flex rounded-full border border-border bg-card/50 px-4 py-1.5 text-xs font-semibold text-muted uppercase tracking-wider">
               Personalized
             </div>
             <h1 className="mt-6 text-4xl sm:text-5xl font-black tracking-tight leading-tight">
               Saved Searches
             </h1>
-            <p className="mt-6 text-base leading-relaxed text-zinc-400">
+            <p className="mt-6 text-base leading-relaxed text-muted">
               Quickly re-run your saved search queries. Notifications will be available in a future update.
             </p>
           </div>
@@ -46,15 +48,19 @@ export default async function SavedSearchesPage() {
           {/* SAVED SEARCHES LIST */}
           <section className="mt-14">
             {savedSearches.length === 0 ? (
-              <div className="rounded-3xl border border-zinc-800/80 bg-zinc-900/30 backdrop-blur-sm p-12 text-center">
-                <div className="text-4xl mb-4">🔍</div>
-                <h2 className="text-xl font-bold text-zinc-300">No saved searches yet</h2>
-                <p className="mt-3 text-zinc-500 text-sm max-w-md mx-auto">
+              <div className="flex flex-col items-center justify-center rounded-3xl border border-border bg-card/30 backdrop-blur-sm p-12 text-center shadow-xl max-w-xl mx-auto">
+                <div className="rounded-full bg-emerald-500/10 p-4 text-emerald-600 dark:text-emerald-400 mb-6">
+                  <Search className="h-8 w-8 animate-pulse" />
+                </div>
+                
+                <h2 className="text-2xl font-bold text-foreground">No saved searches yet</h2>
+                
+                <p className="mt-3 text-muted text-sm max-w-sm">
                   Search for notices on the{" "}
-                  <Link href="/notices" className="text-red-400 hover:underline">
+                  <Link href="/notices" className="text-emerald-600 hover:underline dark:text-emerald-400 font-semibold">
                     notices page
                   </Link>{" "}
-                  and click <strong className="text-zinc-300">☆ Save this search</strong> to store a query here.
+                  and click <strong className="text-foreground">☆ Save this search</strong> to store your favorite queries here.
                 </p>
               </div>
             ) : (
@@ -62,36 +68,41 @@ export default async function SavedSearchesPage() {
                 {savedSearches.map((item) => (
                   <div
                     key={item.id}
-                    className="group flex flex-col justify-between rounded-3xl border border-zinc-800/60 bg-zinc-900/30 backdrop-blur-sm p-6 transition-all duration-300 hover:border-zinc-700/80"
+                    className="group flex flex-col justify-between rounded-3xl border border-border bg-card/40 backdrop-blur-sm p-6 transition-all duration-300 hover:border-border-foreground/30 hover:bg-card/70 hover:shadow-md"
                   >
                     <div>
-                      {item.category && (
-                        <span className="inline-block mb-3 rounded-full border border-zinc-800 bg-zinc-900/50 px-3 py-1 text-xs font-semibold text-zinc-400 capitalize">
-                          {item.category}
-                        </span>
-                      )}
-                      <h2 className="text-lg font-bold text-zinc-200 capitalize">
+                      <div className="flex items-center justify-between mb-3.5">
+                        {item.category ? (
+                          <span className="rounded-full border border-border bg-card/85 px-3 py-1 text-xs font-semibold text-muted capitalize">
+                            {item.category}
+                          </span>
+                        ) : (
+                          <span className="rounded-full border border-border bg-card/85 px-3 py-1 text-xs font-semibold text-muted">
+                            All Categories
+                          </span>
+                        )}
+                        <History className="h-4 w-4 text-muted/60" />
+                      </div>
+                      
+                      <h2 className="text-lg font-bold text-foreground capitalize line-clamp-1">
                         {item.label || item.query}
                       </h2>
+                      
                       {item.label && (
-                        <p className="mt-1 text-xs text-zinc-500 font-mono">
+                        <p className="mt-1 text-xs text-muted font-mono truncate">
                           &quot;{item.query}&quot;
                         </p>
                       )}
-                      <p className="mt-2 text-xs text-zinc-600">
-                        Saved{" "}
-                        {new Date(item.created_at).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })}
+                      
+                      <p className="mt-2 text-xs text-muted/80">
+                        Saved {getRelativeTime(item.created_at)}
                       </p>
                     </div>
 
                     <div className="mt-6 flex items-center gap-3">
                       <Link
                         href={`/notices?search=${encodeURIComponent(item.query)}${item.category ? `&category=${encodeURIComponent(item.category)}` : ""}`}
-                        className="flex-1 rounded-2xl bg-red-500 px-4 py-2.5 text-center text-sm font-semibold text-white transition-all duration-300 hover:bg-red-400"
+                        className="flex-1 rounded-2xl bg-emerald-600 px-4 py-2.5 text-center text-sm font-semibold text-white transition-all duration-300 hover:bg-emerald-500 hover:shadow-md hover:shadow-emerald-500/10"
                       >
                         Search Now
                       </Link>
@@ -104,12 +115,10 @@ export default async function SavedSearchesPage() {
                       >
                         <button
                           type="submit"
-                          className="rounded-2xl border border-zinc-800 p-2.5 text-zinc-500 transition-all duration-200 hover:border-red-900/60 hover:bg-red-900/10 hover:text-red-400"
+                          className="rounded-2xl border border-border p-2.5 text-muted transition-all duration-200 hover:border-rose-500/30 hover:bg-rose-500/10 hover:text-rose-500 dark:hover:text-rose-400"
                           title="Delete saved search"
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                          </svg>
+                          <Trash2 className="h-4 w-4" />
                         </button>
                       </form>
                     </div>

@@ -33,7 +33,7 @@ export function NoticesSort({ currentSort, search, category }: Props) {
     <select
       value={currentSort || "newest"}
       onChange={(event) => handleChange(event.target.value)}
-      className="h-12 rounded-2xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-sm px-4 text-sm text-zinc-300 outline-none transition-all duration-300 hover:border-zinc-700/80 cursor-pointer"
+      className="h-12 rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900/30 px-4 text-sm text-zinc-700 dark:text-zinc-300 outline-none transition-all duration-300 hover:border-zinc-300 dark:hover:border-zinc-700/80 cursor-pointer"
     >
       <option value="newest">Latest Posted</option>
       <option value="oldest">Oldest Posted</option>

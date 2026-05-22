@@ -75,20 +75,20 @@ export default async function MonitoringPage() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-red-500/30 selection:text-red-400">
+      <main className="min-h-screen bg-background text-foreground transition-colors duration-200 selection:bg-emerald-500/30 selection:text-emerald-600 dark:selection:text-emerald-400">
         <Container className="py-14">
           {/* HEADER */}
           <div className="max-w-3xl mb-12">
-            <div className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/50 px-4 py-2 text-sm text-zinc-400 font-semibold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/50 px-4 py-2 text-sm text-muted-foreground font-semibold uppercase tracking-wider">
               <Activity className="h-4 w-4 text-emerald-500 animate-pulse" />
               System Status
             </div>
 
-            <h1 className="mt-6 text-4xl sm:text-5xl font-black tracking-tight text-zinc-100">
+            <h1 className="mt-6 text-4xl sm:text-5xl font-black tracking-tight text-foreground">
               Scraper Monitoring
             </h1>
 
-            <p className="mt-6 text-lg leading-8 text-zinc-400">
+            <p className="mt-6 text-lg leading-8 text-muted-foreground">
               Real-time health, expected intervals, execution history, and alerts
               for the AssamStudentHub aggregation pipeline.
             </p>
@@ -100,11 +100,11 @@ export default async function MonitoringPage() {
               <div className="flex gap-3">
                 <AlertTriangle className="h-6 w-6 text-amber-500 shrink-0" />
                 <div>
-                  <h2 className="text-lg font-bold text-amber-400">
+                  <h2 className="text-lg font-bold text-amber-500">
                     System Alert: Stale Ingestion Pipelines Detected (
                     {staleScrapers.length})
                   </h2>
-                  <p className="mt-2 text-sm text-zinc-400">
+                  <p className="mt-2 text-sm text-muted-foreground">
                     The following scrapers have not successfully executed within
                     the last 24 hours. Check log outputs or check if the source site
                     structure has changed:
@@ -118,7 +118,7 @@ export default async function MonitoringPage() {
                       return (
                         <span
                           key={s.scraper_name}
-                          className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3.5 py-1 text-xs font-semibold text-amber-300"
+                          className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3.5 py-1 text-xs font-semibold text-amber-600 dark:text-amber-300"
                         >
                           <span>{info.icon}</span>
                           <span>{info.label}</span>
@@ -133,35 +133,35 @@ export default async function MonitoringPage() {
 
           {/* OVERVIEW STATS */}
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-12">
-            <div className="rounded-3xl border border-zinc-800 bg-zinc-900/15 backdrop-blur-sm p-6 shadow-md">
-              <div className="flex justify-between items-center text-zinc-500 mb-4">
+            <div className="rounded-3xl border border-border bg-card/40 backdrop-blur-sm p-6 shadow-md">
+              <div className="flex justify-between items-center text-muted-foreground mb-4">
                 <span className="text-xs font-bold uppercase tracking-wider">
                   Total Scrapers
                 </span>
-                <Database className="h-5 w-5 text-zinc-400" />
+                <Database className="h-5 w-5 text-muted-foreground" />
               </div>
-              <span className="text-3xl font-black">{summaries.length}</span>
-              <span className="text-xs block text-zinc-500 mt-2">
+              <span className="text-3xl font-black text-foreground">{summaries.length}</span>
+              <span className="text-xs block text-muted-foreground mt-2">
                 Active sources tracked
               </span>
             </div>
 
-            <div className="rounded-3xl border border-zinc-800 bg-zinc-900/15 backdrop-blur-sm p-6 shadow-md">
+            <div className="rounded-3xl border border-border bg-card/40 backdrop-blur-sm p-6 shadow-md">
               <div className="flex justify-between items-center text-emerald-500 mb-4">
                 <span className="text-xs font-bold uppercase tracking-wider">
                   Healthy
                 </span>
                 <CheckCircle2 className="h-5 w-5 text-emerald-500" />
               </div>
-              <span className="text-3xl font-black text-emerald-400">
+              <span className="text-3xl font-black text-emerald-600 dark:text-emerald-400">
                 {summaries.length - staleScrapers.length}
               </span>
-              <span className="text-xs block text-zinc-500 mt-2">
+              <span className="text-xs block text-muted-foreground mt-2">
                 Run successfully within 24h
               </span>
             </div>
 
-            <div className="rounded-3xl border border-zinc-800 bg-zinc-900/15 backdrop-blur-sm p-6 shadow-md">
+            <div className="rounded-3xl border border-border bg-card/40 backdrop-blur-sm p-6 shadow-md">
               <div className="flex justify-between items-center text-amber-500 mb-4">
                 <span className="text-xs font-bold uppercase tracking-wider">
                   Stale / Attention
@@ -171,18 +171,18 @@ export default async function MonitoringPage() {
               <span
                 className={`text-3xl font-black ${
                   staleScrapers.length > 0
-                    ? "text-amber-400 animate-pulse"
-                    : "text-zinc-400"
+                    ? "text-amber-600 dark:text-amber-400 animate-pulse"
+                    : "text-muted-foreground"
                 }`}
               >
                 {staleScrapers.length}
               </span>
-              <span className="text-xs block text-zinc-500 mt-2">
+              <span className="text-xs block text-muted-foreground mt-2">
                 No successful run in 24h
               </span>
             </div>
 
-            <div className="rounded-3xl border border-zinc-800 bg-zinc-900/15 backdrop-blur-sm p-6 shadow-md">
+            <div className="rounded-3xl border border-border bg-card/40 backdrop-blur-sm p-6 shadow-md">
               <div className="flex justify-between items-center text-red-500 mb-4">
                 <span className="text-xs font-bold uppercase tracking-wider">
                   Active Failures
@@ -191,12 +191,12 @@ export default async function MonitoringPage() {
               </div>
               <span
                 className={`text-3xl font-black ${
-                  failedScrapersCount > 0 ? "text-red-500" : "text-zinc-400"
+                  failedScrapersCount > 0 ? "text-red-600 dark:text-red-400" : "text-muted-foreground"
                 }`}
               >
                 {failedScrapersCount}
               </span>
-              <span className="text-xs block text-zinc-500 mt-2">
+              <span className="text-xs block text-muted-foreground mt-2">
                 Failed on last execution
               </span>
             </div>
@@ -206,9 +206,9 @@ export default async function MonitoringPage() {
           <div className="space-y-12">
             {/* CARD GRID - ALL SCRAPERS */}
             <div>
-              <h2 className="text-2xl font-black tracking-tight text-zinc-100 mb-6 flex items-center gap-2">
+              <h2 className="text-2xl font-black tracking-tight text-foreground mb-6 flex items-center gap-2">
                 <span>Ingestion Pipelines</span>
-                <span className="text-xs font-semibold text-zinc-500 bg-zinc-900 px-2.5 py-1 rounded-full">
+                <span className="text-xs font-semibold text-muted-foreground bg-card/80 border border-border px-2.5 py-1 rounded-full">
                   {summaries.length} Sources
                 </span>
               </h2>
@@ -223,24 +223,24 @@ export default async function MonitoringPage() {
                   const isStale = summary.is_stale;
 
                   // Status badge and indicators
-                  let statusColor = "bg-zinc-800 text-zinc-400 border-zinc-700/50";
-                  let statusDot = "bg-zinc-500";
+                  let statusColor = "bg-muted text-muted-foreground border-border/50";
+                  let statusDot = "bg-muted-foreground";
                   let statusText = "No Run Data";
 
                   if (lastRun) {
                     if (lastRun.status === "running") {
                       statusColor =
-                        "bg-blue-500/10 text-blue-400 border-blue-500/20";
+                        "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20";
                       statusDot = "bg-blue-500 animate-pulse";
                       statusText = "Running";
                     } else if (lastRun.status === "completed") {
                       statusColor =
-                        "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
+                        "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20";
                       statusDot = "bg-emerald-500";
                       statusText = "Completed";
                     } else if (lastRun.status === "failed") {
                       statusColor =
-                        "bg-red-500/10 text-red-400 border-red-500/20";
+                        "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20";
                       statusDot = "bg-red-500 animate-pulse";
                       statusText = "Failed";
                     }
@@ -249,24 +249,24 @@ export default async function MonitoringPage() {
                   return (
                     <div
                       key={summary.scraper_name}
-                      className={`group flex flex-col justify-between rounded-3xl border bg-zinc-900/10 backdrop-blur-sm p-6 transition duration-300 hover:-translate-y-1 shadow-md hover:shadow-lg ${
+                      className={`group flex flex-col justify-between rounded-3xl border bg-card/30 backdrop-blur-sm p-6 transition duration-300 hover:-translate-y-1 shadow-md hover:shadow-lg ${
                         isStale
-                          ? "border-amber-500/20 hover:border-amber-500/35 hover:shadow-amber-500/2"
-                          : "border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900/20"
+                          ? "border-amber-500/25 hover:border-amber-500/40 hover:shadow-amber-500/2"
+                          : "border-border hover:border-emerald-500/30 hover:bg-card/50"
                       }`}
                     >
                       <div>
                         {/* TOP: Name & Status */}
                         <div className="flex justify-between items-start gap-4">
                           <div className="flex items-center gap-3">
-                            <span className="text-2xl bg-zinc-900/85 p-2.5 rounded-2xl border border-zinc-800 shrink-0">
+                            <span className="text-2xl bg-card/90 p-2.5 rounded-2xl border border-border shrink-0">
                               {info.icon}
                             </span>
                             <div className="min-w-0">
-                              <h3 className="text-base font-bold text-zinc-100 group-hover:text-red-400 transition-colors duration-200 truncate">
+                              <h3 className="text-base font-bold text-foreground group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-200 truncate">
                                 {info.label}
                               </h3>
-                              <p className="text-[10px] text-zinc-500 font-semibold tracking-wider uppercase mt-0.5">
+                              <p className="text-[10px] text-muted-foreground font-semibold tracking-wider uppercase mt-0.5">
                                 {summary.scraper_name}
                               </p>
                             </div>
@@ -282,10 +282,10 @@ export default async function MonitoringPage() {
                         </div>
 
                         {/* MIDDLE: Timers & Staleness */}
-                        <div className="mt-6 space-y-2 border-t border-b border-zinc-900/80 py-4 text-xs">
+                        <div className="mt-6 space-y-2 border-t border-b border-border/60 py-4 text-xs">
                           <div className="flex justify-between">
-                            <span className="text-zinc-500">Expected Interval:</span>
-                            <span className="font-semibold text-zinc-300">
+                            <span className="text-muted-foreground">Expected Interval:</span>
+                            <span className="font-semibold text-foreground">
                               {summary.expected_interval === "30m"
                                 ? "Every 30 minutes"
                                 : summary.expected_interval === "3h"
@@ -296,16 +296,16 @@ export default async function MonitoringPage() {
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-zinc-500">Last Executed:</span>
-                            <span className="font-semibold text-zinc-300">
+                            <span className="text-muted-foreground">Last Executed:</span>
+                            <span className="font-semibold text-foreground">
                               {lastRun ? formatTimeAgo(lastRun.started_at) : "Never"}
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-zinc-500">Last Success:</span>
+                            <span className="text-muted-foreground">Last Success:</span>
                             <span
                               className={`font-semibold ${
-                                isStale ? "text-amber-400 font-bold" : "text-zinc-300"
+                                isStale ? "text-amber-600 dark:text-amber-400 font-bold" : "text-foreground"
                               }`}
                             >
                               {summary.last_success
@@ -319,7 +319,7 @@ export default async function MonitoringPage() {
                       {/* BOTTOM: Metrics / Failures */}
                       <div className="mt-5">
                         {lastRun && lastRun.status === "failed" ? (
-                          <div className="rounded-2xl border border-red-500/15 bg-red-500/5 p-3.5 text-[11px] text-red-400 leading-relaxed max-h-[85px] overflow-y-auto scrollbar-hide">
+                          <div className="rounded-2xl border border-red-500/15 bg-red-500/5 p-3.5 text-[11px] text-red-600 dark:text-red-400 leading-relaxed max-h-[85px] overflow-y-auto scrollbar-hide">
                             <p className="font-bold flex items-center gap-1 mb-1">
                               <AlertCircle className="h-3.5 w-3.5" />
                               Error Details:
@@ -332,33 +332,33 @@ export default async function MonitoringPage() {
                           </div>
                         ) : lastRun ? (
                           <div className="grid grid-cols-3 gap-2 text-center text-xs">
-                            <div className="rounded-xl bg-zinc-900/50 border border-zinc-900 p-2">
-                              <span className="block text-[9px] text-zinc-500 font-bold uppercase tracking-wider">
+                            <div className="rounded-xl bg-card/50 border border-border/40 p-2">
+                              <span className="block text-[9px] text-muted-foreground font-bold uppercase tracking-wider">
                                 Scraped
                               </span>
-                              <span className="text-zinc-300 font-black text-sm block mt-0.5">
+                              <span className="text-foreground font-black text-sm block mt-0.5">
                                 {lastRun.items_scraped}
                               </span>
                             </div>
-                            <div className="rounded-xl bg-zinc-900/50 border border-zinc-900 p-2">
-                              <span className="block text-[9px] text-zinc-500 font-bold uppercase tracking-wider">
+                            <div className="rounded-xl bg-card/50 border border-border/40 p-2">
+                              <span className="block text-[9px] text-muted-foreground font-bold uppercase tracking-wider">
                                 Inserted
                               </span>
-                              <span className="text-emerald-400 font-black text-sm block mt-0.5">
+                              <span className="text-emerald-600 dark:text-emerald-400 font-black text-sm block mt-0.5">
                                 {lastRun.items_inserted}
                               </span>
                             </div>
-                            <div className="rounded-xl bg-zinc-900/50 border border-zinc-900 p-2">
-                              <span className="block text-[9px] text-zinc-500 font-bold uppercase tracking-wider">
+                            <div className="rounded-xl bg-card/50 border border-border/40 p-2">
+                              <span className="block text-[9px] text-muted-foreground font-bold uppercase tracking-wider">
                                 Updated
                               </span>
-                              <span className="text-blue-400 font-black text-sm block mt-0.5">
+                              <span className="text-blue-600 dark:text-blue-400 font-black text-sm block mt-0.5">
                                 {lastRun.items_updated}
                               </span>
                             </div>
                           </div>
                         ) : (
-                          <div className="text-center py-2.5 text-zinc-650 text-xs">
+                          <div className="text-center py-2.5 text-muted-foreground text-xs">
                             No statistics recorded for this pipeline.
                           </div>
                         )}
@@ -371,17 +371,17 @@ export default async function MonitoringPage() {
 
             {/* RECENT RUNS HISTORY LOG */}
             <div>
-              <h2 className="text-2xl font-black tracking-tight text-zinc-100 mb-6 flex items-center gap-2">
+              <h2 className="text-2xl font-black tracking-tight text-foreground mb-6 flex items-center gap-2">
                 <span>Recent Ingestion Logs</span>
-                <span className="text-xs font-semibold text-zinc-500 bg-zinc-900 px-2.5 py-1 rounded-full">
+                <span className="text-xs font-semibold text-muted-foreground bg-card/80 border border-border px-2.5 py-1 rounded-full">
                   Last 20 Runs
                 </span>
               </h2>
 
-              <div className="overflow-x-auto rounded-3xl border border-zinc-800 bg-zinc-900/5 shadow-xl">
+              <div className="overflow-x-auto rounded-3xl border border-border bg-card/20 shadow-xl">
                 <table className="w-full text-left border-collapse text-sm">
                   <thead>
-                    <tr className="border-b border-zinc-800 bg-zinc-900/50 text-zinc-400 text-xs font-bold uppercase tracking-wider">
+                    <tr className="border-b border-border bg-card/60 text-muted-foreground text-xs font-bold uppercase tracking-wider">
                       <th className="px-6 py-4">Scraper Name</th>
                       <th className="px-6 py-4">Status</th>
                       <th className="px-6 py-4">Started At</th>
@@ -392,12 +392,12 @@ export default async function MonitoringPage() {
                       <th className="px-6 py-4">Logs/Errors</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-900/80">
+                  <tbody className="divide-y divide-border/60">
                     {recentRuns.length === 0 ? (
                       <tr>
                         <td
                           colSpan={8}
-                          className="px-6 py-10 text-center text-zinc-500"
+                          className="px-6 py-10 text-center text-muted-foreground"
                         >
                           No recent logs recorded in scraper_runs.
                         </td>
@@ -409,31 +409,31 @@ export default async function MonitoringPage() {
                           icon: "🔍",
                         };
 
-                        let statusColor = "bg-zinc-800 text-zinc-400 border-zinc-700/50";
+                        let statusColor = "bg-muted text-muted-foreground border-border/50";
                         if (run.status === "completed") {
                           statusColor =
-                            "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
+                            "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20";
                         } else if (run.status === "failed") {
                           statusColor =
-                            "bg-red-500/10 text-red-400 border-red-500/20";
+                            "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20";
                         } else if (run.status === "running") {
                           statusColor =
-                            "bg-blue-500/10 text-blue-400 border-blue-500/20";
+                            "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20";
                         }
 
                         return (
                           <tr
                             key={run.id}
-                            className="hover:bg-zinc-900/20 transition-colors duration-150 group"
+                            className="hover:bg-card/40 transition-colors duration-150 group"
                           >
-                            <td className="px-6 py-4 font-semibold text-zinc-200">
+                            <td className="px-6 py-4 font-semibold text-foreground">
                               <div className="flex items-center gap-2">
                                 <span className="text-lg shrink-0">{info.icon}</span>
                                 <div>
-                                  <span className="group-hover:text-red-400 transition-colors duration-200">
+                                  <span className="group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-200">
                                     {info.label}
                                   </span>
-                                  <span className="block text-[10px] text-zinc-500 font-mono mt-0.5">
+                                  <span className="block text-[10px] text-muted-foreground font-mono mt-0.5">
                                     {run.scraper_name}
                                   </span>
                                 </div>
@@ -446,7 +446,7 @@ export default async function MonitoringPage() {
                                 {run.status}
                               </span>
                             </td>
-                            <td className="px-6 py-4 text-zinc-400 font-medium">
+                            <td className="px-6 py-4 text-muted-foreground font-medium">
                               {new Date(run.started_at).toLocaleString("en-US", {
                                 month: "short",
                                 day: "numeric",
@@ -455,16 +455,16 @@ export default async function MonitoringPage() {
                                 second: "2-digit",
                               })}
                             </td>
-                            <td className="px-6 py-4 text-zinc-400 font-mono">
+                            <td className="px-6 py-4 text-muted-foreground font-mono">
                               {formatDuration(run.started_at, run.completed_at)}
                             </td>
-                            <td className="px-6 py-4 text-center font-bold text-zinc-300">
+                            <td className="px-6 py-4 text-center font-bold text-foreground">
                               {run.items_scraped}
                             </td>
-                            <td className="px-6 py-4 text-center font-bold text-emerald-400">
+                            <td className="px-6 py-4 text-center font-bold text-emerald-600 dark:text-emerald-400">
                               {run.items_inserted}
                             </td>
-                            <td className="px-6 py-4 text-center font-bold text-blue-400">
+                            <td className="px-6 py-4 text-center font-bold text-blue-600 dark:text-blue-400">
                               {run.items_updated}
                             </td>
                             <td className="px-6 py-4 max-w-xs truncate text-xs">
@@ -472,13 +472,13 @@ export default async function MonitoringPage() {
                               run.errors &&
                               run.errors.length > 0 ? (
                                 <span
-                                  className="text-red-400 font-mono leading-relaxed"
+                                  className="text-red-600 dark:text-red-400 font-mono leading-relaxed"
                                   title={run.errors.join(", ")}
                                 >
                                   {run.errors[run.errors.length - 1]}
                                 </span>
                               ) : (
-                                <span className="text-zinc-500 font-mono">
+                                <span className="text-muted-foreground font-mono">
                                   Healthy status.
                                 </span>
                               )}

@@ -36,20 +36,20 @@ export function HeroSearch() {
 
   return (
     <form onSubmit={onSubmit} className="w-full">
-      <div className="relative flex items-center rounded-3xl border border-zinc-800/80 bg-zinc-950/40 p-1.5 focus-within:border-emerald-500/50 focus-within:shadow-[0_0_25px_rgba(16,185,129,0.08)] transition-all duration-300">
-        <Search className="ml-4 h-5 w-5 text-zinc-500 shrink-0" />
+      <div className="relative flex items-center rounded-3xl border border-zinc-200 bg-white/70 dark:border-zinc-800/80 dark:bg-zinc-950/40 p-1.5 focus-within:border-emerald-500/50 focus-within:shadow-[0_0_25px_rgba(16,185,129,0.06)] dark:focus-within:shadow-[0_0_25px_rgba(16,185,129,0.08)] transition-all duration-300">
+        <Search className="ml-4 h-5 w-5 text-zinc-500 dark:text-zinc-400 shrink-0" />
         <input
           ref={inputRef}
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search jobs, scholarships, universities, recruitment..."
-          className="h-12 w-full bg-transparent px-3 text-zinc-200 outline-none placeholder:text-zinc-500 text-sm sm:text-base pr-10"
+          className="h-12 w-full bg-transparent px-3 text-zinc-900 dark:text-zinc-100 outline-none placeholder:text-zinc-500 text-sm sm:text-base pr-10"
         />
         
         {/* Keyboard shortcut indicator */}
         <div className="absolute right-28 mr-3 hidden sm:flex items-center pointer-events-none">
-          <kbd className="h-5 px-1.5 flex items-center justify-center rounded border border-zinc-800 bg-zinc-900/60 text-[10px] font-medium text-zinc-500 font-mono">
+          <kbd className="h-5 px-1.5 flex items-center justify-center rounded border border-zinc-200 bg-zinc-100 dark:border-zinc-800 bg-zinc-900/60 text-[10px] font-medium text-zinc-500 font-mono">
             /
           </kbd>
         </div>
