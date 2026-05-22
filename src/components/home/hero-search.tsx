@@ -4,13 +4,9 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { Search } from "lucide-react";
 
-type Props = {
-  initialSearch?: string;
-};
-
-export function NoticesSearch({ initialSearch = "" }: Props) {
+export function HeroSearch() {
   const router = useRouter();
-  const [search, setSearch] = useState(initialSearch);
+  const [search, setSearch] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -29,35 +25,30 @@ export function NoticesSearch({ initialSearch = "" }: Props) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  function handleSearch(event: React.FormEvent) {
-    event.preventDefault();
-    const params = new URLSearchParams();
-
+  function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
     if (search.trim()) {
-      params.set("search", search.trim());
+      router.push(`/notices?search=${encodeURIComponent(search.trim())}`);
+    } else {
+      router.push("/notices");
     }
-
-    router.push(`/notices?${params.toString()}`);
   }
 
   return (
-    <form
-      onSubmit={handleSearch}
-      className="relative rounded-3xl border border-zinc-800/80 bg-zinc-950/40 p-1.5 focus-within:border-emerald-500/50 focus-within:shadow-[0_0_25px_rgba(16,185,129,0.08)] transition-all duration-300"
-    >
-      <div className="flex items-center gap-3">
-        <Search className="ml-3 h-5 w-5 text-zinc-500 shrink-0" />
+    <form onSubmit={onSubmit} className="w-full">
+      <div className="relative flex items-center rounded-3xl border border-zinc-800/80 bg-zinc-950/40 p-1.5 focus-within:border-emerald-500/50 focus-within:shadow-[0_0_25px_rgba(16,185,129,0.08)] transition-all duration-300">
+        <Search className="ml-4 h-5 w-5 text-zinc-500 shrink-0" />
         <input
           ref={inputRef}
           type="text"
           value={search}
-          onChange={(event) => setSearch(event.target.value)}
-          placeholder="Search notices, exams, recruitment..."
-          className="h-12 w-full bg-transparent px-1 text-white outline-none placeholder:text-zinc-500 text-sm"
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search jobs, scholarships, universities, recruitment..."
+          className="h-12 w-full bg-transparent px-3 text-zinc-200 outline-none placeholder:text-zinc-500 text-sm sm:text-base pr-10"
         />
-
+        
         {/* Keyboard shortcut indicator */}
-        <div className="mr-3 hidden sm:flex items-center pointer-events-none shrink-0">
+        <div className="absolute right-28 mr-3 hidden sm:flex items-center pointer-events-none">
           <kbd className="h-5 px-1.5 flex items-center justify-center rounded border border-zinc-800 bg-zinc-900/60 text-[10px] font-medium text-zinc-500 font-mono">
             /
           </kbd>

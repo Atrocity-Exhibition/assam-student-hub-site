@@ -38,7 +38,7 @@ export function NoticeStructuredData({ notice, baseUrl = "https://assamstudenthu
   };
 
   // Main entity schema: JobPosting or NewsArticle
-  let mainEntitySchema: any = null;
+  let mainEntitySchema: Record<string, unknown> | null = null;
 
   if (categoryName.toLowerCase() === "recruitment") {
     mainEntitySchema = {

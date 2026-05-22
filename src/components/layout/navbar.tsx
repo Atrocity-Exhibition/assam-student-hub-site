@@ -46,13 +46,15 @@ export async function Navbar() {
           {/* LOGO */}
           <Link
             href="/"
-            className="shrink-0 text-2xl font-black tracking-tight"
+            className="group shrink-0 flex items-center gap-2.5 text-2xl font-black tracking-tight"
           >
-            <span className="text-green-500">Assam</span>
-
-            <span className="text-white">Student</span>
-
-            <span className="text-red-500">Hub</span>
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform duration-300">
+              <span className="text-lg font-black text-white">A</span>
+            </div>
+            <div className="leading-none">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-500 font-black tracking-wide text-sm uppercase block font-semibold">Assam</span>
+              <span className="text-white font-bold text-lg block -mt-0.5">StudentHub</span>
+            </div>
           </Link>
 
           {/* DESKTOP NAV */}
@@ -61,7 +63,7 @@ export async function Navbar() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="rounded-full px-4 py-2 text-sm text-zinc-400 transition hover:bg-zinc-900 hover:text-white"
+                className="rounded-full px-4 py-2 text-sm text-zinc-400 transition hover:bg-zinc-900 hover:text-emerald-400"
               >
                 {item.name}
               </Link>
@@ -74,13 +76,13 @@ export async function Navbar() {
               <>
                 <Link
                   href="/saved-notices"
-                  className="rounded-full border border-zinc-800 px-5 py-2 text-sm transition hover:border-red-500/40 hover:bg-zinc-900"
+                  className="rounded-full border border-zinc-800 px-5 py-2 text-sm transition-all duration-200 hover:border-emerald-500/30 hover:bg-zinc-900 hover:text-emerald-400"
                 >
                   Saved
                 </Link>
 
                 <form action={logout}>
-                  <button className="rounded-full border border-zinc-800 px-5 py-2 text-sm transition hover:border-red-500/40 hover:bg-zinc-900">
+                  <button className="rounded-full border border-zinc-800 px-5 py-2 text-sm transition-all duration-200 hover:border-emerald-500/30 hover:bg-zinc-900 hover:text-emerald-400">
                     Logout
                   </button>
                 </form>
@@ -88,7 +90,7 @@ export async function Navbar() {
             ) : (
               <Link
                 href="/login"
-                className="rounded-full border border-zinc-800 px-5 py-2 text-sm transition hover:border-red-500/40 hover:bg-zinc-900"
+                className="rounded-full border border-zinc-800 px-5 py-2 text-sm transition-all duration-200 hover:border-emerald-500/30 hover:bg-zinc-900 hover:text-emerald-400"
               >
                 Login
               </Link>

@@ -116,7 +116,7 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
               <div className="mt-8 rounded-3xl border border-zinc-800/80 bg-zinc-900/10 backdrop-blur-sm p-10 text-center">
                 <h3 className="text-xl font-bold text-zinc-300">No active updates found</h3>
                 <p className="mt-3 text-zinc-500 text-sm max-w-xl mx-auto leading-relaxed">
-                  We currently haven't scraped any active alerts, results, or exam routines for this institution. Check back soon as our automated pipeline indexes portals daily.
+                  We currently haven&apos;t scraped any active alerts, results, or exam routines for this institution. Check back soon as our automated pipeline indexes portals daily.
                 </p>
                 <div className="mt-8 flex justify-center gap-2 flex-wrap">
                   {["Admissions", "Exam Routines", "Results", "Recruitment", "Scholarships"].map((cat) => (

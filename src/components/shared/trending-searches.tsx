@@ -8,8 +8,16 @@ export const revalidate = 1800;
 export async function TrendingSearches() {
   const trends = await getTrendingSearches(8);
 
-  // Don't render anything if there's not enough real data yet
-  if (trends.length < 3) return null;
+  const displayTrends = trends.length >= 3 ? trends : [
+    "APSC Recruitment",
+    "Gauhati University Exam",
+    "Dibrugarh University",
+    "Assam Police SI",
+    "Admissions 2026",
+    "Scholarships",
+    "TET Assam",
+    "Results"
+  ];
 
   return (
     <div className="mt-8">
@@ -17,7 +25,7 @@ export async function TrendingSearches() {
         🔍 Trending searches
       </p>
       <div className="flex flex-wrap gap-2">
-        {trends.map((query) => (
+        {displayTrends.map((query) => (
           <Link
             key={query}
             href={`/notices?search=${encodeURIComponent(query)}`}

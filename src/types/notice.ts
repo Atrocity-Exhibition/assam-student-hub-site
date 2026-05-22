@@ -17,7 +17,7 @@ export type Notice = {
   tags: string[] | null;
   slug: string;
   raw_html: string | null;
-  metadata: any | null;
+  metadata: Record<string, unknown> | null;
   scraped_at: string;
   created_at: string;
   updated_at: string | null;

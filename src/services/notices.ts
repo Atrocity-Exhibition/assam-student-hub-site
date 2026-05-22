@@ -44,15 +44,17 @@ export async function getNotices(options?: GetNoticesOptions) {
 
       if (!ftsError && ftsData && ftsData.length > 0) {
         // Fetch institution details for matching notices (RPC doesn't join)
-        const ids = ftsData.map((n: any) => n.id);
+        const ids = (ftsData as { id: number }[]).map((n) => n.id);
         const { data: instData } = await supabase
           .from("notices")
           .select("id, institutions(*)")
           .in("id", ids);
-        const instMap: Record<number, any> = {};
-        instData?.forEach((row: any) => { instMap[row.id] = row.institutions; });
+        const instMap: Record<number, Notice["institutions"]> = {};
+        (instData as unknown as { id: number; institutions: Notice["institutions"] }[] | null)?.forEach((row) => {
+          instMap[row.id] = row.institutions;
+        });
 
-        const notices = ftsData.map((n: any) => ({
+        const notices = (ftsData as Notice[]).map((n) => ({
           ...n,
           institutions: instMap[n.id] ?? null,
         })) as Notice[];
@@ -79,15 +81,17 @@ export async function getNotices(options?: GetNoticesOptions) {
       const durationMs = Date.now() - t0;
 
       if (!fuzzyError && fuzzyData && fuzzyData.length > 0) {
-        const ids = fuzzyData.map((n: any) => n.id);
+        const ids = (fuzzyData as { id: number }[]).map((n) => n.id);
         const { data: instData } = await supabase
           .from("notices")
           .select("id, institutions(*)")
           .in("id", ids);
-        const instMap: Record<number, any> = {};
-        instData?.forEach((row: any) => { instMap[row.id] = row.institutions; });
+        const instMap: Record<number, Notice["institutions"]> = {};
+        (instData as unknown as { id: number; institutions: Notice["institutions"] }[] | null)?.forEach((row) => {
+          instMap[row.id] = row.institutions;
+        });
 
-        const notices = fuzzyData.map((n: any) => ({
+        const notices = (fuzzyData as Notice[]).map((n) => ({
           ...n,
           institutions: instMap[n.id] ?? null,
         })) as Notice[];
@@ -234,10 +238,64 @@ export async function getRelatedNotices(
       return (fallbackData as Notice[]) || [];
     }
 
-    return fuzzyData
-      .filter((n: any) => n.id !== noticeId)
-      .slice(0, limit) as Notice[];
+    return (fuzzyData as { id: number }[])
+      .filter((n) => n.id !== noticeId)
+      .slice(0, limit) as unknown as Notice[];
   } catch {
     return [];
+  }
+}
+
+export async function getPlatformStats() {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const [
+      { count: activeNotices },
+      { count: institutionsCount },
+      { count: recruitmentsCount },
+      { count: updatedTodayCount }
+    ] = await Promise.all([
+      // Active Notices
+      supabase
+        .from("notices")
+        .select("*", { head: true, count: "exact" })
+        .eq("is_active", true)
+        .is("merged_into_notice_id", null),
+      // Institutions
+      supabase
+        .from("institutions")
+        .select("*", { head: true, count: "exact" }),
+      // Recruitments
+      supabase
+        .from("notices")
+        .select("*", { head: true, count: "exact" })
+        .eq("is_active", true)
+        .is("merged_into_notice_id", null)
+        .eq("category", "recruitment"),
+      // Updated Today (created since midnight today)
+      supabase
+        .from("notices")
+        .select("*", { head: true, count: "exact" })
+        .eq("is_active", true)
+        .is("merged_into_notice_id", null)
+        .gte("created_at", today.toISOString())
+    ]);
+
+    return {
+      activeNotices: activeNotices || 0,
+      institutions: institutionsCount || 0,
+      recruitments: recruitmentsCount || 0,
+      updatedToday: updatedTodayCount || 0,
+    };
+  } catch (error) {
+    console.error("Error fetching platform stats:", error);
+    return {
+      activeNotices: 0,
+      institutions: 0,
+      recruitments: 0,
+      updatedToday: 0,
+    };
   }
 }

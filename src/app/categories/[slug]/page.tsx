@@ -192,7 +192,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                 <div className="mt-12 rounded-3xl border border-zinc-800/80 bg-zinc-900/30 backdrop-blur-sm p-12 text-center">
                   <h2 className="text-2xl font-bold text-zinc-200">No notices found</h2>
                   <p className="mt-4 text-zinc-500 text-sm max-w-md mx-auto">
-                    We couldn't find any announcements matching your query in this category. Try adjusting your search query.
+                    We couldn&apos;t find any announcements matching your query in this category. Try adjusting your search query.
                   </p>
                 </div>
               )}
