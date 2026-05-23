@@ -117,7 +117,7 @@ export async function JobsList({
             No jobs found
           </h2>
 
-          <p className="mt-4 text-zinc-400">
+          <p className="mt-4 text-muted">
             Try different filters.
           </p>
         </div>
@@ -132,32 +132,34 @@ export async function JobsList({
                 key={job.id}
                 href={`/jobs/${job.slug}`}
               >
-                <article className="group h-full rounded-3xl border border-border bg-card/50 p-7 transition duration-300 hover:-translate-y-1 hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-card/75 hover:shadow-[0_0_30px_rgba(0,0,0,0.02)] dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.01)]">
-                  <div className="mb-4 inline-flex rounded-full border border-border bg-card/40 px-3 py-1 text-xs text-foreground font-semibold">
-                    {job.category ||
-                      "Job"}
+                <article className="group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/50 p-7 transition duration-300 hover:-translate-y-1 hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-card/75 hover:shadow-[0_0_30px_rgba(0,0,0,0.02)] dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.01)] min-h-[220px] sm:min-h-[240px]">
+                  <div>
+                    <div className="mb-4 inline-flex rounded-full border border-border bg-card/40 px-3 py-1 text-xs text-foreground font-semibold">
+                      {job.category ||
+                        "Job"}
+                    </div>
+
+                    <h2 className="text-xl sm:text-2xl font-bold leading-tight text-zinc-900 dark:text-zinc-200 transition group-hover:text-brand line-clamp-2">
+                      {job.title}
+                    </h2>
+
+                    <p className="mt-4 line-clamp-3 leading-7 text-zinc-600 dark:text-zinc-300 transition-colors duration-200 text-sm sm:text-base">
+                      {job.description ||
+                        "No description available."}
+                    </p>
+
+                    {(() => {
+                      const salary = extractSalary(job.title, job.description, null);
+                      return salary ? (
+                        <div className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-600 dark:bg-emerald-500/5 dark:text-emerald-400 border border-emerald-500/20">
+                          <Banknote className="h-3.5 w-3.5 shrink-0" />
+                          <span>Salary/Stipend: {salary}</span>
+                        </div>
+                      ) : null;
+                    })()}
                   </div>
 
-                  <h2 className="text-2xl font-bold leading-tight text-zinc-900 dark:text-zinc-200 transition group-hover:text-brand">
-                    {job.title}
-                  </h2>
-
-                  <p className="mt-4 line-clamp-3 leading-7 text-zinc-500 dark:text-zinc-400 transition-colors duration-200">
-                    {job.description ||
-                      "No description available."}
-                  </p>
-
-                  {(() => {
-                    const salary = extractSalary(job.title, job.description, null);
-                    return salary ? (
-                      <div className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-600 dark:bg-emerald-500/5 dark:text-emerald-400 border border-emerald-500/20">
-                        <Banknote className="h-3.5 w-3.5 shrink-0" />
-                        <span>Salary/Stipend: {salary}</span>
-                      </div>
-                    ) : null;
-                  })()}
-
-                  <div className="mt-8 flex items-center justify-between text-sm text-zinc-500 border-t border-border pt-4">
+                  <div className="mt-8 flex items-center justify-between text-sm text-zinc-600 dark:text-zinc-300 border-t border-border pt-4">
                     <span>
                       {job.source}
                     </span>
@@ -218,7 +220,11 @@ export async function JobsList({
                 );
 
                 return (
-                  <Link key={pageNumber} href={`/jobs?${params.toString()}`}>
+                  <Link
+                    key={pageNumber}
+                    href={`/jobs?${params.toString()}`}
+                    className="relative inline-flex items-center justify-center transition-transform active:scale-95 duration-100 after:absolute after:-inset-2 after:content-['']"
+                  >
                     <Button
                       variant={isActive ? "primary" : "secondary"}
                       className="h-11 w-11 p-0 text-sm font-semibold rounded-2xl"

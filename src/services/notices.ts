@@ -4,6 +4,22 @@ import { logSearch } from "./search-analytics";
 
 export const EXCLUDED_ACADEMIC_SLUGS = ["gauhati-university", "cotton-university", "dibrugarh-university"];
 
+export const NON_ACADEMIC_SLUGS = [
+  "assam-public-service-commission",
+  "state-level-police-recruitment-board",
+  "gauhati-high-court",
+  "all-job-assam",
+  "numaligarh-refinery-limited",
+  "assamjobnews",
+  "daily-assam-job",
+  "assam-career",
+  "ncs-portal",
+  "aesrb",
+  "nhm-assam",
+  "seba",
+  "ahsec",
+];
+
 /**
  * Checks if a category is a competitive exam/result category that requires partitioning academic notices.
  */
@@ -18,13 +34,14 @@ export function isCompetitiveCategory(category?: string | null): boolean {
  * If the category is competitive and no specific institution is requested,
  * it excludes university academic notices.
  */
-export function applyCompetitiveExamFilters<T extends any>(
+export function applyCompetitiveExamFilters<T>(
   query: T,
   category?: string,
   options?: { institutionSlug?: string; institutionId?: number }
 ): T {
   if (isCompetitiveCategory(category) && !options?.institutionSlug && !options?.institutionId) {
-    return (query as any).not("institution_slug", "in", `("${EXCLUDED_ACADEMIC_SLUGS.join(",")}")`);
+    return (query as unknown as { not: (col: string, op: string, val: string) => T })
+      .not("institution_slug", "in", `("${EXCLUDED_ACADEMIC_SLUGS.join(",")}")`);
   }
   return query;
 }
@@ -53,6 +70,7 @@ type GetNoticesOptions = {
   institutionSlug?: string;
   institutionId?: number;
   userId?: string | null;
+  excludeId?: number;
 };
 
 const PAGE_SIZE = 6;
@@ -67,6 +85,7 @@ export async function getNotices(options?: GetNoticesOptions) {
   const to = from + PAGE_SIZE - 1;
   const search = options?.search?.trim() || "";
   const category = options?.category && options.category !== "All" ? options.category : undefined;
+  const rpcCategory = category === "academic" ? null : (category ?? null);
 
   // ──────────────────────────────────────────────────────────────────────
   // SEARCH PATH: FTS → Fuzzy fallback → ilike fallback
@@ -78,7 +97,7 @@ export async function getNotices(options?: GetNoticesOptions) {
     try {
       const { data: ftsData, error: ftsError } = await supabase.rpc("search_notices", {
         search_query: search,
-        p_category: category ?? null,
+        p_category: rpcCategory,
         p_page: page,
         p_page_size: PAGE_SIZE,
       });
@@ -102,6 +121,16 @@ export async function getNotices(options?: GetNoticesOptions) {
           institutions: instMap[n.id] ?? null,
         })) as Notice[];
 
+        if (options?.excludeId) {
+          notices = notices.filter((n) => n.id !== options.excludeId);
+        }
+        if (options?.category === "academic") {
+          notices = notices.filter(
+            (n) =>
+              n.category?.toLowerCase() !== "recruitment" &&
+              (!n.institution_slug || !NON_ACADEMIC_SLUGS.includes(n.institution_slug))
+          );
+        }
         notices = filterCompetitiveExamNotices(notices, category, options);
 
         // Fire-and-forget analytics log
@@ -118,7 +147,7 @@ export async function getNotices(options?: GetNoticesOptions) {
     try {
       const { data: fuzzyData, error: fuzzyError } = await supabase.rpc("fuzzy_search_notices", {
         search_query: search,
-        p_category: category ?? null,
+        p_category: rpcCategory,
         p_threshold: 0.25,
         p_page_size: PAGE_SIZE,
       });
@@ -141,6 +170,16 @@ export async function getNotices(options?: GetNoticesOptions) {
           institutions: instMap[n.id] ?? null,
         })) as Notice[];
 
+        if (options?.excludeId) {
+          notices = notices.filter((n) => n.id !== options.excludeId);
+        }
+        if (options?.category === "academic") {
+          notices = notices.filter(
+            (n) =>
+              n.category?.toLowerCase() !== "recruitment" &&
+              (!n.institution_slug || !NON_ACADEMIC_SLUGS.includes(n.institution_slug))
+          );
+        }
         notices = filterCompetitiveExamNotices(notices, category, options);
 
         logSearch({ query: search, resultsCount: notices.length, searchType: "fuzzy", durationMs, category, userId: options?.userId });
@@ -171,7 +210,17 @@ export async function getNotices(options?: GetNoticesOptions) {
   }
 
   if (category) {
-    query = query.ilike("category", category);
+    if (category === "academic") {
+      query = query
+        .neq("category", "recruitment")
+        .or(`institution_slug.not.in.("${NON_ACADEMIC_SLUGS.join('","')}"),institution_slug.is.null`);
+    } else {
+      query = query.ilike("category", category);
+    }
+  }
+
+  if (options?.excludeId) {
+    query = query.neq("id", options.excludeId);
   }
 
   query = applyCompetitiveExamFilters(query, category, options);
@@ -356,6 +405,7 @@ export async function getAcademicNotices(limit: number = 5): Promise<Notice[]> {
     .eq("is_active", true)
     .is("merged_into_notice_id", null)
     .neq("category", "recruitment")
+    .or(`institution_slug.not.in.("${NON_ACADEMIC_SLUGS.join('","')}"),institution_slug.is.null`)
     .order("posted_at", { ascending: false, nullsFirst: false })
     .limit(limit);
 
@@ -365,4 +415,31 @@ export async function getAcademicNotices(limit: number = 5): Promise<Notice[]> {
   }
 
   return (data as Notice[]) || [];
+}
+
+export async function getImportantNotice(categoryType: "job" | "academic"): Promise<Notice | null> {
+  let query = supabase
+    .from("notices")
+    .select("*, institutions(*)")
+    .eq("is_active", true)
+    .is("merged_into_notice_id", null)
+    .contains("tags", ["important"]);
+
+  if (categoryType === "job") {
+    query = query.eq("category", "recruitment");
+  } else {
+    query = query.neq("category", "recruitment");
+  }
+
+  const { data, error } = await query
+    .order("posted_at", { ascending: false, nullsFirst: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Error in getImportantNotice:", error);
+    return null;
+  }
+
+  return data as Notice;
 }

@@ -43,6 +43,16 @@ const SCRAPER_DISPLAY_INFO: Record<string, { label: string; icon: React.Componen
   mangaldai: { label: "Mangaldai College", icon: School },
   ahsec: { label: "AHSEC Board", icon: BookOpen },
   seba: { label: "SEBA Board", icon: BookOpen },
+  // Phase 1
+  assam_university: { label: "Assam University", icon: School },
+  astu: { label: "ASTU Guwahati", icon: School },
+  ghc: { label: "Gauhati High Court", icon: Trophy },
+  all_job_assam: { label: "AllJobAssam", icon: Briefcase },
+  // Batch 2
+  kkhsou: { label: "KKHSOU", icon: School },
+  awu: { label: "Assam Women's University", icon: School },
+  nrl: { label: "Numaligarh Refinery", icon: Settings },
+  assam_job_news: { label: "assamJOBnews", icon: Briefcase },
 };
 
 function formatTimeAgo(dateString: string | null): string {

@@ -48,10 +48,10 @@ export default function ApiDocsPage() {
                 <div>
                   <div className="flex items-center gap-3 mb-2">
                     <span className="rounded bg-emerald-500/10 px-2 py-0.5 text-xs font-bold text-emerald-600 dark:bg-emerald-500/5 dark:text-emerald-400 border border-emerald-500/20">GET</span>
-                    <code className="text-xs font-mono font-bold text-foreground">/api/v1/notices</code>
+                    <code className="text-xs font-mono font-bold text-foreground">/api/v1/jobs</code>
                   </div>
                   <p className="text-xs sm:text-sm text-muted">
-                    Fetch a paginated feed of verified notices, filterable by category, source, or institution.
+                    Fetch a paginated feed of verified jobs and updates, filterable by category, source, or institution.
                   </p>
                 </div>
 

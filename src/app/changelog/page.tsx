@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Container } from "@/components/layout/container";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/home/footer";
-import { Calendar, GitPullRequest, Milestone } from "lucide-react";
+import { Calendar, Milestone } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Changelog | AssamStudentHub",

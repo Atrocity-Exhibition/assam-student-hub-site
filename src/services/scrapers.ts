@@ -2,21 +2,31 @@ import { supabase } from "@/lib/supabase";
 import type { ScraperRun, ScraperSummary } from "@/types/scraper";
 
 const EXPECTED_INTERVALS: Record<string, string> = {
-  apsc: "30m",
-  slprb: "30m",
-  dibrugarh: "3h",
-  gauhati: "6h",
-  cotton: "6h",
+  apsc: "6h",
+  slprb: "6h",
+  dibrugarh: "12h",
+  gauhati: "24h",
+  cotton: "24h",
   assam_career: "24h",
   daily_assam_job: "24h",
-  nhm_assam: "24h",
-  aesrb: "24h",
+  nhm_assam: "12h",
+  aesrb: "12h",
   ncs_portal: "24h",
   tezpur: "24h",
   bodoland: "24h",
   mangaldai: "24h",
   ahsec: "24h",
   seba: "24h",
+  // Phase 1
+  assam_university: "12h",
+  astu: "12h",
+  ghc: "6h",
+  all_job_assam: "24h",
+  // Batch 2
+  kkhsou: "12h",
+  awu: "12h",
+  nrl: "12h",
+  assam_job_news: "24h",
 };
 
 const SCRAPER_NAMES = [
@@ -35,6 +45,16 @@ const SCRAPER_NAMES = [
   "mangaldai",
   "ahsec",
   "seba",
+  // Phase 1
+  "assam_university",
+  "astu",
+  "ghc",
+  "all_job_assam",
+  // Batch 2
+  "kkhsou",
+  "awu",
+  "nrl",
+  "assam_job_news",
 ];
 
 export async function getRecentRuns(limit: number = 20): Promise<ScraperRun[]> {

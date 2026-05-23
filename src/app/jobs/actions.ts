@@ -25,8 +25,8 @@ export async function saveNotice(
       notice_id: noticeId,
     });
 
-  revalidatePath("/notices");
-  revalidatePath("/saved-notices");
+  revalidatePath("/jobs");
+  revalidatePath("/saved-jobs");
 }
 
 export async function unsaveNotice(
@@ -49,6 +49,6 @@ export async function unsaveNotice(
     .eq("user_id", user.id)
     .eq("notice_id", noticeId);
 
-  revalidatePath("/notices");
-  revalidatePath("/saved-notices");
+  revalidatePath("/jobs");
+  revalidatePath("/saved-jobs");
 }

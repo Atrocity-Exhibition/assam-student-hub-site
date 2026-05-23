@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Container } from "./container";
 import { MobileMenu } from "./mobile-menu";
 import { ThemeToggle } from "./theme-toggle";
+import { NavLinks } from "./nav-links";
 
 const navigationItems = [
   {
@@ -16,7 +17,7 @@ const navigationItems = [
   },
   {
     name: "Jobs",
-    href: "/notices",
+    href: "/jobs",
   },
   {
     name: "Institutions",
@@ -60,25 +61,13 @@ export async function Navbar() {
           </Link>
 
           {/* DESKTOP NAV */}
-          <nav className="hidden items-center gap-1 md:flex">
-            {navigationItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="rounded-full px-4 py-2 text-sm text-zinc-600 hover:text-brand dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/80 dark:hover:text-brand transition-all duration-200"
-              >
-                {item.name}
-              </Link>
-            ))}
-          </nav>
+          <NavLinks items={navigationItems} />
 
           {/* RIGHT */}
           <div className="flex items-center gap-2.5">
-            <ThemeToggle />
-
             {user ? (
-              <>
-                <Link href="/saved-notices">
+              <div className="hidden md:flex items-center gap-2.5">
+                <Link href="/saved-jobs">
                   <Button variant="secondary" size="sm">
                     Saved
                   </Button>
@@ -89,17 +78,21 @@ export async function Navbar() {
                     Logout
                   </Button>
                 </form>
-              </>
+              </div>
             ) : (
-              <Link href="/login">
-                <Button variant="secondary" size="sm">
-                  Login
-                </Button>
-              </Link>
+              <div className="hidden md:flex items-center gap-2.5">
+                <Link href="/login">
+                  <Button variant="secondary" size="sm">
+                    Login
+                  </Button>
+                </Link>
+              </div>
             )}
 
+            <ThemeToggle />
+
             {/* MOBILE MENU */}
-            <MobileMenu items={navigationItems} />
+            <MobileMenu items={navigationItems} user={user} />
           </div>
         </Container>
       </header>

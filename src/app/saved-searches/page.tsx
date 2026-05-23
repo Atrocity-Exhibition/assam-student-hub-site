@@ -56,9 +56,9 @@ export default async function SavedSearchesPage() {
                 <h2 className="text-2xl font-bold text-foreground">No saved searches yet</h2>
                 
                 <p className="mt-3 text-muted text-sm max-w-sm">
-                  Search for notices on the{" "}
-                  <Link href="/notices" className="text-emerald-600 hover:underline dark:text-emerald-400 font-semibold">
-                    notices page
+                  Search for updates on the{" "}
+                  <Link href="/jobs" className="text-emerald-600 hover:underline dark:text-emerald-400 font-semibold">
+                    jobs page
                   </Link>{" "}
                   and click{" "}
                   <strong className="text-foreground inline-flex items-center gap-1">
@@ -106,7 +106,7 @@ export default async function SavedSearchesPage() {
 
                     <div className="mt-6 flex items-center gap-3">
                       <Link
-                        href={`/notices?search=${encodeURIComponent(item.query)}${item.category ? `&category=${encodeURIComponent(item.category)}` : ""}`}
+                        href={`/jobs?search=${encodeURIComponent(item.query)}${item.category ? `&category=${encodeURIComponent(item.category)}` : ""}`}
                         className="flex-1 rounded-2xl bg-emerald-600 px-4 py-2.5 text-center text-sm font-semibold text-white transition-all duration-300 hover:bg-emerald-500 hover:shadow-md hover:shadow-emerald-500/10"
                       >
                         Search Now

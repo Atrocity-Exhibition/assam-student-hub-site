@@ -6,8 +6,28 @@ type NoticeSchemaProps = {
   baseUrl?: string;
 };
 
+function getCategorySlug(categoryName: string): string {
+  const cat = categoryName.toLowerCase();
+  switch (cat) {
+    case "recruitment":
+      return "recruitment";
+    case "result":
+      return "results";
+    case "exam":
+      return "exams";
+    case "admission":
+      return "admissions";
+    case "scholarship":
+      return "scholarships";
+    case "notice":
+      return "notices";
+    default:
+      return cat.endsWith("s") ? cat : `${cat}s`;
+  }
+}
+
 export function NoticeStructuredData({ notice, baseUrl = "https://assamstudenthub.com" }: NoticeSchemaProps) {
-  const noticeUrl = `${baseUrl}/notices/${notice.slug}`;
+  const noticeUrl = `${baseUrl}/jobs/${notice.slug}`;
   const categoryName = notice.category || "Notice";
   const postedDate = notice.posted_at || notice.created_at;
 
@@ -26,7 +46,7 @@ export function NoticeStructuredData({ notice, baseUrl = "https://assamstudenthu
         "@type": "ListItem",
         "position": 2,
         "name": categoryName,
-        "item": `${baseUrl}/categories/${categoryName.toLowerCase()}s` // e.g. /categories/exams
+        "item": `${baseUrl}/categories/${getCategorySlug(categoryName)}` // e.g. /categories/exams
       },
       {
         "@type": "ListItem",
@@ -172,7 +192,7 @@ export function WebSiteStructuredData({ baseUrl = "https://assamstudenthub.com" 
     "url": baseUrl,
     "potentialAction": {
       "@type": "SearchAction",
-      "target": `${baseUrl}/notices?search={search_term_string}`,
+      "target": `${baseUrl}/jobs?search={search_term_string}`,
       "query-input": "required name=search_term_string"
     }
   };

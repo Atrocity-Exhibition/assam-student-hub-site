@@ -29,7 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1.0,
     },
     {
-      url: `${BASE_URL}/notices`,
+      url: `${BASE_URL}/jobs`,
       lastModified: now,
       changeFrequency: "hourly",
       priority: 0.9,
@@ -79,7 +79,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       console.error("Sitemap: Error fetching notices:", error);
     } else if (noticesData) {
       noticeRoutes = noticesData.map((notice) => ({
-        url: `${BASE_URL}/notices/${notice.slug}`,
+        url: `${BASE_URL}/jobs/${notice.slug}`,
         lastModified: notice.updated_at
           ? new Date(notice.updated_at)
           : new Date(notice.scraped_at),

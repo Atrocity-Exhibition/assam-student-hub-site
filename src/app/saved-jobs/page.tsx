@@ -45,11 +45,11 @@ export default async function SavedNoticesPage() {
             </div>
 
             <h1 className="mt-6 text-4xl sm:text-5xl font-black tracking-tight text-foreground">
-              Saved Notices
+              Saved Updates
             </h1>
 
             <p className="mt-6 text-lg leading-8 text-muted">
-              Manage your bookmarked notices, exam schedules, results, and opportunities.
+              Manage your bookmarked opportunities, exam schedules, results, and notifications.
             </p>
           </div>
 
@@ -61,18 +61,18 @@ export default async function SavedNoticesPage() {
               </div>
               
               <h2 className="text-2xl font-bold text-foreground">
-                No saved notices yet
+                No saved updates yet
               </h2>
 
               <p className="mt-3 text-muted text-sm max-w-sm">
-                Start bookmarking notices and opportunities to keep track of deadlines, exam notices, and results here.
+                Start bookmarking opportunities to keep track of deadlines, exam schedules, and results here.
               </p>
 
               <Link
-                href="/notices"
+                href="/jobs"
                 className="mt-8 inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/10"
               >
-                Browse Notices
+                Browse Updates
               </Link>
             </div>
           )}
@@ -87,7 +87,7 @@ export default async function SavedNoticesPage() {
                 return (
                   <Link
                     key={notice.id}
-                    href={`/notices/${notice.slug}`}
+                    href={`/jobs/${notice.slug}`}
                     className="block"
                   >
                     <article className={`group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/40 backdrop-blur-sm p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-muted/5 shadow-sm ${hoverClasses.border}`}>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { saveNotice, unsaveNotice } from "@/app/notices/actions";
+import { saveNotice, unsaveNotice } from "@/app/jobs/actions";
 import { Button } from "@/components/ui/button";
 
 type Props = {

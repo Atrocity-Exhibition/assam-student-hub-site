@@ -13,7 +13,7 @@ const categoryAccentColors: Record<string, string> = {
   notice: "bg-zinc-500",
 };
 
-export async function NoticesSection() {
+export async function JobsSection() {
   const { notices } = await getNotices({ page: 1, sort: "latest", category: "recruitment" });
   // Limit to first 6 notices for homepage high density feed
   const latestNotices = notices.slice(0, 6);
@@ -37,13 +37,13 @@ export async function NoticesSection() {
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-100 transition-colors duration-200">
             Latest Jobs &amp; Recruitments
           </h2>
-          <p className="mt-1 text-zinc-500 dark:text-zinc-400 text-sm transition-colors duration-200">
+          <p className="mt-1 text-muted text-sm transition-colors duration-200">
             Verified job vacancies, official recruitment notifications, and career announcements.
           </p>
         </div>
         <Link
-          href="/notices?category=recruitment"
-          className="mt-3 sm:mt-0 text-xs sm:text-sm font-bold text-brand hover:opacity-85 transition-all duration-200"
+          href="/jobs?category=recruitment"
+          className="mt-3 sm:mt-0 text-xs sm:text-sm font-bold text-brand-text hover:opacity-85 transition-all duration-200"
         >
           View all jobs &rarr;
         </Link>
@@ -51,7 +51,7 @@ export async function NoticesSection() {
 
       {/* IMPORTANT NOTICE BANNER */}
       {importantNotice && (
-        <Link href={`/notices/${importantNotice.slug}`} className="block mt-6">
+        <Link href={`/jobs/${importantNotice.slug}`} className="block mt-6">
           <div className="relative group overflow-hidden rounded-2xl border border-brand-border bg-brand-bg p-4 sm:p-5 shadow-sm shadow-brand/5 transition-all duration-300 hover:border-brand/30 hover:bg-brand-bg/85">
             {/* Ambient subtle glow background */}
             <div className="absolute -inset-y-12 -left-12 w-64 bg-brand/5 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
@@ -67,11 +67,11 @@ export async function NoticesSection() {
                 
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="inline-flex rounded-full bg-brand-bg border border-brand-border px-2.5 py-0.5 text-[9px] font-bold text-brand uppercase tracking-wider">
+                    <span className="inline-flex rounded-full bg-brand-bg border border-brand-border px-2.5 py-0.5 text-[9px] font-bold text-brand-text uppercase tracking-wider">
                       Featured Job Update
                     </span>
                     {importantNotice.institutions?.name && (
-                      <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-semibold uppercase tracking-wider">
+                      <span className="text-[10px] text-muted font-semibold uppercase tracking-wider">
                         {importantNotice.institutions.name}
                       </span>
                     )}
@@ -82,7 +82,7 @@ export async function NoticesSection() {
                 </div>
               </div>
               
-              <div className="shrink-0 flex items-center gap-2 text-xs font-bold text-brand">
+              <div className="shrink-0 flex items-center gap-2 text-xs font-bold text-brand-text">
                 <span>View Details</span>
                 <span>&rarr;</span>
               </div>
@@ -106,7 +106,7 @@ export async function NoticesSection() {
               const accentColor = categoryAccentColors[(featuredNotice.category || "").toLowerCase()] || "bg-zinc-500";
 
               return (
-                <Link href={`/notices/${featuredNotice.slug}`} className="block h-full">
+                <Link href={`/jobs/${featuredNotice.slug}`} className="block h-full">
                   <article className={`group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/70 p-6 sm:p-8 transition-all duration-300 dark:hover:bg-zinc-900/10 hover:bg-zinc-50/50 shadow-sm ${hoverClasses.border} min-h-fit sm:min-h-[380px]`}>
                     <div className="flex gap-4">
                       {/* Left accent vertical indicator strip */}
@@ -118,7 +118,7 @@ export async function NoticesSection() {
                             {featuredNotice.category || "Job"}
                           </span>
                           {featuredNotice.institutions?.name && (
-                            <span className="text-xs text-zinc-500 dark:text-zinc-400 font-semibold uppercase tracking-wider truncate max-w-[200px] sm:max-w-[300px]">
+                            <span className="text-xs text-muted font-semibold uppercase tracking-wider truncate max-w-[200px] sm:max-w-[300px]">
                               {featuredNotice.institutions.name}
                             </span>
                           )}
@@ -145,12 +145,12 @@ export async function NoticesSection() {
                     </div>
 
                     <div className="mt-6 pt-5 border-t border-border flex items-center justify-between flex-wrap gap-3">
-                      <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider transition-colors duration-200">
+                      <span className="text-xs font-semibold text-muted uppercase tracking-wider transition-colors duration-200">
                         Source: {featuredNotice.source}
                       </span>
                       
                       <div className="flex items-center gap-4">
-                        <span className="text-xs text-zinc-500 dark:text-zinc-400 font-semibold tracking-wide transition-colors duration-200">
+                        <span className="text-xs text-muted font-semibold tracking-wide transition-colors duration-200">
                           {formattedDate}
                         </span>
                         <span className={`inline-flex items-center gap-1 text-xs font-bold ${hoverClasses.text} transition-all duration-300`}>
@@ -167,14 +167,14 @@ export async function NoticesSection() {
           {/* COMPACT STACK FEED (Col span 1) */}
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between pb-2 border-b border-border">
-              <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 transition-colors duration-200">
+              <h3 className="text-[10px] font-bold uppercase tracking-widest text-muted transition-colors duration-200">
                 Recent Jobs
               </h3>
             </div>
             
             {compactNotices.length === 0 ? (
               <div className="rounded-2xl border border-border bg-card/40 p-6 text-center">
-                <p className="text-xs text-zinc-500">No additional job updates.</p>
+                <p className="text-xs text-muted">No additional job updates.</p>
               </div>
             ) : (
               <div className="flex flex-col gap-3">
@@ -184,7 +184,7 @@ export async function NoticesSection() {
                   const accentColor = categoryAccentColors[(notice.category || "").toLowerCase()] || "bg-zinc-500";
 
                   return (
-                    <Link key={notice.id} href={`/notices/${notice.slug}`} className="block">
+                    <Link key={notice.id} href={`/jobs/${notice.slug}`} className="block">
                       <div className={`group flex flex-col justify-between p-4 rounded-2xl border border-border bg-card/50 hover:bg-card/75 transition-all duration-300 shadow-sm ${hoverClasses.border}`}>
                         <div className="flex gap-2.5">
                           {/* Accent line on compact card */}
@@ -195,7 +195,7 @@ export async function NoticesSection() {
                               <span className={`inline-flex rounded-full border px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${getCategoryStyles(notice.category)}`}>
                                 {notice.category || "Job"}
                               </span>
-                              <span className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 shrink-0">{dateStr}</span>
+                              <span className="text-[10px] font-semibold text-muted shrink-0">{dateStr}</span>
                             </div>
                             
                             <h4 className={`text-xs sm:text-sm font-bold leading-snug text-zinc-800 dark:text-zinc-300 line-clamp-2 transition-colors duration-300 ${hoverClasses.text}`}>
@@ -206,13 +206,13 @@ export async function NoticesSection() {
                               const salary = extractSalary(notice.title, notice.description, notice.metadata);
                               return salary ? (
                                 <div className="mt-2 inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
-                                  <Banknote className="h-3 w-3 shrink-0" />
+                                  <Banknote className="h-3.5 w-3.5 shrink-0" />
                                   <span>{salary}</span>
                                 </div>
                               ) : null;
                             })()}
 
-                            <p className="mt-1.5 text-[9px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 truncate">
+                            <p className="mt-1.5 text-[9px] font-bold uppercase tracking-wider text-muted truncate">
                               {notice.institutions?.name || notice.source}
                             </p>
                           </div>
@@ -230,8 +230,8 @@ export async function NoticesSection() {
       {/* FOOTER BUTTON */}
       <div className="mt-6 md:mt-8 flex justify-center">
         <Link
-          href="/notices?category=recruitment"
-          className="rounded-full border border-border bg-card/45 px-6 py-2.5 text-xs sm:text-sm font-semibold text-foreground transition-all duration-300 hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-card hover:text-brand shadow-sm hover:shadow"
+          href="/jobs?category=recruitment"
+          className="rounded-full border border-border bg-card/45 px-6 py-2.5 text-xs sm:text-sm font-semibold text-foreground transition-all duration-300 hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-card hover:text-brand-text shadow-sm hover:shadow"
         >
           Browse All Job Opportunities
         </Link>

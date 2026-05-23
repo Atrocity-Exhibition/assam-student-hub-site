@@ -6,9 +6,10 @@ type Props = {
   currentSort?: string;
   search?: string;
   category?: string;
+  basePath?: string;
 };
 
-export function NoticesSort({ currentSort, search, category }: Props) {
+export function NoticesSort({ currentSort, search, category, basePath }: Props) {
   const router = useRouter();
 
   function handleChange(value: string) {
@@ -26,7 +27,8 @@ export function NoticesSort({ currentSort, search, category }: Props) {
       params.set("sort", value);
     }
 
-    router.push(`/notices?${params.toString()}`);
+    const path = basePath || "/jobs";
+    router.push(`${path}?${params.toString()}`);
   }
 
   return (

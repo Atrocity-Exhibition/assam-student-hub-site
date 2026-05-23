@@ -47,6 +47,7 @@ export function getRelativeTime(dateInput: string | Date | null): string {
 export function extractSalary(
   title: string,
   description?: string | null,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata?: Record<string, any> | null
 ): string | null {
   if (metadata) {

@@ -45,6 +45,9 @@ export async function generateMetadata({
   return {
     title: `${institution.name} | AssamStudentHub`,
     description: institution.description || `Explore latest updates, exams, results, admissions, and recruitment notifications from ${institution.name}.`,
+    alternates: {
+      canonical: `https://assamstudenthub.com/institutions/${slug.toLowerCase()}`,
+    },
   };
 }
 
@@ -149,7 +152,7 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
                     const accentColor = categoryAccentColors[(notice.category || "").toLowerCase()] || "bg-zinc-500";
                     
                     return (
-                      <Link key={notice.id} href={`/notices/${notice.slug}`}>
+                      <Link key={notice.id} href={`/jobs/${notice.slug}`}>
                         <article className={`group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/40 backdrop-blur-sm p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-muted/5 shadow-sm ${hoverClasses.border}`}>
                           <div className="flex gap-4">
                             {/* Left accent strip */}

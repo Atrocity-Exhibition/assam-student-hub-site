@@ -13,6 +13,7 @@
 
   /* Semantic Theme Colors */
   --color-brand: var(--brand);
+  --color-brand-text: var(--brand-text);
   --color-brand-border: var(--brand-border);
   --color-brand-bg: var(--brand-bg);
   --color-critical: var(--critical);
@@ -57,9 +58,10 @@
   --primary-foreground: #09090b;
 
   /* Semantic Theme Variables */
-  --brand: #adde62;
-  --brand-border: rgba(173, 222, 98, 0.2);
-  --brand-bg: rgba(173, 222, 98, 0.05);
+  --brand: #76b900;
+  --brand-text: #76b900;
+  --brand-border: rgba(118, 185, 0, 0.2);
+  --brand-bg: rgba(118, 185, 0, 0.05);
   --critical: #f87171;
   --critical-border: rgba(248, 113, 113, 0.2);
   --color-critical-bg-var: rgba(248, 113, 113, 0.05);
@@ -72,14 +74,15 @@
   --foreground: #0f172a;
   --card: #ffffff;
   --border: #e2e8f0;
-  --muted: #64748b;
+  --muted: #475569;
   --primary: #0f172a;
   --primary-foreground: #ffffff;
 
   /* Semantic Theme Variables */
-  --brand: #456f03;
-  --brand-border: rgba(69, 111, 3, 0.15);
-  --brand-bg: rgba(69, 111, 3, 0.04);
+  --brand: #76b900;
+  --brand-text: #4c7a00;
+  --brand-border: rgba(118, 185, 0, 0.15);
+  --brand-bg: rgba(118, 185, 0, 0.04);
   --critical: #b91c1c;
   --critical-border: rgba(185, 28, 28, 0.15);
   --color-critical-bg-var: rgba(185, 28, 28, 0.04);

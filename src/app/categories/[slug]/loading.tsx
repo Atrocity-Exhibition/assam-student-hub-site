@@ -16,7 +16,7 @@ export default function LoadingCategoryPage() {
           </div>
 
           {/* TWO COLUMN GRID */}
-          <div className="grid gap-10 lg:grid-cols-[1fr_340px]">
+          <div className="grid gap-10 lg:grid-cols-[1fr_340px] items-start">
             {/* LEFT COLUMN: Notices List */}
             <div>
               {/* FILTER CONTROLS */}

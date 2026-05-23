@@ -11,11 +11,25 @@ export async function UniversitiesSection() {
     getAcademicNotices(7),
   ]);
 
-  // Filter out APSC and SLPRB (agencies, not college/universities)
+  const NON_ACADEMIC_SLUGS = [
+    "assam-public-service-commission",
+    "state-level-police-recruitment-board",
+    "gauhati-high-court",
+    "all-job-assam",
+    "numaligarh-refinery-limited",
+    "assamjobnews",
+    "daily-assam-job",
+    "assam-career",
+    "ncs-portal",
+    "aesrb",
+    "nhm-assam",
+    "seba",
+    "ahsec",
+  ];
+
+  // Filter out non-academic entities (agencies, aggregators, PSUs, etc.)
   const institutions = allInstitutions.filter(
-    (inst) =>
-      inst.slug !== "assam-public-service-commission" &&
-      inst.slug !== "state-level-police-recruitment-board"
+    (inst) => !NON_ACADEMIC_SLUGS.includes(inst.slug)
   );
 
   // Check for any important notice in the academic list
@@ -36,7 +50,7 @@ export async function UniversitiesSection() {
         <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-100 transition-colors duration-200">
           Browse Institutions
         </h2>
-        <p className="mt-1 text-zinc-500 dark:text-zinc-400 text-sm transition-colors duration-200">
+        <p className="mt-1 text-muted text-sm transition-colors duration-200">
           Explore colleges and universities to find their latest official updates.
         </p>
       </div>
@@ -49,10 +63,10 @@ export async function UniversitiesSection() {
             href={`/institutions/${uni.slug}`}
             className="group min-w-[280px] rounded-2xl border border-border bg-card/70 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-border hover:bg-brand-bg/30 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 dark:focus-visible:ring-brand/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
-            <h3 className="font-bold text-zinc-900 dark:text-zinc-100 transition group-hover:text-brand">
+            <h3 className="font-bold text-zinc-900 dark:text-zinc-100 transition group-hover:text-brand-text">
               {uni.name}
             </h3>
-            <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+            <p className="mt-2 text-xs text-muted leading-relaxed">
               Official updates, announcements, schedules, results, and student services.
             </p>
           </Link>
@@ -63,7 +77,7 @@ export async function UniversitiesSection() {
         <Link href="/institutions">
           <Button
             variant="secondary"
-            className="rounded-full text-xs sm:text-sm hover:text-brand hover:border-brand-border hover:bg-brand-bg/30"
+            className="rounded-full text-xs sm:text-sm hover:text-brand-text hover:border-brand-border hover:bg-brand-bg/30"
           >
             Browse All Institutions
           </Button>
@@ -77,13 +91,13 @@ export async function UniversitiesSection() {
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-100 transition-colors duration-200">
               Latest Academic Updates
             </h2>
-            <p className="mt-1 text-zinc-500 dark:text-zinc-400 text-sm transition-colors duration-200">
+            <p className="mt-1 text-muted text-sm transition-colors duration-200">
               Exam routines, results, admissions, and scholarship details from verified colleges and universities.
             </p>
           </div>
           <Link
-            href="/notices"
-            className="mt-3 sm:mt-0 text-xs sm:text-sm font-bold text-brand hover:opacity-85 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 rounded-lg px-2 py-1"
+            href="/jobs"
+            className="mt-3 sm:mt-0 text-xs sm:text-sm font-bold text-brand-text hover:opacity-85 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 rounded-lg px-2 py-1"
           >
             View all academic updates &rarr;
           </Link>
@@ -92,7 +106,7 @@ export async function UniversitiesSection() {
         {/* IMPORTANT ACADEMIC NOTICE HIGHLIGHT */}
         {importantAcademicNotice && (
           <Link
-            href={`/notices/${importantAcademicNotice.slug}`}
+            href={`/jobs/${importantAcademicNotice.slug}`}
             className="block mt-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 dark:focus-visible:ring-brand/50 rounded-2xl"
           >
             <div className="relative group overflow-hidden rounded-2xl border border-brand-border bg-brand-bg p-4 sm:p-5 shadow-sm shadow-brand/5 transition-all duration-300 hover:border-brand/30 hover:bg-brand-bg/85">
@@ -110,22 +124,22 @@ export async function UniversitiesSection() {
                   
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="inline-flex rounded-full bg-brand-bg border border-brand-border px-2.5 py-0.5 text-[9px] font-bold text-brand uppercase tracking-wider">
+                      <span className="inline-flex rounded-full bg-brand-bg border border-brand-border px-2.5 py-0.5 text-[9px] font-bold text-brand-text uppercase tracking-wider">
                         Featured Academic Update
                       </span>
                       {importantAcademicNotice.institutions?.name && (
-                        <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-semibold uppercase tracking-wider">
+                        <span className="text-[10px] text-muted font-semibold uppercase tracking-wider">
                           {importantAcademicNotice.institutions.name}
                         </span>
                       )}
                     </div>
-                    <h4 className="mt-1.5 text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-brand transition-colors duration-200">
+                    <h4 className="mt-1.5 text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-brand-text transition-colors duration-200">
                       {importantAcademicNotice.title}
                     </h4>
                   </div>
                 </div>
                 
-                <div className="shrink-0 flex items-center gap-2 text-xs font-bold text-brand">
+                <div className="shrink-0 flex items-center gap-2 text-xs font-bold text-brand-text">
                   <span>View Details</span>
                   <span>&rarr;</span>
                 </div>
@@ -148,7 +162,7 @@ export async function UniversitiesSection() {
               return (
                 <Link
                   key={notice.id}
-                  href={`/notices/${notice.slug}`}
+                  href={`/jobs/${notice.slug}`}
                   className="block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 dark:focus-visible:ring-brand/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   <article className={`group h-full flex flex-col justify-between rounded-2xl border border-border bg-card/50 p-5 hover:bg-card/75 hover:-translate-y-0.5 transition-all duration-300 shadow-sm ${hoverClasses.border} min-h-fit sm:min-h-[180px]`}>
@@ -158,7 +172,7 @@ export async function UniversitiesSection() {
                           {notice.category}
                         </span>
                         {notice.institutions?.name && (
-                          <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-semibold uppercase tracking-wider truncate max-w-[150px]">
+                          <span className="text-[10px] text-muted font-semibold uppercase tracking-wider truncate max-w-[150px]">
                             {notice.institutions.name}
                           </span>
                         )}
@@ -168,12 +182,12 @@ export async function UniversitiesSection() {
                         {notice.title}
                       </h3>
                       
-                      <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
+                      <p className="mt-2 text-xs text-muted line-clamp-2">
                         {notice.description || "Click to view full details and official document."}
                       </p>
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-border flex items-center justify-between text-[11px] font-semibold text-zinc-500 dark:text-zinc-400">
+                    <div className="mt-4 pt-3 border-t border-border flex items-center justify-between text-[11px] font-semibold text-muted">
                       <span>Source: {notice.source}</span>
                       <span>{dateStr}</span>
                     </div>

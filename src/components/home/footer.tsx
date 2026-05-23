@@ -9,13 +9,22 @@ export function Footer() {
           {/* BRAND & STATUS */}
           <div className="max-w-sm space-y-6">
             <div className="flex items-center">
-              <Link href="/" className="text-xl font-black tracking-tight text-foreground">
-                Assam<span className="text-emerald-600 dark:text-emerald-400">Student</span>Hub
+              <Link
+                href="/"
+                className="group shrink-0 flex items-center gap-2.5 text-2xl font-black tracking-tight"
+              >
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform duration-300">
+                  <span className="text-lg font-black text-white">A</span>
+                </div>
+                <div className="leading-none text-left">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-teal-600 font-black tracking-wide text-[10px] uppercase block font-semibold">Assam</span>
+                  <span className="text-zinc-900 dark:text-white font-bold text-base block -mt-0.5 transition-colors duration-200">StudentHub</span>
+                </div>
               </Link>
             </div>
 
             <p className="text-sm leading-relaxed text-muted">
-              Assam&apos;s unified academic intelligence dashboard. Aggregating announcements, recruitments, exam routines, results, and admissions from across verified state portals.
+              Assam&apos;s unified academic intelligence dashboard. Sourcing and aggregating announcements, recruitments, exam routines, results, and admissions from across verified state portals.
             </p>
 
             {/* Pulse Status Indicator */}
@@ -29,7 +38,7 @@ export function Footer() {
           </div>
 
           {/* METRICS & LINKS GRID */}
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 text-sm flex-1 lg:max-w-2xl">
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 text-sm flex-1 lg:max-w-2xl lg:ml-auto">
             {/* PLATFORM LINKS */}
             <div>
               <h4 className="mb-4 font-bold text-foreground uppercase tracking-wider text-xs">

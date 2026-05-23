@@ -35,6 +35,9 @@ export async function generateMetadata({
   return {
     title: `${notice.title} | AssamStudentHub`,
     description: notice.description || "Latest Assam government and university announcements.",
+    alternates: {
+      canonical: `https://assamstudenthub.com/jobs/${notice.slug}`,
+    },
     openGraph: {
       title: notice.title,
       description: notice.description || "Latest Assam government and university announcements.",
@@ -69,7 +72,7 @@ export default async function NoticePage({ params }: PageProps) {
         .single();
 
       if (canonicalNotice?.slug) {
-        redirect(`/notices/${canonicalNotice.slug}`);
+        redirect(`/jobs/${canonicalNotice.slug}`);
       }
     } catch {
       // If redirect target not found, fall through and render this notice normally
@@ -93,8 +96,6 @@ export default async function NoticePage({ params }: PageProps) {
     isSaved = !!data;
   }
 
-  const canonicalUrl = `https://assamstudenthub.com/notices/${notice.slug}`;
-
   // Fetch related notices for the sidebar
   const relatedNotices = await getRelatedNotices(
     notice.id,
@@ -111,8 +112,6 @@ export default async function NoticePage({ params }: PageProps) {
       <Navbar />
 
       <main className="min-h-screen bg-background text-foreground transition-colors duration-200 selection:bg-emerald-500/30 selection:text-emerald-500">
-        {/* Canonical Link Tag */}
-        <link rel="canonical" href={canonicalUrl} />
         <Container className="py-14">
           {/* BREADCRUMB */}
           <div className="mb-8 flex items-center gap-2 text-sm text-muted">
@@ -120,8 +119,8 @@ export default async function NoticePage({ params }: PageProps) {
               Home
             </Link>
             <span>/</span>
-            <Link href="/notices" className="hover:text-foreground transition-colors">
-              Notices
+            <Link href="/jobs" className="hover:text-foreground transition-colors">
+              Jobs
             </Link>
             <span>/</span>
             <span className="text-foreground/70 truncate max-w-[240px] md:max-w-md">
@@ -129,7 +128,7 @@ export default async function NoticePage({ params }: PageProps) {
             </span>
           </div>
 
-          <div className="grid gap-10 lg:grid-cols-[1fr_340px]">
+          <div className="grid gap-10 lg:grid-cols-[1fr_340px] items-start">
             {/* MAIN CONTENT */}
             <div>
               {/* CATEGORY */}
@@ -201,7 +200,7 @@ export default async function NoticePage({ params }: PageProps) {
             </div>
 
             {/* SIDEBAR */}
-            <aside className="lg:sticky lg:top-24 h-fit space-y-6">
+            <aside className="lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto scrollbar-hide space-y-6">
               <div className="rounded-3xl border border-border bg-card/60 backdrop-blur-sm p-6 shadow-xl space-y-6">
                 <div className="flex flex-col gap-3">
                   {notice.attachment_url ? (
@@ -309,7 +308,7 @@ export default async function NoticePage({ params }: PageProps) {
                     {relatedNotices.map((related) => (
                       <Link
                         key={related.slug}
-                        href={`/notices/${related.slug}`}
+                        href={`/jobs/${related.slug}`}
                         className="group block space-y-1"
                       >
                         <h4 className="text-xs font-semibold text-foreground/80 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-200 line-clamp-2">

@@ -5,13 +5,14 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/layout/container";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/home/footer";
-import { getNotices, applyCompetitiveExamFilters } from "@/services/notices";
+import { getNotices } from "@/services/notices";
 import { getCategoryStyles, getCategoryHoverClasses } from "@/components/notices/notices-list";
-import { CategorySearch, CategorySort } from "./category-controls";
-import { supabase } from "@/lib/supabase";
+import { NoticesSearch } from "@/components/notices/notices-search";
+import { NoticesSort } from "@/components/notices/notices-sort";
+import { Button } from "@/components/ui/button";
 import type { Notice } from "@/types/notice";
 import { getRelativeTime, extractSalary } from "@/lib/utils";
-import { TrendingUp, Clock, Banknote } from "lucide-react";
+import { Banknote } from "lucide-react";
 
 
 type Props = {
@@ -83,6 +84,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: `${title} | AssamStudentHub`,
     description: `Stay updated with the latest verified ${categoryName.toLowerCase()} notifications, announcements, results, timetables, and official notices from universities and boards in Assam.`,
+    alternates: {
+      canonical: `https://assamstudenthub.com/categories/${slug.toLowerCase()}`,
+    },
   };
 }
 
@@ -108,58 +112,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     search,
   });
 
-  // 2. Fetch sidebar: Trending Institutions (Most active notices in this category)
-  let trendingInstitutions: { name: string; slug: string; count: number }[] = [];
-  try {
-    let trendingQuery = supabase
-      .from("notices")
-      .select("institution, institution_slug, institution_id")
-      .ilike("category", dbCategory)
-      .eq("is_active", true);
-
-    trendingQuery = applyCompetitiveExamFilters(trendingQuery, dbCategory);
-
-    const { data: noticesForCategory } = await trendingQuery;
-
-    const instCounts: { [id: number]: { name: string; slug: string; count: number } } = {};
-    noticesForCategory?.forEach((n) => {
-      if (n.institution_id) {
-        if (!instCounts[n.institution_id]) {
-          instCounts[n.institution_id] = {
-            name: n.institution,
-            slug: n.institution_slug || "",
-            count: 0,
-          };
-        }
-        instCounts[n.institution_id].count++;
-      }
-    });
-
-    trendingInstitutions = Object.values(instCounts)
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 5);
-  } catch (err) {
-    console.error("Error fetching trending institutions for sidebar:", err);
-  }
-
-  // 3. Fetch sidebar: Recent Updates (Newest 5 notices in this category)
-  let recentUpdates: Partial<Notice>[] = [];
-  try {
-    let recentQuery = supabase
-      .from("notices")
-      .select("title, slug, posted_at, created_at")
-      .ilike("category", dbCategory)
-      .eq("is_active", true);
-
-    recentQuery = applyCompetitiveExamFilters(recentQuery, dbCategory);
-
-    const { data: recentData } = await recentQuery
-      .order("posted_at", { ascending: false, nullsFirst: false })
-      .limit(5);
-    recentUpdates = recentData || [];
-  } catch (err) {
-    console.error("Error fetching recent updates for sidebar:", err);
-  }
 
   // Related categories mapping
   const allCategories = [
@@ -193,186 +145,126 @@ export default async function CategoryPage({ params, searchParams }: Props) {
             </p>
           </div>
 
-          {/* TWO COLUMN GRID */}
-          <div className="grid gap-10 lg:grid-cols-[1fr_340px]">
-            {/* LEFT COLUMN: Notices List */}
-            <div>
-              {/* FILTER CONTROLS */}
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex-1">
-                  <CategorySearch initialSearch={search} categorySlug={slug} />
-                </div>
-                <div className="shrink-0">
-                  <CategorySort currentSort={sort} search={search} categorySlug={slug} />
-                </div>
+          {/* FILTER CONTROLS */}
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex-1">
+              <NoticesSearch initialSearch={search} currentCategory={dbCategory} basePath={`/categories/${slug}`} />
+            </div>
+            <div className="shrink-0">
+              <NoticesSort currentSort={sort} search={search} category={dbCategory} basePath={`/categories/${slug}`} />
+            </div>
+          </div>
+
+          {/* EMPTY STATE */}
+          {notices.length === 0 && (
+            <div className="mt-12 rounded-3xl border border-border bg-card/30 backdrop-blur-sm p-12 text-center shadow-md max-w-2xl mx-auto">
+              <h2 className="text-2xl font-bold text-foreground">No notices found</h2>
+              <p className="mt-4 text-muted text-sm max-w-md mx-auto">
+                We couldn&apos;t find any announcements matching your query in this category. Try adjusting your search query.
+              </p>
+            </div>
+          )}
+
+          {/* GRID OF CARDS */}
+          {notices.length > 0 && (
+            <>
+              <div className="mt-10 grid gap-6 md:grid-cols-2">
+                {notices.map((notice: Notice) => {
+                  const hoverClasses = getCategoryHoverClasses(notice.category);
+                  const accentColor = categoryAccentColors[(notice.category || "").toLowerCase()] || "bg-zinc-500";
+                  
+                  return (
+                    <Link key={notice.id} href={`/jobs/${notice.slug}`}>
+                      <article className={`group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/50 p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-card/75 shadow-sm min-h-[190px] sm:min-h-[210px] ${hoverClasses.border}`}>
+                        <div className="flex gap-4">
+                          {/* Left accent strip */}
+                          <div className={`w-1 shrink-0 rounded-full ${accentColor} opacity-90 group-hover:scale-y-[1.03] transition-transform duration-300`} />
+                          
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-4 mb-3.5">
+                              <div
+                                className={`inline-flex rounded-full border px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider ${getCategoryStyles(
+                                  notice.category
+                                )}`}
+                              >
+                                {notice.category || "Notice"}
+                              </div>
+
+                              {notice.institutions?.name && (
+                                <span className="text-xs text-muted font-medium truncate max-w-[200px]">
+                                  {notice.institutions.name}
+                                </span>
+                              )}
+                            </div>
+
+                            <h2 className={`text-base sm:text-lg font-extrabold leading-snug text-foreground transition-colors duration-300 line-clamp-2 ${hoverClasses.text}`}>
+                              {notice.title}
+                            </h2>
+
+                            <p className="mt-2.5 line-clamp-2 text-xs sm:text-sm leading-relaxed text-muted transition-colors duration-200">
+                              {notice.description ||
+                                "No description provided. Click to view the full announcement details and official attachments."}
+                            </p>
+
+                            {(() => {
+                              const salary = extractSalary(notice.title, notice.description, notice.metadata);
+                              return salary ? (
+                                <div className="mt-3.5 inline-flex items-center gap-1.5 rounded-lg bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-600 dark:bg-emerald-500/5 dark:text-emerald-400 border border-emerald-500/20">
+                                  <Banknote className="h-3.5 w-3.5 shrink-0" />
+                                  <span>Salary/Stipend: {salary}</span>
+                                </div>
+                              ) : null;
+                            })()}
+                          </div>
+                        </div>
+
+                        <div className="mt-6 flex items-center justify-between border-t border-border/60 pt-3.5 text-xs text-muted font-semibold uppercase tracking-wider">
+                          <span>{notice.source}</span>
+                          <span>{getRelativeTime(notice.posted_at || notice.created_at)}</span>
+                        </div>
+                      </article>
+                    </Link>
+                  );
+                })}
               </div>
 
-              {/* EMPTY STATE */}
-              {notices.length === 0 && (
-                <div className="mt-12 rounded-3xl border border-border bg-card/30 backdrop-blur-sm p-12 text-center shadow-md">
-                  <h2 className="text-2xl font-bold text-foreground">No notices found</h2>
-                  <p className="mt-4 text-muted text-sm max-w-md mx-auto">
-                    We couldn&apos;t find any announcements matching your query in this category. Try adjusting your search query.
-                  </p>
-                </div>
-              )}
+              {/* PAGINATION */}
+              {totalPages > 1 && (
+                <div className="mt-12 flex justify-center gap-2">
+                  {Array.from({ length: totalPages }).map((_, index) => {
+                    const pageNumber = index + 1;
+                    const isActive = pageNumber === page;
+                    const params = new URLSearchParams();
 
-              {/* GRID OF CARDS */}
-              {notices.length > 0 && (
-                <>
-                  <div className="mt-10 grid gap-6 md:grid-cols-2">
-                    {notices.map((notice: Notice) => {
-                      const hoverClasses = getCategoryHoverClasses(notice.category);
-                      const accentColor = categoryAccentColors[(notice.category || "").toLowerCase()] || "bg-zinc-500";
-                      
-                      return (
-                        <Link key={notice.id} href={`/notices/${notice.slug}`}>
-                          <article className={`group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/40 backdrop-blur-sm p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-muted/5 shadow-sm ${hoverClasses.border}`}>
-                            <div className="flex gap-4">
-                              {/* Left accent strip */}
-                              <div className={`w-1 shrink-0 rounded-full ${accentColor} opacity-90 group-hover:scale-y-[1.03] transition-transform duration-300`} />
-                              
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-center justify-between gap-4 mb-3.5">
-                                  <div
-                                    className={`inline-flex rounded-full border px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider ${getCategoryStyles(
-                                      notice.category
-                                    )}`}
-                                  >
-                                    {notice.category || "Notice"}
-                                  </div>
+                    if (search) {
+                      params.set("search", search);
+                    }
 
-                                  {notice.institutions?.name && (
-                                    <span className="text-xs text-muted font-medium truncate max-w-[200px]">
-                                      {notice.institutions.name}
-                                    </span>
-                                  )}
-                                </div>
+                    if (sort && sort !== "newest") {
+                      params.set("sort", sort);
+                    }
 
-                                <h2 className={`text-base sm:text-lg font-extrabold leading-snug text-foreground transition-colors duration-300 line-clamp-2 ${hoverClasses.text}`}>
-                                  {notice.title}
-                                </h2>
+                    params.set("page", String(pageNumber));
 
-                                <p className="mt-2.5 line-clamp-2 text-xs sm:text-sm leading-relaxed text-muted transition-colors duration-200">
-                                  {notice.description ||
-                                    "No description provided. Click to view the full announcement details and official attachments."}
-                                </p>
-
-                                {(() => {
-                                  const salary = extractSalary(notice.title, notice.description, notice.metadata);
-                                  return salary ? (
-                                    <div className="mt-3.5 inline-flex items-center gap-1.5 rounded-lg bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-600 dark:bg-emerald-500/5 dark:text-emerald-400 border border-emerald-500/20">
-                                      <Banknote className="h-3.5 w-3.5 shrink-0" />
-                                      <span>Salary/Stipend: {salary}</span>
-                                    </div>
-                                  ) : null;
-                                })()}
-                              </div>
-                            </div>
-
-                            <div className="mt-6 flex items-center justify-between border-t border-border/60 pt-3.5 text-xs text-muted font-semibold uppercase tracking-wider">
-                              <span>{notice.source}</span>
-                              <span>{getRelativeTime(notice.posted_at || notice.created_at)}</span>
-                            </div>
-                          </article>
-                        </Link>
-                      );
-                    })}
-                  </div>
-
-                  {/* PAGINATION */}
-                  {totalPages > 1 && (
-                    <div className="mt-12 flex justify-center gap-3">
-                      {Array.from({ length: totalPages }).map((_, index) => {
-                        const pageNumber = index + 1;
-                        const isActive = pageNumber === page;
-                        const params = new URLSearchParams();
-
-                        if (search) {
-                          params.set("search", search);
-                        }
-
-                        if (sort && sort !== "newest") {
-                          params.set("sort", sort);
-                        }
-
-                        params.set("page", String(pageNumber));
-
-                        return (
-                          <Link
-                            key={pageNumber}
-                            href={`/categories/${slug}?${params.toString()}`}
-                            className={`flex h-10 w-10 items-center justify-center rounded-xl border text-sm font-medium transition-all duration-300 ${
-                              isActive
-                                ? "border-emerald-600 bg-emerald-600 text-white shadow-lg shadow-emerald-600/10"
-                                : "border-border bg-card text-muted hover:border-foreground/30 hover:bg-muted/10 hover:text-foreground"
-                            }`}
-                          >
-                            {pageNumber}
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-
-            {/* RIGHT COLUMN: Sidebar Widgets */}
-            <aside className="space-y-8">
-              {/* Trending Institutions */}
-              {trendingInstitutions.length > 0 && (
-                <div className="rounded-3xl border border-border bg-card/60 backdrop-blur-sm p-6 shadow-xl">
-                  <h3 className="text-sm font-bold text-foreground uppercase tracking-wider border-b border-border pb-3 mb-4 flex items-center gap-2">
-                    <TrendingUp className="h-4 w-4 text-emerald-500" />
-                    Trending Institutions
-                  </h3>
-                  <div className="space-y-4">
-                    {trendingInstitutions.map((inst) => (
+                    return (
                       <Link
-                        key={inst.slug}
-                        href={`/institutions/${inst.slug}`}
-                        className="group flex items-center justify-between gap-3 text-sm transition-all duration-300"
+                        key={pageNumber}
+                        href={`/categories/${slug}?${params.toString()}`}
+                        className="relative inline-flex items-center justify-center transition-transform active:scale-95 duration-100 after:absolute after:-inset-2.5 after:content-['']"
                       >
-                        <span className="text-muted group-hover:text-foreground group-hover:underline truncate max-w-[200px]">
-                          {inst.name}
-                        </span>
-                        <span className="rounded-full bg-background border border-border px-2 py-0.5 text-xs text-muted font-semibold group-hover:border-foreground/30 group-hover:text-foreground">
-                          {inst.count}
-                        </span>
+                        <Button
+                          variant={isActive ? "primary" : "secondary"}
+                          className="h-9 w-9 p-0 text-xs font-bold rounded-xl"
+                        >
+                          {pageNumber}
+                        </Button>
                       </Link>
-                    ))}
-                  </div>
+                    );
+                  })}
                 </div>
               )}
-
-              {/* Recent Updates */}
-              {recentUpdates.length > 0 && (
-                <div className="rounded-3xl border border-border bg-card/60 backdrop-blur-sm p-6 shadow-xl">
-                  <h3 className="text-sm font-bold text-foreground uppercase tracking-wider border-b border-border pb-3 mb-4 flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-emerald-500" />
-                    Recent Updates
-                  </h3>
-                  <div className="space-y-4">
-                    {recentUpdates.map((notice) => (
-                      <Link
-                        key={notice.slug}
-                        href={`/notices/${notice.slug}`}
-                        className="group block text-xs space-y-1"
-                      >
-                        <h4 className="font-semibold text-muted group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-200 line-clamp-2">
-                          {notice.title}
-                        </h4>
-                        <span className="text-muted/60 block">
-                          {getRelativeTime(notice.posted_at || notice.created_at || null)}
-                        </span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </aside>
-          </div>
+            </>
+          )}
 
           {/* RELATED CATEGORIES */}
           <div className="mt-16 border-t border-border pt-10">

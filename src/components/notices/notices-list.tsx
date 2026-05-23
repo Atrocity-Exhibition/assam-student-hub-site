@@ -7,15 +7,6 @@ import { getRelativeTime, extractSalary } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Banknote, Search } from "lucide-react";
 
-const categories = [
-  "All",
-  "Recruitment",
-  "Result",
-  "Exam",
-  "Notice",
-  "Admission",
-  "Scholarship",
-];
 
 const categoryAccentColors: Record<string, string> = {
   recruitment: "bg-emerald-500",
@@ -91,19 +82,33 @@ type Props = {
   category?: string;
   page?: number;
   sort?: string;
+  excludeId?: number;
+  basePath?: string;
 };
+
+const academicCategories = [
+  { label: "All Updates", value: "academic" },
+  { label: "Results", value: "Result" },
+  { label: "Exams", value: "Exam" },
+  { label: "Admissions", value: "Admission" },
+  { label: "Scholarships", value: "Scholarship" },
+  { label: "General Notices", value: "Notice" },
+];
 
 export async function NoticesList({
   search,
   category,
   page = 1,
   sort = "newest",
+  excludeId,
+  basePath = "/jobs",
 }: Props) {
   const { notices, totalPages } = await getNotices({
     search,
     category,
     page,
     sort,
+    excludeId,
   });
 
   return (
@@ -111,60 +116,63 @@ export async function NoticesList({
       {/* TOP BAR */}
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex-1">
-          <NoticesSearch initialSearch={search} />
+          <NoticesSearch initialSearch={search} currentCategory={category} basePath={basePath} />
         </div>
 
         <NoticesSort
           currentSort={sort}
           search={search}
           category={category}
+          basePath={basePath}
         />
       </div>
 
       {/* CATEGORY PILLS */}
-      <div className="mt-5 flex gap-2.5 overflow-x-auto pb-2 scrollbar-hide">
-        {categories.map((item) => {
-          const isActive = item === (category || "All");
-          const params = new URLSearchParams();
+      {category !== "recruitment" && (
+        <div className="mt-5 flex gap-2.5 overflow-x-auto pb-2 scrollbar-hide">
+          {academicCategories.map((item) => {
+            const isActive = item.value === (category || "academic");
+            const params = new URLSearchParams();
 
-          if (search) {
-            params.set("search", search);
-          }
+            if (search) {
+              params.set("search", search);
+            }
 
-          if (sort) {
-            params.set("sort", sort);
-          }
+            if (sort) {
+              params.set("sort", sort);
+            }
 
-          if (item !== "All") {
-            params.set("category", item);
-          }
+            if (item.value !== "academic") {
+              params.set("category", item.value);
+            }
 
-          return (
-            <Link
-              key={item}
-              href={`/notices?${params.toString()}`}
-              className={`shrink-0 rounded-full border px-4 py-1.5 text-xs font-bold transition-all duration-300 ${
-                isActive
-                  ? "border-brand bg-brand text-primary-foreground shadow shadow-brand/10"
-                  : "border-border bg-card/40 text-foreground hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-card"
-              }`}
-            >
-              {item}
-            </Link>
-          );
-        })}
-      </div>
+            return (
+              <Link
+                key={item.value}
+                href={`${basePath}?${params.toString()}`}
+                className={`shrink-0 rounded-full border px-4 py-1.5 text-xs font-bold transition-all duration-300 ${
+                  isActive
+                    ? "border-brand bg-brand text-primary-foreground shadow shadow-brand/10"
+                    : "border-border bg-card/40 text-foreground hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-card"
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </div>
+      )}
 
       {/* EMPTY STATE */}
       {notices.length === 0 && (
         <div className="mt-12 rounded-3xl border border-border bg-card/50 backdrop-blur-sm p-12 text-center shadow-sm max-w-2xl mx-auto">
           <Search className="h-10 w-10 text-muted mx-auto mb-4" />
           <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-200 transition-colors duration-200">No notices found</h2>
-          <p className="mt-3 text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed">
+          <p className="mt-3 text-zinc-600 dark:text-zinc-300 text-sm leading-relaxed">
             We couldn&apos;t find any announcements matching your current search or category filter. Try using different keywords, checking the spelling, or clearing filters.
           </p>
-          {(search || category !== "All") && (
-            <Link href="/notices">
+          {(search || (category !== "All" && category !== "academic" && category !== "recruitment")) && (
+            <Link href={basePath}>
               <Button variant="secondary" size="sm" className="mt-6">
                 Clear Filters
               </Button>
@@ -184,8 +192,8 @@ export async function NoticesList({
               const salary = extractSalary(notice.title, notice.description, notice.metadata);
 
               return (
-                <Link key={notice.id} href={`/notices/${notice.slug}`}>
-                  <article className={`group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/50 p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-card/75 shadow-sm ${hoverClasses.border}`}>
+                <Link key={notice.id} href={`/jobs/${notice.slug}`}>
+                  <article className={`group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/50 p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-card/75 shadow-sm min-h-[190px] sm:min-h-[210px] ${hoverClasses.border}`}>
                     <div className="flex gap-4">
                       {/* Left accent strip */}
                       <div className={`w-1 shrink-0 rounded-full ${accentColor} opacity-90 group-hover:scale-y-[1.03] transition-transform duration-300`} />
@@ -197,7 +205,7 @@ export async function NoticesList({
                           </div>
                           
                           {notice.institutions?.name && (
-                            <span className="text-xs text-zinc-500 dark:text-zinc-400 font-bold uppercase tracking-wider truncate max-w-[200px] transition-colors duration-200">
+                            <span className="text-xs text-zinc-600 dark:text-zinc-300 font-bold uppercase tracking-wider truncate max-w-[200px] transition-colors duration-200">
                               {notice.institutions.name}
                             </span>
                           )}
@@ -207,7 +215,7 @@ export async function NoticesList({
                           {notice.title}
                         </h2>
 
-                        <p className="mt-2.5 line-clamp-2 text-xs sm:text-sm leading-relaxed text-zinc-500 dark:text-zinc-400 transition-colors duration-200">
+                        <p className="mt-2.5 line-clamp-2 text-xs sm:text-sm leading-relaxed text-zinc-600 dark:text-zinc-300 transition-colors duration-200">
                           {notice.description || "No description provided. Click to view the full announcement details and official attachments."}
                         </p>
 
@@ -220,7 +228,7 @@ export async function NoticesList({
                       </div>
                     </div>
 
-                    <div className="mt-6 flex items-center justify-between border-t border-border pt-3.5 text-xs text-zinc-500 dark:text-zinc-400 font-semibold uppercase tracking-wider transition-colors duration-200">
+                    <div className="mt-6 flex items-center justify-between border-t border-border pt-3.5 text-xs text-zinc-600 dark:text-zinc-300 font-semibold uppercase tracking-wider transition-colors duration-200">
                       <span>{notice.source}</span>
                       <span>{formattedDate}</span>
                     </div>
@@ -242,7 +250,7 @@ export async function NoticesList({
                   params.set("search", search);
                 }
 
-                if (category && category !== "All") {
+                if (category && category !== "All" && category !== "academic") {
                   params.set("category", category);
                 }
 
@@ -253,7 +261,11 @@ export async function NoticesList({
                 params.set("page", String(pageNumber));
 
                 return (
-                  <Link key={pageNumber} href={`/notices?${params.toString()}`}>
+                  <Link
+                    key={pageNumber}
+                    href={`${basePath}?${params.toString()}`}
+                    className="relative inline-flex items-center justify-center transition-transform active:scale-95 duration-100 after:absolute after:-inset-2.5 after:content-['']"
+                  >
                     <Button
                       variant={isActive ? "primary" : "secondary"}
                       className="h-9 w-9 p-0 text-xs font-bold rounded-xl"
