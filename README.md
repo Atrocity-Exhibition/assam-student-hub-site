@@ -6,35 +6,35 @@ Designed with a focus on web speed, SEO, accessibility, and modern editorial aes
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
-- 📰 **Unified Opportunity Feed**: A single-column page structure across all opportunity categories (Jobs, Exams, Scholarships, Admissions) ensuring a clean and consistent reading experience.
-- 🔍 **Typography & Typo-Tolerant Search**: High-speed search leveraging PostgreSQL Trigram indexing and Fuzzy Match RPC functions to handle spelling errors gracefully, completed by search analytics logging.
-- 📊 **Scraper Telemetry Dashboard**: Live monitoring dashboard at `/monitoring` displaying crawler heartbeats, timing durations, database insertion rates, and error logs for all backend pipelines.
-- 🌙 **Modern Theme System**: Automatic system preference sync and manual theme toggling built on class-based dark mode rules using Tailwind CSS v4. Includes customized accessible Nvidia Green accents.
-- 📱 **Mobile Responsive Design**: Clean layouts across all screen breakpoints. Fixed sidebar layout conflicts on mobile breakpoints using responsive container rules to prevent scroll conflicts and content clipping.
-- 🔖 **Student Bookmarks**: Dynamic client-side notice saving for offline reference and personal boards.
-- 🚀 **Clickable Announcements**: Fully interactive, layout-integrated alert ribbons highlighted on the homepage and directories for notices tagged as "important".
-
----
-
-## 🛠️ Technology Stack
-
-- **Framework**: Next.js 16 (App Router, Turbopack)
-- **Runtime & Language**: Node.js & TypeScript
-- **Styling**: Tailwind CSS v4 & Framer Motion
-- **Database & Services**: Supabase (PostgreSQL with custom text search indexing functions, RPCs)
-- **Iconography**: Lucide React
+* **Unified Opportunity Feed**: A single-column page structure across all opportunity categories (Jobs, Exams, Scholarships, Admissions) ensuring a clean and consistent reading experience.
+* **Typography and Typo-Tolerant Search**: High-speed search leveraging PostgreSQL Trigram indexing and Fuzzy Match RPC functions to handle spelling errors gracefully, completed by search analytics logging.
+* **Scraper Telemetry Dashboard**: Live monitoring dashboard at `/monitoring` displaying crawler heartbeats, timing durations, database insertion rates, and error logs for all backend pipelines.
+* **Modern Theme System**: Automatic system preference sync and manual theme toggling built on class-based dark mode rules using Tailwind CSS v4. Includes customized accessible Nvidia Green accents.
+* **Mobile Responsive Design**: Clean layouts across all screen breakpoints. Fixed sidebar layout conflicts on mobile breakpoints using responsive container rules to prevent scroll conflicts and content clipping.
+* **Student Bookmarks**: Dynamic client-side notice saving for offline reference and personal boards.
+* **Clickable Announcements**: Fully interactive, layout-integrated alert ribbons highlighted on the homepage and directories for notices tagged as "important".
 
 ---
 
-## ⚙️ Getting Started
+## Technology Stack
+
+* **Framework**: Next.js 16 (App Router, Turbopack)
+* **Runtime and Language**: Node.js and TypeScript
+* **Styling**: Tailwind CSS v4 and Framer Motion
+* **Database and Services**: Supabase (PostgreSQL with custom text search indexing functions, RPCs)
+* **Iconography**: Lucide React
+
+---
+
+## Getting Started
 
 ### Prerequisites
 
-- Node.js (v18.x or later)
-- npm or pnpm
-- A Supabase project instance
+* Node.js (v18.x or later)
+* npm or pnpm
+* A Supabase project instance
 
 ### 1. Clone the Repository
 
@@ -77,7 +77,7 @@ npm run start
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 src/
@@ -98,6 +98,6 @@ src/
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License.
