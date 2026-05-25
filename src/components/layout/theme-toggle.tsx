@@ -40,8 +40,7 @@ export function ThemeToggle() {
     return (
       <Button
         variant="secondary"
-        size="sm"
-        className="h-9 w-9 p-0 rounded-full"
+        size="icon"
         disabled
         aria-label="Theme toggle loading placeholder"
       />
@@ -52,8 +51,7 @@ export function ThemeToggle() {
     <Button
       onClick={toggleTheme}
       variant="secondary"
-      size="sm"
-      className="h-9 w-9 p-0 rounded-full"
+      size="icon"
       aria-label="Toggle light/dark theme"
     >
       {theme === "light" ? (

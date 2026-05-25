@@ -195,9 +195,6 @@ export async function NoticesList({
                 <Link key={notice.id} href={`/jobs/${notice.slug}`}>
                   <article className={`group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/50 p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-card/75 shadow-sm min-h-[190px] sm:min-h-[210px] ${hoverClasses.border}`}>
                     <div className="flex gap-4">
-                      {/* Left accent strip */}
-                      <div className={`w-1 shrink-0 rounded-full ${accentColor} opacity-90 group-hover:scale-y-[1.03] transition-transform duration-300`} />
-                      
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-4 mb-3.5">
                           <div className={`inline-flex rounded-full border px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider ${getCategoryStyles(notice.category)}`}>

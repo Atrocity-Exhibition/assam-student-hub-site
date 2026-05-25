@@ -109,9 +109,6 @@ export async function JobsSection() {
                 <Link href={`/jobs/${featuredNotice.slug}`} className="block h-full">
                   <article className={`group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/70 p-6 sm:p-8 transition-all duration-300 dark:hover:bg-zinc-900/10 hover:bg-zinc-50/50 shadow-sm ${hoverClasses.border} min-h-fit sm:min-h-[380px]`}>
                     <div className="flex gap-4">
-                      {/* Left accent vertical indicator strip */}
-                      <div className={`w-1.5 shrink-0 rounded-full ${accentColor} opacity-90 group-hover:scale-y-[1.03] transition-transform duration-300`} />
-                      
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-4 mb-4">
                           <span className={`inline-flex rounded-full border px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider ${getCategoryStyles(featuredNotice.category)}`}>
@@ -187,9 +184,6 @@ export async function JobsSection() {
                     <Link key={notice.id} href={`/jobs/${notice.slug}`} className="block">
                       <div className={`group flex flex-col justify-between p-4 rounded-2xl border border-border bg-card/50 hover:bg-card/75 transition-all duration-300 shadow-sm ${hoverClasses.border}`}>
                         <div className="flex gap-2.5">
-                          {/* Accent line on compact card */}
-                          <div className={`w-1 shrink-0 rounded-full ${accentColor} opacity-90 group-hover:scale-y-[1.05] transition-transform duration-300`} />
-                          
                           <div className="flex-1 min-w-0">
                             <div className="flex items-start justify-between gap-3 mb-1.5">
                               <span className={`inline-flex rounded-full border px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${getCategoryStyles(notice.category)}`}>

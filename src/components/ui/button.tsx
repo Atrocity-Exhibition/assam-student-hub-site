@@ -1,8 +1,9 @@
 import type { ButtonHTMLAttributes } from "react";
+import { cn } from "@/lib/utils";
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "primary" | "secondary" | "critical" | "ghost";
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "icon";
 };
 
 export function Button({
@@ -30,11 +31,12 @@ export function Button({
     sm: "px-4 py-1.5 text-xs rounded-full",
     md: "px-5 py-2.5 text-sm rounded-2xl",
     lg: "px-6 py-3.5 text-base rounded-2xl",
+    icon: "h-9 w-9 p-0 rounded-full",
   };
 
   return (
     <button
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+      className={cn(baseStyles, variants[variant], sizes[size], className)}
       {...props}
     >
       {children}
