@@ -95,6 +95,9 @@
 
 html {
   scroll-behavior: smooth;
+  /* overflow: clip does NOT create a new scroll container (unlike overflow: hidden)
+     so position:sticky and touch hit-testing stay aligned on iOS Safari */
+  overflow-x: clip;
 }
 
 body {
@@ -113,8 +116,14 @@ body {
 
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
 
-  overflow-x: hidden;
+/* Ensure all interactive elements respond instantly to taps on mobile.
+   touch-action:manipulation disables the 300ms double-tap-to-zoom delay. */
+button,
+[role="button"],
+a {
+  touch-action: manipulation;
 }
 
 /* HIDE SCROLLBAR */

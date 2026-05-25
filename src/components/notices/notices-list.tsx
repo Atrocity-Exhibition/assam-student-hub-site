@@ -129,7 +129,7 @@ export async function NoticesList({
 
       {/* CATEGORY PILLS */}
       {category !== "recruitment" && (
-        <div className="mt-5 flex gap-2.5 overflow-x-auto pb-2 scrollbar-hide">
+        <div className="mt-5 flex gap-2.5 overflow-x-auto pb-2 scrollbar-hide w-full max-w-full">
           {academicCategories.map((item) => {
             const isActive = item.value === (category || "academic");
             const params = new URLSearchParams();

@@ -65,7 +65,7 @@ export async function JobsList({
       </div>
 
       {/* CATEGORY PILLS */}
-      <div className="mt-6 flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+      <div className="mt-6 flex gap-3 overflow-x-auto pb-2 scrollbar-hide w-full max-w-full">
         {categories.map((item) => {
           const isActive =
             item ===

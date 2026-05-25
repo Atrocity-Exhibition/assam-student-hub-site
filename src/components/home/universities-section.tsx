@@ -56,7 +56,7 @@ export async function UniversitiesSection() {
       </div>
 
       {/* INSTITUTIONS CAROUSEL/GRID */}
-      <div className="mt-6 md:mt-8 flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+      <div className="mt-6 md:mt-8 flex gap-4 overflow-x-auto pb-4 scrollbar-hide w-full max-w-full">
         {institutions.map((uni) => (
           <Link
             key={uni.slug}

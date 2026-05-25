@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -12,6 +12,13 @@ export const metadata: Metadata = {
   title: "AssamStudentHub | Unified Academic & Recruitment Notices",
   description:
     "Assam's unified information portal for university notices, government exams, recruitments, admissions, and scholarships.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1.0,
+  maximumScale: 1.0,
+  userScalable: false,
 };
 
 export default function RootLayout({

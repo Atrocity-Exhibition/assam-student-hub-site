@@ -7,8 +7,8 @@ import { logout } from "@/app/login/actions";
 import { Button } from "@/components/ui/button";
 import { Container } from "./container";
 import { MobileMenu } from "./mobile-menu";
-import { ThemeToggle } from "./theme-toggle";
 import { NavLinks } from "./nav-links";
+import { ThemeToggle } from "./theme-toggle";
 
 const navigationItems = [
   {
