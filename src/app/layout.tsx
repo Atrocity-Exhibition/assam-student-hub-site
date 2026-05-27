@@ -50,7 +50,9 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased bg-background text-foreground transition-colors duration-200">{children}</body>
+      <body className="antialiased bg-background text-foreground transition-colors duration-200">
+        {children}
+      </body>
     </html>
   );
 }

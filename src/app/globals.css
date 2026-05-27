@@ -126,6 +126,13 @@ a {
   touch-action: manipulation;
 }
 
+/* Dynamic scroll-lock utility to prevent background scrolling on mobile */
+.overflow-hidden-lock {
+  overflow: hidden !important;
+  height: 100vh !important;
+  touch-action: none;
+}
+
 /* HIDE SCROLLBAR */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
