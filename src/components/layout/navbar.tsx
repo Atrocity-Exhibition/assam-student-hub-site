@@ -31,6 +31,10 @@ const navigationItems = [
     name: "Scholarships",
     href: "/categories/scholarships",
   },
+  {
+    name: "All Notices",
+    href: "/browse",
+  },
 ];
 
 

@@ -81,15 +81,15 @@ export async function HeroSection() {
         </div>
 
         {/* QUICK LINKS */}
-        <div className="mt-5 flex flex-wrap items-center gap-x-2.5 gap-y-3">
-          <span className="text-[10px] font-bold text-muted uppercase tracking-widest mr-1.5">
+        <div className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-2.5">
+          <span className="text-[10px] font-bold text-muted uppercase tracking-widest mr-1">
             Browse By:
           </span>
           {quickLinks.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className="rounded-full border border-zinc-200 bg-white/50 dark:border-zinc-800 dark:bg-zinc-900/30 px-4 py-1.5 text-xs font-semibold text-zinc-700 dark:text-zinc-300 transition-all duration-200 hover:border-emerald-500/30 hover:bg-emerald-500/5 hover:text-emerald-600 dark:hover:text-emerald-300"
+              className="rounded-full border border-border bg-card/40 px-4 py-1.5 text-xs font-medium text-muted backdrop-blur-sm transition-all duration-200 hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-card hover:text-foreground"
             >
               {item.name}
             </Link>

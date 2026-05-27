@@ -4,4 +4,4 @@ Disallow: /monitoring
 Disallow: /auth/
 Disallow: /login
 
-Sitemap: https://assamstudenthub.com/sitemap.xml
+Sitemap: https://assamstudenthub.xyz/sitemap.xml

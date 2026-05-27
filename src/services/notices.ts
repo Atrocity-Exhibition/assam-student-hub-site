@@ -2,7 +2,18 @@ import { supabase } from "@/lib/supabase";
 import type { Notice } from "@/types/notice";
 import { logSearch } from "./search-analytics";
 
-export const EXCLUDED_ACADEMIC_SLUGS = ["gauhati-university", "cotton-university", "dibrugarh-university"];
+export const EXCLUDED_ACADEMIC_SLUGS = [
+  "gauhati-university",
+  "cotton-university",
+  "dibrugarh-university",
+  "tezpur-university",
+  "bodoland-university",
+  "mangaldai-college",
+  "assam-university",
+  "astu",
+  "krishna-kanta-handiqui-state-open-university",
+  "assam-womens-university",
+];
 
 export const NON_ACADEMIC_SLUGS = [
   "assam-public-service-commission",
@@ -41,7 +52,7 @@ export function applyCompetitiveExamFilters<T>(
 ): T {
   if (isCompetitiveCategory(category) && !options?.institutionSlug && !options?.institutionId) {
     return (query as unknown as { not: (col: string, op: string, val: string) => T })
-      .not("institution_slug", "in", `("${EXCLUDED_ACADEMIC_SLUGS.join(",")}")`);
+      .not("institution_slug", "in", `("${EXCLUDED_ACADEMIC_SLUGS.join('","')}")`);
   }
   return query;
 }

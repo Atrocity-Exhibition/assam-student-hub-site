@@ -4,14 +4,7 @@ import { getCategoryStyles, getCategoryHoverClasses } from "@/components/notices
 import { getRelativeTime, extractSalary } from "@/lib/utils";
 import { Banknote } from "lucide-react";
 
-const categoryAccentColors: Record<string, string> = {
-  recruitment: "bg-emerald-500",
-  result: "bg-blue-500",
-  exam: "bg-amber-500",
-  admission: "bg-purple-500",
-  scholarship: "bg-pink-500",
-  notice: "bg-zinc-500",
-};
+
 
 export async function JobsSection() {
   const { notices } = await getNotices({ page: 1, sort: "latest", category: "recruitment" });
@@ -103,7 +96,6 @@ export async function JobsSection() {
             {featuredNotice && (() => {
               const hoverClasses = getCategoryHoverClasses(featuredNotice.category);
               const formattedDate = getRelativeTime(featuredNotice.posted_at || featuredNotice.created_at);
-              const accentColor = categoryAccentColors[(featuredNotice.category || "").toLowerCase()] || "bg-zinc-500";
 
               return (
                 <Link href={`/jobs/${featuredNotice.slug}`} className="block h-full">
@@ -178,7 +170,6 @@ export async function JobsSection() {
                 {compactNotices.map((notice) => {
                   const hoverClasses = getCategoryHoverClasses(notice.category);
                   const dateStr = getRelativeTime(notice.posted_at || notice.created_at);
-                  const accentColor = categoryAccentColors[(notice.category || "").toLowerCase()] || "bg-zinc-500";
 
                   return (
                     <Link key={notice.id} href={`/jobs/${notice.slug}`} className="block">

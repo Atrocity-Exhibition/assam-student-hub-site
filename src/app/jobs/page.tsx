@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   description:
     "Browse the latest exam results, interview lists, skill tests, and job recruitment notifications from APSC, SLPRB, and other government boards in Assam.",
   alternates: {
-    canonical: "https://assamstudenthub.com/jobs",
+    canonical: "https://assamstudenthub.xyz/jobs",
   },
 };
 

@@ -12,14 +12,7 @@ import { getCategoryStyles, getCategoryHoverClasses } from "@/components/notices
 import { InstitutionStructuredData } from "@/components/shared/structured-data";
 import { getRelativeTime } from "@/lib/utils";
 
-const categoryAccentColors: Record<string, string> = {
-  recruitment: "bg-emerald-500",
-  result: "bg-blue-500",
-  exam: "bg-amber-500",
-  admission: "bg-purple-500",
-  scholarship: "bg-pink-500",
-  notice: "bg-zinc-500",
-};
+
 
 type Props = {
   params: Promise<{
@@ -149,15 +142,11 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
                 <div className="mt-8 grid gap-6 md:grid-cols-2">
                   {notices.map((notice) => {
                     const hoverClasses = getCategoryHoverClasses(notice.category);
-                    const accentColor = categoryAccentColors[(notice.category || "").toLowerCase()] || "bg-zinc-500";
                     
                     return (
                       <Link key={notice.id} href={`/jobs/${notice.slug}`}>
                         <article className={`group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/40 backdrop-blur-sm p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-muted/5 shadow-sm ${hoverClasses.border}`}>
                           <div className="flex gap-4">
-                            {/* Left accent strip */}
-                            <div className={`w-1 shrink-0 rounded-full ${accentColor} opacity-90 group-hover:scale-y-[1.03] transition-transform duration-300`} />
-                            
                             <div className="flex-1 min-w-0">
                               <div className="mb-3.5 flex items-center justify-between gap-4">
                                 <div className={`inline-flex rounded-full border px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider ${getCategoryStyles(notice.category)}`}>

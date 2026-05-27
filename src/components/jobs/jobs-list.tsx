@@ -7,7 +7,7 @@ import { JobsSearch } from "./jobs-search";
 import { JobsSort } from "./jobs-sort";
 import { Button } from "@/components/ui/button";
 import { extractSalary } from "@/lib/utils";
-import { Banknote } from "lucide-react";
+import { Banknote, ChevronLeft, ChevronRight } from "lucide-react";
 
 const categories = [
   "All",
@@ -44,6 +44,48 @@ export async function JobsList({
     page,
     sort,
   });
+
+  const getParamsString = (pageNum: number) => {
+    const params = new URLSearchParams();
+    if (search) params.set("search", search);
+    if (category && category !== "All") params.set("category", category);
+    if (sort) params.set("sort", sort);
+    params.set("page", String(pageNum));
+    return params.toString();
+  };
+
+  const getPageNumbers = (currentPage: number, total: number) => {
+    if (total <= 7) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+    const pages: (number | string)[] = [];
+    pages.push(1);
+    
+    let start = Math.max(2, currentPage - 1);
+    let end = Math.min(total - 1, currentPage + 1);
+    
+    if (currentPage <= 4) {
+      start = 2;
+      end = 5;
+    } else if (currentPage >= total - 3) {
+      start = total - 4;
+      end = total - 1;
+    }
+    
+    if (start > 2) {
+      pages.push("...");
+    }
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+    if (end < total - 1) {
+      pages.push("...");
+    }
+    pages.push(total);
+    return pages;
+  };
+
+  const pageNumbers = getPageNumbers(page, totalPages);
 
   return (
     <section className="mt-16">
@@ -177,52 +219,51 @@ export async function JobsList({
 
           {/* PAGINATION */}
           {totalPages > 1 && (
-            <div className="mt-12 flex justify-center gap-3">
-              {Array.from({
-                length: totalPages,
-              }).map((_, index) => {
-                const pageNumber =
-                  index + 1;
+            <div className="mt-12 flex justify-center items-center gap-3">
+              {/* Previous button */}
+              {page > 1 ? (
+                <Link
+                  href={`/jobs?${getParamsString(page - 1)}`}
+                  className="transition-transform active:scale-95 duration-100"
+                >
+                  <Button
+                    variant="secondary"
+                    className="h-11 px-4 text-sm font-semibold rounded-2xl flex items-center gap-1.5"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                    <span className="hidden sm:inline">Prev</span>
+                  </Button>
+                </Link>
+              ) : (
+                <Button
+                  disabled
+                  variant="secondary"
+                  className="h-11 px-4 text-sm font-semibold rounded-2xl flex items-center gap-1.5 opacity-50 cursor-not-allowed"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  <span className="hidden sm:inline">Prev</span>
+                </Button>
+              )}
 
-                const isActive =
-                  pageNumber === page;
-
-                const params =
-                  new URLSearchParams();
-
-                if (search) {
-                  params.set(
-                    "search",
-                    search,
+              {/* Page buttons */}
+              {pageNumbers.map((pageNumber, index) => {
+                if (pageNumber === "...") {
+                  return (
+                    <span
+                      key={`ellipsis-${index}`}
+                      className="inline-flex items-center justify-center h-11 w-11 text-zinc-400 dark:text-zinc-500 text-sm font-semibold"
+                    >
+                      ...
+                    </span>
                   );
                 }
 
-                if (
-                  category &&
-                  category !== "All"
-                ) {
-                  params.set(
-                    "category",
-                    category,
-                  );
-                }
-
-                if (sort) {
-                  params.set(
-                    "sort",
-                    sort,
-                  );
-                }
-
-                params.set(
-                  "page",
-                  String(pageNumber),
-                );
+                const isActive = pageNumber === page;
 
                 return (
                   <Link
                     key={pageNumber}
-                    href={`/jobs?${params.toString()}`}
+                    href={`/jobs?${getParamsString(Number(pageNumber))}`}
                     className="relative inline-flex items-center justify-center transition-transform active:scale-95 duration-100 after:absolute after:-inset-2 after:content-['']"
                   >
                     <Button
@@ -234,6 +275,31 @@ export async function JobsList({
                   </Link>
                 );
               })}
+
+              {/* Next button */}
+              {page < totalPages ? (
+                <Link
+                  href={`/jobs?${getParamsString(page + 1)}`}
+                  className="transition-transform active:scale-95 duration-100"
+                >
+                  <Button
+                    variant="secondary"
+                    className="h-11 px-4 text-sm font-semibold rounded-2xl flex items-center gap-1.5"
+                  >
+                    <span className="hidden sm:inline">Next</span>
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </Link>
+              ) : (
+                <Button
+                  disabled
+                  variant="secondary"
+                  className="h-11 px-4 text-sm font-semibold rounded-2xl flex items-center gap-1.5 opacity-50 cursor-not-allowed"
+                >
+                  <span className="hidden sm:inline">Next</span>
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              )}
             </div>
           )}
         </>

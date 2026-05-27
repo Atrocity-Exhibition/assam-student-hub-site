@@ -12,7 +12,7 @@ import { NoticesSort } from "@/components/notices/notices-sort";
 import { Button } from "@/components/ui/button";
 import type { Notice } from "@/types/notice";
 import { getRelativeTime, extractSalary } from "@/lib/utils";
-import { Banknote } from "lucide-react";
+import { Banknote, ChevronLeft, ChevronRight } from "lucide-react";
 
 
 type Props = {
@@ -26,14 +26,7 @@ type Props = {
   }>;
 };
 
-const categoryAccentColors: Record<string, string> = {
-  recruitment: "bg-emerald-500",
-  result: "bg-blue-500",
-  exam: "bg-amber-500",
-  admission: "bg-purple-500",
-  scholarship: "bg-pink-500",
-  notice: "bg-zinc-500",
-};
+
 
 // Map URL slug to DB category casing
 function mapSlugToCategory(slug: string): string {
@@ -112,6 +105,47 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     search,
   });
 
+  const getParamsString = (pageNum: number) => {
+    const params = new URLSearchParams();
+    if (search) params.set("search", search);
+    if (sort && sort !== "newest") params.set("sort", sort);
+    params.set("page", String(pageNum));
+    return params.toString();
+  };
+
+  const getPageNumbers = (currentPage: number, total: number) => {
+    if (total <= 7) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+    const pages: (number | string)[] = [];
+    pages.push(1);
+    
+    let start = Math.max(2, currentPage - 1);
+    let end = Math.min(total - 1, currentPage + 1);
+    
+    if (currentPage <= 4) {
+      start = 2;
+      end = 5;
+    } else if (currentPage >= total - 3) {
+      start = total - 4;
+      end = total - 1;
+    }
+    
+    if (start > 2) {
+      pages.push("...");
+    }
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+    if (end < total - 1) {
+      pages.push("...");
+    }
+    pages.push(total);
+    return pages;
+  };
+
+  const pageNumbers = getPageNumbers(page, totalPages);
+
 
   // Related categories mapping
   const allCategories = [
@@ -171,15 +205,11 @@ export default async function CategoryPage({ params, searchParams }: Props) {
               <div className="mt-10 grid gap-6 md:grid-cols-2">
                 {notices.map((notice: Notice) => {
                   const hoverClasses = getCategoryHoverClasses(notice.category);
-                  const accentColor = categoryAccentColors[(notice.category || "").toLowerCase()] || "bg-zinc-500";
                   
                   return (
                     <Link key={notice.id} href={`/jobs/${notice.slug}`}>
                       <article className={`group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/50 p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-card/75 shadow-sm min-h-[190px] sm:min-h-[210px] ${hoverClasses.border}`}>
                         <div className="flex gap-4">
-                          {/* Left accent strip */}
-                          <div className={`w-1 shrink-0 rounded-full ${accentColor} opacity-90 group-hover:scale-y-[1.03] transition-transform duration-300`} />
-                          
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between gap-4 mb-3.5">
                               <div
@@ -230,26 +260,51 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
               {/* PAGINATION */}
               {totalPages > 1 && (
-                <div className="mt-12 flex justify-center gap-2">
-                  {Array.from({ length: totalPages }).map((_, index) => {
-                    const pageNumber = index + 1;
+                <div className="mt-12 flex justify-center items-center gap-2">
+                  {/* Previous button */}
+                  {page > 1 ? (
+                    <Link
+                      href={`/categories/${slug}?${getParamsString(page - 1)}`}
+                      className="transition-transform active:scale-95 duration-100"
+                    >
+                      <Button
+                        variant="secondary"
+                        className="h-9 px-3 text-xs font-bold rounded-xl flex items-center gap-1"
+                      >
+                        <ChevronLeft className="h-3.5 w-3.5" />
+                        <span className="hidden sm:inline">Prev</span>
+                      </Button>
+                    </Link>
+                  ) : (
+                    <Button
+                      disabled
+                      variant="secondary"
+                      className="h-9 px-3 text-xs font-bold rounded-xl flex items-center gap-1 opacity-50 cursor-not-allowed"
+                    >
+                      <ChevronLeft className="h-3.5 w-3.5" />
+                      <span className="hidden sm:inline">Prev</span>
+                    </Button>
+                  )}
+
+                  {/* Page buttons */}
+                  {pageNumbers.map((pageNumber, index) => {
+                    if (pageNumber === "...") {
+                      return (
+                        <span
+                          key={`ellipsis-${index}`}
+                          className="inline-flex items-center justify-center h-9 w-9 text-zinc-400 dark:text-zinc-500 text-xs font-semibold"
+                        >
+                          ...
+                        </span>
+                      );
+                    }
+
                     const isActive = pageNumber === page;
-                    const params = new URLSearchParams();
-
-                    if (search) {
-                      params.set("search", search);
-                    }
-
-                    if (sort && sort !== "newest") {
-                      params.set("sort", sort);
-                    }
-
-                    params.set("page", String(pageNumber));
 
                     return (
                       <Link
                         key={pageNumber}
-                        href={`/categories/${slug}?${params.toString()}`}
+                        href={`/categories/${slug}?${getParamsString(Number(pageNumber))}`}
                         className="relative inline-flex items-center justify-center transition-transform active:scale-95 duration-100 after:absolute after:-inset-2.5 after:content-['']"
                       >
                         <Button
@@ -261,6 +316,31 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                       </Link>
                     );
                   })}
+
+                  {/* Next button */}
+                  {page < totalPages ? (
+                    <Link
+                      href={`/categories/${slug}?${getParamsString(page + 1)}`}
+                      className="transition-transform active:scale-95 duration-100"
+                    >
+                      <Button
+                        variant="secondary"
+                        className="h-9 px-3 text-xs font-bold rounded-xl flex items-center gap-1"
+                      >
+                        <span className="hidden sm:inline">Next</span>
+                        <ChevronRight className="h-3.5 w-3.5" />
+                      </Button>
+                    </Link>
+                  ) : (
+                    <Button
+                      disabled
+                      variant="secondary"
+                      className="h-9 px-3 text-xs font-bold rounded-xl flex items-center gap-1 opacity-50 cursor-not-allowed"
+                    >
+                      <span className="hidden sm:inline">Next</span>
+                      <ChevronRight className="h-3.5 w-3.5" />
+                    </Button>
+                  )}
                 </div>
               )}
             </>
