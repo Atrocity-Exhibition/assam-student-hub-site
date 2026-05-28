@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getNotices } from "@/services/notices";
 import { getCategoryStyles, getCategoryHoverClasses } from "@/components/notices/notices-list";
 import { getRelativeTime, extractSalary } from "@/lib/utils";
-import { Banknote } from "lucide-react";
+import { Banknote, Users, Calendar, GraduationCap, FileText } from "lucide-react";
 
 
 
@@ -99,7 +99,7 @@ export async function JobsSection() {
 
               return (
                 <Link href={`/jobs/${featuredNotice.slug}`} className="block h-full">
-                  <article className={`group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/70 p-6 sm:p-8 transition-all duration-300 dark:hover:bg-zinc-900/10 hover:bg-zinc-50/50 shadow-sm ${hoverClasses.border} min-h-fit sm:min-h-[380px]`}>
+                  <article className={`group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/70 p-6 sm:p-8 transition-all duration-300 dark:hover:bg-zinc-900/10 hover:bg-zinc-50/50 shadow-sm ${hoverClasses.border} min-h-fit sm:min-h-[340px]`}>
                     <div className="flex gap-4">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-4 mb-4">
@@ -121,14 +121,64 @@ export async function JobsSection() {
                           {featuredNotice.description || "No description available. Click to view the official recruitment details."}
                         </p>
 
+                        {/* Rich Badges Grid */}
                         {(() => {
+                          const md: any = featuredNotice.metadata || {};
+                          const badges: Array<{ icon: React.ReactNode; text: string; color: string }> = [];
+
                           const salary = extractSalary(featuredNotice.title, featuredNotice.description, featuredNotice.metadata);
-                          return salary ? (
-                            <div className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-600 dark:bg-emerald-500/5 dark:text-emerald-400 border border-emerald-500/20">
-                              <Banknote className="h-3.5 w-3.5 shrink-0" />
-                              <span>Salary/Stipend: {salary}</span>
+                          if (salary) {
+                            badges.push({
+                              icon: <Banknote className="h-3.5 w-3.5 shrink-0" />,
+                              text: `Salary: ${salary}`,
+                              color: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20 dark:bg-emerald-500/5 dark:text-emerald-400"
+                            });
+                          }
+
+                          if (md.vacancies) {
+                            badges.push({
+                              icon: <Users className="h-3.5 w-3.5 shrink-0" />,
+                              text: `${md.vacancies} Vacancies`,
+                              color: "bg-blue-500/10 text-blue-600 border-blue-500/20 dark:bg-blue-500/5 dark:text-blue-400"
+                            });
+                          }
+
+                          if (md.last_date) {
+                            badges.push({
+                              icon: <Calendar className="h-3.5 w-3.5 shrink-0" />,
+                              text: `Apply By: ${md.last_date}`,
+                              color: "bg-amber-500/10 text-amber-600 border-amber-500/20 dark:bg-amber-500/5 dark:text-amber-400"
+                            });
+                          }
+
+                          if (md.qualification) {
+                            badges.push({
+                              icon: <GraduationCap className="h-3.5 w-3.5 shrink-0" />,
+                              text: md.qualification,
+                              color: "bg-purple-500/10 text-purple-600 border-purple-500/20 dark:bg-purple-500/5 dark:text-purple-400"
+                            });
+                          }
+
+                          if (featuredNotice.attachment_url) {
+                            badges.push({
+                              icon: <FileText className="h-3.5 w-3.5 shrink-0" />,
+                              text: "PDF Attachment",
+                              color: "bg-zinc-500/10 text-zinc-600 border-zinc-500/20 dark:bg-zinc-500/5 dark:text-zinc-400"
+                            });
+                          }
+
+                          if (badges.length === 0) return null;
+
+                          return (
+                            <div className="mt-4 flex flex-wrap gap-2">
+                              {badges.map((b, i) => (
+                                <div key={i} className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold border ${b.color}`}>
+                                  {b.icon}
+                                  <span>{b.text}</span>
+                                </div>
+                              ))}
                             </div>
-                          ) : null;
+                          );
                         })()}
                       </div>
                     </div>
