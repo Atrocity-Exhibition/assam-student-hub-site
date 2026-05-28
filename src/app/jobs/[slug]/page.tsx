@@ -13,7 +13,7 @@ import { SaveNoticeButton } from "@/components/notices/save-notice-button";
 import { NoticeStructuredData } from "@/components/shared/structured-data";
 import { supabase } from "@/lib/supabase";
 import { getRelativeTime } from "@/lib/utils";
-
+// NoticeDetailBody import removed per user request
 type MetadataProps = {
   params: Promise<{
     slug: string;
@@ -162,17 +162,72 @@ export default async function NoticePage({ params }: PageProps) {
                     </div>
                   ))}
                 </div>
-              )}
-
-              {/* DESCRIPTION */}
-              <div className="mt-12 rounded-3xl border border-border bg-card/30 backdrop-blur-sm p-8 shadow-xl">
-                <h2 className="text-xl font-bold text-foreground border-b border-border pb-3">
-                  Announcement Details
-                </h2>
-
-                <p className="mt-6 leading-8 text-foreground/90 text-sm sm:text-base whitespace-pre-wrap">
-                  {notice.description || "No further text description is available for this notice. Please consult the official attached PDF or URL source link for full details."}
+              )}              {/* Announcement Details */}
+              <div className="rounded-3xl border border-border bg-card/30 backdrop-blur-sm p-6 shadow-lg mb-6">
+                <h2 className="text-lg font-bold text-foreground border-b border-border pb-2 mb-4">Announcement Details</h2>
+                <p className="whitespace-pre-wrap text-foreground/90 text-sm leading-relaxed mb-4">
+                  {notice.description || 'No description available.'}
                 </p>
+
+                {/* Inline Category-Specific Details */}
+                {(() => {
+                  const cat = (notice.category || '').toLowerCase();
+                  const md: any = notice.metadata || {};
+                  
+                  const hasJobFields = md.salary || md.vacancies || md.qualification || md.last_date || md.advt_no || md.age_limit;
+                  const hasExamFields = md.exam_date || md.admit_card_date || md.last_date || md.qualification || md.exam_mode || md.age_limit;
+                  const hasScholarshipFields = md.award_amount || md.level || md.qualification || md.last_date || md.application_mode;
+
+                  const Row = ({ label, value }: { label: string; value: any }) => (
+                    <div className="grid grid-cols-3 gap-2 py-2.5 border-t border-border/40 hover:bg-emerald-500/5 transition-colors duration-200 px-2 rounded-md">
+                      <div className="font-semibold text-muted uppercase text-[10px] tracking-wider flex items-center">{label}</div>
+                      <div className="col-span-2 text-foreground text-sm font-medium break-all">{value}</div>
+                    </div>
+                  );
+
+                  if ((cat === 'recruitment' || cat === 'job') && hasJobFields) {
+                    return (
+                      <div className="mt-6 pt-4 border-t border-border/60 space-y-1">
+                        <h3 className="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-3">Job Details</h3>
+                        {md.salary && Row({ label: 'Pay Scale', value: md.salary })}
+                        {md.vacancies && Row({ label: 'Vacancies', value: md.vacancies })}
+                        {md.qualification && Row({ label: 'Qualification', value: md.qualification })}
+                        {md.last_date && Row({ label: 'Apply By', value: md.last_date })}
+                        {md.advt_no && Row({ label: 'Advt No.', value: md.advt_no })}
+                        {md.age_limit && Row({ label: 'Age Limit', value: md.age_limit })}
+                      </div>
+                    );
+                  }
+
+                  if (cat === 'exam' && hasExamFields) {
+                    return (
+                      <div className="mt-6 pt-4 border-t border-border/60 space-y-1">
+                        <h3 className="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-3">Exam Details</h3>
+                        {md.exam_date && Row({ label: 'Exam Date', value: md.exam_date })}
+                        {md.admit_card_date && Row({ label: 'Admit Card', value: md.admit_card_date })}
+                        {md.last_date && Row({ label: 'Deadline', value: md.last_date })}
+                        {md.qualification && Row({ label: 'Eligibility', value: md.qualification })}
+                        {md.exam_mode && Row({ label: 'Mode', value: md.exam_mode })}
+                        {md.age_limit && Row({ label: 'Age Limit', value: md.age_limit })}
+                      </div>
+                    );
+                  }
+
+                  if (cat === 'scholarship' && hasScholarshipFields) {
+                    return (
+                      <div className="mt-6 pt-4 border-t border-border/60 space-y-1">
+                        <h3 className="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-3">Scholarship Details</h3>
+                        {md.award_amount && Row({ label: 'Award', value: md.award_amount })}
+                        {md.level && Row({ label: 'Level', value: md.level })}
+                        {md.qualification && Row({ label: 'Eligibility', value: md.qualification })}
+                        {md.last_date && Row({ label: 'Last Date', value: md.last_date })}
+                        {md.application_mode && Row({ label: 'Apply Via', value: md.application_mode })}
+                      </div>
+                    );
+                  }
+
+                  return null;
+                })()}
               </div>
 
               {/* ATTACHMENT INFO */}
