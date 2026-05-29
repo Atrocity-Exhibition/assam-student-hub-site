@@ -103,7 +103,7 @@ export async function JobsSection() {
                     <div className="flex gap-4">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-4 mb-4">
-                          <span className={`inline-flex rounded-full border px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider ${getCategoryStyles(featuredNotice.category)}`}>
+                          <span className={`inline-flex rounded-full border px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider shrink-0 whitespace-nowrap ${getCategoryStyles(featuredNotice.category)}`}>
                             {featuredNotice.category || "Job"}
                           </span>
                           {featuredNotice.institutions?.name && (
@@ -227,7 +227,7 @@ export async function JobsSection() {
                         <div className="flex gap-2.5">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-start justify-between gap-3 mb-1.5">
-                              <span className={`inline-flex rounded-full border px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${getCategoryStyles(notice.category)}`}>
+                              <span className={`inline-flex rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider shrink-0 whitespace-nowrap ${getCategoryStyles(notice.category)}`}>
                                 {notice.category || "Job"}
                               </span>
                               <span className="text-[10px] font-semibold text-muted shrink-0">{dateStr}</span>

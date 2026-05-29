@@ -108,7 +108,7 @@ export default function AdminDashboard() {
               >
                 <Clock className="h-6 w-6" />
               </div>
-              <span className="rounded-full border border-border bg-background px-3 py-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              <span className="rounded-full border border-border bg-background px-3 py-1 text-xs font-bold uppercase tracking-wider text-muted-foreground shrink-0 whitespace-nowrap">
                 {pipeline.interval}
               </span>
             </div>

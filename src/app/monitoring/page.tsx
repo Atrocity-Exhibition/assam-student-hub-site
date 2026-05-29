@@ -239,9 +239,9 @@ export default async function MonitoringPage() {
           <div className="space-y-12">
             {/* CARD GRID - ALL SCRAPERS */}
             <div>
-              <h2 className="text-2xl font-black tracking-tight text-foreground mb-6 flex items-center gap-2">
+              <h2 className="text-2xl font-black tracking-tight text-foreground mb-6 flex flex-wrap items-center gap-2">
                 <span>Ingestion Pipelines</span>
-                <span className="text-xs font-semibold text-muted-foreground bg-card/80 border border-border px-2.5 py-1 rounded-full">
+                <span className="text-xs font-semibold text-muted-foreground bg-card/80 border border-border px-2.5 py-1 rounded-full whitespace-nowrap shrink-0">
                   {summaries.length} Sources
                 </span>
               </h2>
@@ -283,7 +283,7 @@ export default async function MonitoringPage() {
                   return (
                     <div
                       key={summary.scraper_name}
-                      className={`group flex flex-col justify-between rounded-3xl border bg-card/30 backdrop-blur-sm p-6 transition duration-300 hover:-translate-y-1 shadow-md hover:shadow-lg ${
+                      className={`group flex flex-col justify-between rounded-3xl border bg-card/30 backdrop-blur-sm p-6 transition duration-300 hover:-translate-y-1 shadow-md hover:shadow-lg min-w-0 ${
                         isStale
                           ? "border-amber-500/25 hover:border-amber-500/40 hover:shadow-amber-500/2"
                           : "border-border hover:border-emerald-500/30 hover:bg-card/50"
@@ -306,10 +306,10 @@ export default async function MonitoringPage() {
                             </div>
                           </div>
                           <span
-                            className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider shrink-0 ${statusColor}`}
+                            className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider shrink-0 whitespace-nowrap ${statusColor}`}
                           >
                             <span
-                              className={`h-1.5 w-1.5 rounded-full ${statusDot}`}
+                              className={`h-1.5 w-1.5 rounded-full shrink-0 ${statusDot}`}
                             ></span>
                             {statusText}
                           </span>
@@ -366,27 +366,27 @@ export default async function MonitoringPage() {
                           </div>
                         ) : lastRun ? (
                           <div className="grid grid-cols-3 gap-2 text-center text-xs">
-                            <div className="rounded-xl bg-card/50 border border-border/40 p-2">
-                              <span className="block text-[9px] text-muted-foreground font-bold uppercase tracking-wider">
+                            <div className="rounded-xl bg-card/50 border border-border/40 p-2 min-w-0">
+                              <span className="block text-[9px] text-muted-foreground font-bold uppercase tracking-wider truncate">
                                 Scraped
                               </span>
-                              <span className="text-foreground font-black text-sm block mt-0.5">
+                              <span className="text-foreground font-black text-sm block mt-0.5 truncate">
                                 {lastRun.items_scraped}
                               </span>
                             </div>
-                            <div className="rounded-xl bg-card/50 border border-border/40 p-2">
-                              <span className="block text-[9px] text-muted-foreground font-bold uppercase tracking-wider">
+                            <div className="rounded-xl bg-card/50 border border-border/40 p-2 min-w-0">
+                              <span className="block text-[9px] text-muted-foreground font-bold uppercase tracking-wider truncate">
                                 Inserted
                               </span>
-                              <span className="text-emerald-600 dark:text-emerald-400 font-black text-sm block mt-0.5">
+                              <span className="text-emerald-600 dark:text-emerald-400 font-black text-sm block mt-0.5 truncate">
                                 {lastRun.items_inserted}
                               </span>
                             </div>
-                            <div className="rounded-xl bg-card/50 border border-border/40 p-2">
-                              <span className="block text-[9px] text-muted-foreground font-bold uppercase tracking-wider">
+                            <div className="rounded-xl bg-card/50 border border-border/40 p-2 min-w-0">
+                              <span className="block text-[9px] text-muted-foreground font-bold uppercase tracking-wider truncate">
                                 Updated
                               </span>
-                              <span className="text-blue-600 dark:text-blue-400 font-black text-sm block mt-0.5">
+                              <span className="text-blue-600 dark:text-blue-400 font-black text-sm block mt-0.5 truncate">
                                 {lastRun.items_updated}
                               </span>
                             </div>
@@ -405,9 +405,9 @@ export default async function MonitoringPage() {
 
             {/* RECENT RUNS HISTORY LOG */}
             <div>
-              <h2 className="text-2xl font-black tracking-tight text-foreground mb-6 flex items-center gap-2">
+              <h2 className="text-2xl font-black tracking-tight text-foreground mb-6 flex flex-wrap items-center gap-2">
                 <span>Recent Ingestion Logs</span>
-                <span className="text-xs font-semibold text-muted-foreground bg-card/80 border border-border px-2.5 py-1 rounded-full">
+                <span className="text-xs font-semibold text-muted-foreground bg-card/80 border border-border px-2.5 py-1 rounded-full whitespace-nowrap shrink-0">
                   Last 20 Runs
                 </span>
               </h2>
