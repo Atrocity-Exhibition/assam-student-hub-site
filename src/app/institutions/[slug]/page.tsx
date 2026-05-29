@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { MapPin } from "lucide-react";
+import { MapPin, ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Navbar } from "@/components/layout/navbar";
 import { Container } from "@/components/layout/container";
@@ -11,6 +11,7 @@ import { getNotices } from "@/services/notices";
 import { getCategoryStyles, getCategoryHoverClasses } from "@/components/notices/notices-list";
 import { InstitutionStructuredData } from "@/components/shared/structured-data";
 import { getRelativeTime } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 
 
@@ -68,6 +69,39 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
     page: currentPage,
     sort: "latest",
   });
+
+  const getPageNumbers = (currentPage: number, total: number) => {
+    if (total <= 7) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+    const pages: (number | string)[] = [];
+    pages.push(1);
+    
+    let start = Math.max(2, currentPage - 1);
+    let end = Math.min(total - 1, currentPage + 1);
+    
+    if (currentPage <= 4) {
+      start = 2;
+      end = 5;
+    } else if (currentPage >= total - 3) {
+      start = total - 4;
+      end = total - 1;
+    }
+    
+    if (start > 2) {
+      pages.push("...");
+    }
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+    if (end < total - 1) {
+      pages.push("...");
+    }
+    pages.push(total);
+    return pages;
+  };
+
+  const pageNumbers = getPageNumbers(currentPage, totalPages);
 
   return (
     <>
@@ -176,42 +210,86 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
 
                 {/* PAGINATION CONTROLS */}
                 {totalPages > 1 && (
-                  <div className="mt-12 flex items-center justify-center gap-4">
+                  <div className="mt-12 flex justify-center items-center gap-2">
+                    {/* Previous button */}
                     {currentPage > 1 ? (
                       <Link
                         href={`/institutions/${slug}?page=${currentPage - 1}`}
-                        className="rounded-2xl border border-border bg-card/40 px-5 py-3 text-sm font-semibold text-muted transition hover:border-foreground/30 hover:bg-card/60 hover:text-foreground"
+                        className="transition-transform active:scale-95 duration-100"
                       >
-                        Previous
+                        <Button
+                          variant="secondary"
+                          className="h-9 px-3 text-xs font-bold rounded-xl flex items-center gap-1"
+                        >
+                          <ChevronLeft className="h-3.5 w-3.5" />
+                          <span className="hidden sm:inline">Prev</span>
+                        </Button>
                       </Link>
                     ) : (
-                      <button
+                      <Button
                         disabled
-                        className="rounded-2xl border border-border bg-muted/10 px-5 py-3 text-sm font-semibold text-muted/40 cursor-not-allowed opacity-50"
+                        variant="secondary"
+                        className="h-9 px-3 text-xs font-bold rounded-xl flex items-center gap-1 opacity-50 cursor-not-allowed"
                       >
-                        Previous
-                      </button>
+                        <ChevronLeft className="h-3.5 w-3.5" />
+                        <span className="hidden sm:inline">Prev</span>
+                      </Button>
                     )}
 
-                    <div className="text-sm font-medium text-muted">
-                      Page <span className="text-foreground">{currentPage}</span> of{" "}
-                      <span className="text-foreground">{totalPages}</span>
-                    </div>
+                    {/* Page buttons */}
+                    {pageNumbers.map((pageNumber, index) => {
+                      if (pageNumber === "...") {
+                        return (
+                          <span
+                            key={`ellipsis-${index}`}
+                            className="inline-flex items-center justify-center h-9 w-9 text-zinc-400 dark:text-zinc-500 text-xs font-semibold"
+                          >
+                            ...
+                          </span>
+                        );
+                      }
 
+                      const isActive = pageNumber === currentPage;
+
+                      return (
+                        <Link
+                          key={pageNumber}
+                          href={`/institutions/${slug}?page=${pageNumber}`}
+                          className="relative inline-flex items-center justify-center transition-transform active:scale-95 duration-100 after:absolute after:-inset-2.5 after:content-['']"
+                        >
+                          <Button
+                            variant={isActive ? "primary" : "secondary"}
+                            className="h-9 w-9 p-0 text-xs font-bold rounded-xl"
+                          >
+                            {pageNumber}
+                          </Button>
+                        </Link>
+                      );
+                    })}
+
+                    {/* Next button */}
                     {currentPage < totalPages ? (
                       <Link
                         href={`/institutions/${slug}?page=${currentPage + 1}`}
-                        className="rounded-2xl border border-border bg-card/40 px-5 py-3 text-sm font-semibold text-muted transition hover:border-foreground/30 hover:bg-card/60 hover:text-foreground"
+                        className="transition-transform active:scale-95 duration-100"
                       >
-                        Next
+                        <Button
+                          variant="secondary"
+                          className="h-9 px-3 text-xs font-bold rounded-xl flex items-center gap-1"
+                        >
+                          <span className="hidden sm:inline">Next</span>
+                          <ChevronRight className="h-3.5 w-3.5" />
+                        </Button>
                       </Link>
                     ) : (
-                      <button
+                      <Button
                         disabled
-                        className="rounded-2xl border border-border bg-muted/10 px-5 py-3 text-sm font-semibold text-muted/40 cursor-not-allowed opacity-50"
+                        variant="secondary"
+                        className="h-9 px-3 text-xs font-bold rounded-xl flex items-center gap-1 opacity-50 cursor-not-allowed"
                       >
-                        Next
-                      </button>
+                        <span className="hidden sm:inline">Next</span>
+                        <ChevronRight className="h-3.5 w-3.5" />
+                      </Button>
                     )}
                   </div>
                 )}

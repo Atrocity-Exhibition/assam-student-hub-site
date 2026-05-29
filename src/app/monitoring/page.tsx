@@ -53,6 +53,15 @@ const SCRAPER_DISPLAY_INFO: Record<string, { label: string; icon: React.Componen
   awu: { label: "Assam Women's University", icon: School },
   nrl: { label: "Numaligarh Refinery", icon: Settings },
   assam_job_news: { label: "assamJOBnews", icon: Briefcase },
+  // 8 New Colleges/Universities
+  darrang_college: { label: "Darrang College", icon: School },
+  tezpur_college: { label: "Tezpur College", icon: School },
+  lokd_college: { label: "LOKD College", icon: School },
+  royal_global: { label: "Royal Global University", icon: School },
+  ignou_guwahati: { label: "IGNOU Guwahati", icon: GraduationCap },
+  don_bosco: { label: "Assam Don Bosco University", icon: School },
+  pandu_college: { label: "Pandu College", icon: School },
+  adtu: { label: "Assam Down Town University", icon: School },
 };
 
 function formatTimeAgo(dateString: string | null): string {

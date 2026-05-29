@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { CustomSort } from "../shared/custom-sort";
 
 type Props = {
   currentSort?: string;
@@ -9,6 +10,12 @@ type Props = {
 
   category?: string;
 };
+
+const SORT_OPTIONS = [
+  { value: "newest", label: "Newest" },
+  { value: "oldest", label: "Oldest" },
+  { value: "alphabetical", label: "A-Z" },
+];
 
 export function JobsSort({
   currentSort,
@@ -53,28 +60,10 @@ export function JobsSort({
   }
 
   return (
-    <select
-      value={
-        currentSort || "newest"
-      }
-      onChange={(event) =>
-        handleChange(
-          event.target.value,
-        )
-      }
-      className="h-12 rounded-2xl border border-border bg-card/45 px-4 text-sm text-foreground outline-none transition-all duration-200 hover:border-zinc-400 dark:hover:border-zinc-700 cursor-pointer focus-visible:border-brand-border focus-visible:ring-2 focus-visible:ring-brand/15 dark:focus-visible:ring-brand/20"
-    >
-      <option value="newest">
-        Newest
-      </option>
-
-      <option value="oldest">
-        Oldest
-      </option>
-
-      <option value="alphabetical">
-        A-Z
-      </option>
-    </select>
+    <CustomSort
+      options={SORT_OPTIONS}
+      value={currentSort || "newest"}
+      onChange={handleChange}
+    />
   );
 }

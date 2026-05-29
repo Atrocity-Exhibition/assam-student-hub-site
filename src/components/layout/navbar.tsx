@@ -55,9 +55,11 @@ export async function Navbar() {
             href="/"
             className="group shrink-0 flex items-center gap-2.5 text-2xl font-black tracking-tight"
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform duration-300">
-              <span className="text-lg font-black text-white">A</span>
-            </div>
+            <img
+              src="/logo.png"
+              alt="Assam StudentHub Logo"
+              className="h-9 w-9 object-contain rounded-xl shadow-md shadow-emerald-500/10 bg-white group-hover:scale-105 transition-transform duration-300"
+            />
             <div className="leading-none">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-teal-600 font-black tracking-wide text-xs uppercase block font-semibold">Assam</span>
               <span className="text-zinc-900 dark:text-white font-bold text-lg block -mt-0.5 transition-colors duration-200">StudentHub</span>

@@ -27,6 +27,15 @@ const EXPECTED_INTERVALS: Record<string, string> = {
   awu: "12h",
   nrl: "12h",
   assam_job_news: "24h",
+  // 8 New Colleges/Universities
+  darrang_college: "24h",
+  tezpur_college: "24h",
+  lokd_college: "24h",
+  royal_global: "24h",
+  ignou_guwahati: "24h",
+  don_bosco: "24h",
+  pandu_college: "24h",
+  adtu: "24h",
 };
 
 const SCRAPER_NAMES = [
@@ -55,6 +64,15 @@ const SCRAPER_NAMES = [
   "awu",
   "nrl",
   "assam_job_news",
+  // 8 New Colleges/Universities
+  "darrang_college",
+  "tezpur_college",
+  "lokd_college",
+  "royal_global",
+  "ignou_guwahati",
+  "don_bosco",
+  "pandu_college",
+  "adtu",
 ];
 
 export async function getRecentRuns(limit: number = 20): Promise<ScraperRun[]> {
