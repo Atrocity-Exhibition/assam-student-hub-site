@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description:
     "Directory of educational boards, universities, and colleges in Assam. Access official notices, exam routines, results, and notifications directly from each institution.",
   alternates: {
-    canonical: "https://assamstudenthub.com/institutions",
+    canonical: "https://assamstudenthub.xyz/institutions",
   },
 };
 

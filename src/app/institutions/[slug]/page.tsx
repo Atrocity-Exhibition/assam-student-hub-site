@@ -40,7 +40,7 @@ export async function generateMetadata({
     title: `${institution.name} | AssamStudentHub`,
     description: institution.description || `Explore latest updates, exams, results, admissions, and recruitment notifications from ${institution.name}.`,
     alternates: {
-      canonical: `https://assamstudenthub.com/institutions/${slug.toLowerCase()}`,
+      canonical: `https://assamstudenthub.xyz/institutions/${slug.toLowerCase()}`,
     },
   };
 }
