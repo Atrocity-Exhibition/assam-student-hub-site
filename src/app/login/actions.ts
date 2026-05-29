@@ -41,7 +41,8 @@ export async function signup(formData: FormData) {
   const origin = headersList.get("origin");
   const host = headersList.get("x-forwarded-host") || headersList.get("host") || "localhost:3000";
   const proto = headersList.get("x-forwarded-proto") || (host.includes("localhost") ? "http" : "https");
-  const redirectUrl = origin ? `${origin}/auth/callback` : `${proto}://${host}/auth/callback`;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || origin || `${proto}://${host}`;
+  const redirectUrl = `${siteUrl}/auth/callback`;
 
   const { error } = await supabase.auth.signUp({
     email,
@@ -66,7 +67,8 @@ export async function signInWithGoogle() {
   const origin = headersList.get("origin");
   const host = headersList.get("x-forwarded-host") || headersList.get("host") || "localhost:3000";
   const proto = headersList.get("x-forwarded-proto") || (host.includes("localhost") ? "http" : "https");
-  const redirectUrl = origin ? `${origin}/auth/callback` : `${proto}://${host}/auth/callback`;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || origin || `${proto}://${host}`;
+  const redirectUrl = `${siteUrl}/auth/callback`;
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
