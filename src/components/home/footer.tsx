@@ -132,11 +132,11 @@ export function Footer() {
               <div className="space-y-3 font-mono text-xs text-muted">
                 <div className="flex items-center justify-between border-b border-border/40 pb-1.5">
                   <span>Ingest Pipelines</span>
-                  <span className="text-foreground font-semibold">9 Active</span>
+                  <span className="text-foreground font-semibold">32 Active</span>
                 </div>
                 <div className="flex items-center justify-between border-b border-border/40 pb-1.5">
                   <span>Update Interval</span>
-                  <span className="text-foreground font-semibold">6 Hours</span>
+                  <span className="text-foreground font-semibold">6-24 Hours</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Integrity Guard</span>
