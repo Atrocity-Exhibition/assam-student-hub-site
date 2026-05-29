@@ -259,6 +259,12 @@ export async function getNotices(options?: GetNoticesOptions) {
   const durationFallback = Date.now() - t0Fallback;
 
   if (error) {
+    if (error.code === "PGRST103") {
+      const match = error.details?.match(/there are only (\d+) rows/);
+      const totalRows = match ? parseInt(match[1], 10) : 0;
+      const totalPages = Math.max(1, Math.ceil(totalRows / PAGE_SIZE));
+      return { notices: [], totalPages };
+    }
     console.error("Error in getNotices:", error);
     return { notices: [], totalPages: 1 };
   }

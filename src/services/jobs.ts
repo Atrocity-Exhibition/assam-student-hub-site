@@ -97,7 +97,13 @@ export async function getJobs(
   } = await query;
 
   if (error) {
-    console.error(error);
+    if (error.code === "PGRST103") {
+      const match = error.details?.match(/there are only (\d+) rows/);
+      const totalRows = match ? parseInt(match[1], 10) : 0;
+      const totalPages = Math.max(1, Math.ceil(totalRows / PAGE_SIZE));
+      return { jobs: [], totalPages };
+    }
+    console.error("Error in getJobs:", error);
 
     return {
       jobs: [],
