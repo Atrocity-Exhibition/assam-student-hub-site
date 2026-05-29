@@ -292,7 +292,7 @@ export default async function MonitoringPage() {
                       <div>
                         {/* TOP: Name & Status */}
                         <div className="flex justify-between items-start gap-4">
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-3 flex-1 min-w-0">
                             <span className="flex items-center justify-center h-11 w-11 bg-card/90 rounded-2xl border border-border shrink-0 text-muted-foreground">
                               <InfoIcon className="h-5 w-5 shrink-0 text-emerald-500 dark:text-emerald-400" />
                             </span>

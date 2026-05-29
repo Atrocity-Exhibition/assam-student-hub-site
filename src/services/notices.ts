@@ -84,7 +84,7 @@ type GetNoticesOptions = {
   excludeId?: number;
 };
 
-const PAGE_SIZE = 6;
+const PAGE_SIZE = 12;
 
 // Minimum query length to attempt Full Text Search
 // Queries shorter than this fall through directly to ilike
