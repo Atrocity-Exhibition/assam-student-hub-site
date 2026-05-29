@@ -36,6 +36,7 @@ const EXPECTED_INTERVALS: Record<string, string> = {
   don_bosco: "24h",
   pandu_college: "24h",
   adtu: "24h",
+  dhe_assam: "24h",
 };
 
 const SCRAPER_NAMES = [
@@ -73,6 +74,7 @@ const SCRAPER_NAMES = [
   "don_bosco",
   "pandu_college",
   "adtu",
+  "dhe_assam",
 ];
 
 export async function getRecentRuns(limit: number = 20): Promise<ScraperRun[]> {
