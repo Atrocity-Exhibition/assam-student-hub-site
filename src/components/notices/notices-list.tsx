@@ -166,37 +166,39 @@ export async function NoticesList({
 
       {/* CATEGORY PILLS */}
       {category !== "recruitment" && (
-        <div className="mt-5 flex gap-2.5 overflow-x-auto pb-2 scrollbar-hide w-full max-w-full">
-          {academicCategories.map((item) => {
-            const isActive = item.value === (category || "academic");
-            const params = new URLSearchParams();
+        <div className="mt-5 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 overflow-x-auto scrollbar-hide">
+          <div className="flex gap-2.5 pb-2 w-max min-w-full">
+            {academicCategories.map((item) => {
+              const isActive = item.value === (category || "academic");
+              const params = new URLSearchParams();
 
-            if (search) {
-              params.set("search", search);
-            }
+              if (search) {
+                params.set("search", search);
+              }
 
-            if (sort) {
-              params.set("sort", sort);
-            }
+              if (sort) {
+                params.set("sort", sort);
+              }
 
-            if (item.value !== "academic") {
-              params.set("category", item.value);
-            }
+              if (item.value !== "academic") {
+                params.set("category", item.value);
+              }
 
-            return (
-              <Link
-                key={item.value}
-                href={`${basePath}?${params.toString()}`}
-                className={`shrink-0 rounded-full border px-4 py-1.5 text-xs font-bold transition-all duration-300 ${
-                  isActive
-                    ? "border-brand bg-brand text-primary-foreground shadow shadow-brand/10"
-                    : "border-border bg-card/40 text-foreground hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-card"
-                }`}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
+              return (
+                <Link
+                  key={item.value}
+                  href={`${basePath}?${params.toString()}`}
+                  className={`shrink-0 rounded-full border px-4 py-1.5 text-xs font-bold transition-all duration-300 ${
+                    isActive
+                      ? "border-brand bg-brand text-primary-foreground shadow shadow-brand/10"
+                      : "border-border bg-card/40 text-foreground hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-card"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
         </div>
       )}
 
@@ -238,7 +240,7 @@ export async function NoticesList({
                           </div>
                           
                           {notice.institutions?.name && (
-                            <span className="text-xs text-zinc-600 dark:text-zinc-300 font-bold uppercase tracking-wider truncate max-w-[200px] transition-colors duration-200">
+                            <span className="hidden sm:inline text-xs text-zinc-600 dark:text-zinc-300 font-bold uppercase tracking-wider truncate max-w-[200px] transition-colors duration-200">
                               {notice.institutions.name}
                             </span>
                           )}

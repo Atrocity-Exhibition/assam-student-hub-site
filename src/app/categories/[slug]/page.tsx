@@ -221,7 +221,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                               </div>
 
                               {notice.institutions?.name && (
-                                <span className="text-xs text-muted font-medium truncate max-w-[200px]">
+                                <span className="hidden sm:inline text-xs text-muted font-medium truncate max-w-[200px]">
                                   {notice.institutions.name}
                                 </span>
                               )}
