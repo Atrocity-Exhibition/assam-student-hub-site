@@ -172,13 +172,13 @@ export default async function NoticePage({ params }: PageProps) {
                 {/* Inline Category-Specific Details */}
                 {(() => {
                   const cat = (notice.category || '').toLowerCase();
-                  const md: any = notice.metadata || {};
+                  const md = (notice.metadata || {}) as Record<string, string | number | null>;
                   
                   const hasJobFields = md.salary || md.vacancies || md.qualification || md.last_date || md.advt_no || md.age_limit;
                   const hasExamFields = md.exam_date || md.admit_card_date || md.last_date || md.qualification || md.exam_mode || md.age_limit;
                   const hasScholarshipFields = md.award_amount || md.level || md.qualification || md.last_date || md.application_mode;
 
-                  const Row = ({ label, value }: { label: string; value: any }) => (
+                  const Row = ({ label, value }: { label: string; value: React.ReactNode }) => (
                     <div className="grid grid-cols-3 gap-2 py-2.5 border-t border-border/40 hover:bg-emerald-500/5 transition-colors duration-200 px-2 rounded-md">
                       <div className="font-semibold text-muted uppercase text-[10px] tracking-wider flex items-center">{label}</div>
                       <div className="col-span-2 text-foreground text-sm font-medium break-all">{value}</div>

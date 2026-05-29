@@ -25,6 +25,7 @@ export function MobileMenu({ items, user }: MobileMenuProps) {
   const pathname = usePathname();
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
@@ -42,6 +43,7 @@ export function MobileMenu({ items, user }: MobileMenuProps) {
 
   // Automatically close mobile menu when pathname changes
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMobileMenuOpen(false);
   }, [pathname]);
 

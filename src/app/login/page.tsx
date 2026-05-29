@@ -145,7 +145,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               </>
             ) : (
               <>
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <Link
                   href="/login?mode=signup"
                   className="font-semibold text-brand-text hover:underline"
