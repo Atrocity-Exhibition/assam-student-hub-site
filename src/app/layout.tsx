@@ -9,9 +9,17 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   title: "AssamStudentHub | Unified Academic & Recruitment Notices",
   description:
     "Assam's unified information portal for university notices, government exams, recruitments, admissions, and scholarships.",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
+  openGraph: {
+    images: ["/logo.png"],
+  },
 };
 
 export const viewport: Viewport = {
