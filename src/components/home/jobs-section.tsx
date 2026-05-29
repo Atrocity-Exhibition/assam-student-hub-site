@@ -124,7 +124,7 @@ export async function JobsSection() {
                         {/* Rich Badges Grid */}
                         {(() => {
                           const md = (featuredNotice.metadata || {}) as Record<string, string | number | null>;
-                          const badges: Array<{ icon: React.ReactNode; text: string; color: string }> = [];
+                          const badges: Array<{ icon: React.ReactNode; text: React.ReactNode; color: string }> = [];
 
                           const salary = extractSalary(featuredNotice.title, featuredNotice.description, featuredNotice.metadata);
                           if (salary) {
