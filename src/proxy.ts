@@ -56,6 +56,21 @@ export async function proxy(request: NextRequest) {
   }
 
   const { pathname } = request.nextUrl;
+
+  const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+  const isAdminRoute = pathname === "/admin" || pathname.startsWith("/admin/") || pathname.startsWith("/api/admin");
+
+  if (isAdminRoute) {
+    if (!user) {
+      const loginUrl = new URL("/login", request.url);
+      loginUrl.searchParams.set("next", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+    if (!ADMIN_EMAIL || user.email !== ADMIN_EMAIL) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  }
+
   const isProtected = PROTECTED_ROUTES.some(
     (route) => pathname === route || pathname.startsWith(route + "/"),
   );
