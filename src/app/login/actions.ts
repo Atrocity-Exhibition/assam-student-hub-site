@@ -1,98 +1,88 @@
 "use server";
 
 import { redirect } from "next/navigation";
-
+import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 
-export async function login(
-  formData: FormData,
-) {
-  const supabase =
-    await createClient();
+export async function login(formData: FormData) {
+  const supabase = await createClient();
 
-  const email = String(
-    formData.get("email"),
-  );
+  const email = String(formData.get("email") || "");
+  const password = String(formData.get("password") || "");
 
-  const password = String(
-    formData.get("password"),
-  );
+  if (!email || !password) {
+    redirect("/login?error=" + encodeURIComponent("Email and password are required."));
+  }
 
-  const { error } =
-    await supabase.auth.signInWithPassword(
-      {
-        email,
-        password,
-      },
-    );
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
 
   if (error) {
-    console.error(error);
-
-    return;
+    console.error("Login failed:", error);
+    redirect("/login?error=" + encodeURIComponent(error.message));
   }
 
   redirect("/");
 }
 
-export async function signup(
-  formData: FormData,
-) {
-  const supabase =
-    await createClient();
+export async function signup(formData: FormData) {
+  const supabase = await createClient();
 
-  const email = String(
-    formData.get("email"),
-  );
+  const email = String(formData.get("email") || "");
+  const password = String(formData.get("password") || "");
 
-  const password = String(
-    formData.get("password"),
-  );
-
-  const { error } =
-    await supabase.auth.signUp({
-      email,
-      password,
-    });
-
-  if (error) {
-    console.error(error);
-
-    return;
+  if (!email || !password) {
+    redirect("/login?mode=signup&error=" + encodeURIComponent("Email and password are required."));
   }
 
-  redirect("/");
+  const headersList = await headers();
+  const host = headersList.get("x-forwarded-host") || headersList.get("host") || "localhost:3000";
+  const proto = headersList.get("x-forwarded-proto") || "http";
+  const redirectUrl = `${proto}://${host}/auth/callback`;
+
+  const { error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      emailRedirectTo: redirectUrl,
+    },
+  });
+
+  if (error) {
+    console.error("Signup failed:", error);
+    redirect(`/login?mode=signup&error=${encodeURIComponent(error.message)}`);
+  }
+
+  redirect("/login?message=" + encodeURIComponent("Registration successful! Please check your email to confirm your account."));
 }
 
 export async function signInWithGoogle() {
-  const supabase =
-    await createClient();
+  const supabase = await createClient();
 
-  const { data, error } =
-    await supabase.auth.signInWithOAuth(
-      {
-        provider: "google",
+  const headersList = await headers();
+  const host = headersList.get("x-forwarded-host") || headersList.get("host") || "localhost:3000";
+  const proto = headersList.get("x-forwarded-proto") || "http";
+  const redirectUrl = `${proto}://${host}/auth/callback`;
 
-        options: {
-          redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/auth/callback`,
-        },
-      },
-    );
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: redirectUrl,
+    },
+  });
 
   if (error) {
-    console.error(error);
-
-    return;
+    console.error("Google login failed:", error);
+    redirect("/login?error=" + encodeURIComponent(error.message));
   }
 
   redirect(data.url);
 }
 
 export async function logout() {
-  const supabase =
-    await createClient();
-
+  const supabase = await createClient();
   await supabase.auth.signOut();
-
   redirect("/");
 }

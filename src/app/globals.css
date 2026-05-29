@@ -94,7 +94,6 @@
 }
 
 html {
-  scroll-behavior: smooth;
   /* overflow: clip does NOT create a new scroll container (unlike overflow: hidden)
      so position:sticky and touch hit-testing stay aligned on iOS Safari */
   overflow-x: clip;

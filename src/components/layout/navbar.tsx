@@ -2,9 +2,8 @@ import Link from "next/link";
 
 import { createClient } from "@/lib/supabase/server";
 
-import { logout } from "@/app/login/actions";
-
 import { Button } from "@/components/ui/button";
+import { UserDropdown } from "./user-dropdown";
 import { Container } from "./container";
 import { MobileMenu } from "./mobile-menu";
 import { NavLinks } from "./nav-links";
@@ -73,17 +72,7 @@ export async function Navbar() {
           <div className="flex items-center gap-2.5">
             {user ? (
               <div className="hidden md:flex items-center gap-2.5">
-                <Link href="/saved-jobs">
-                  <Button variant="secondary" size="sm">
-                    Saved
-                  </Button>
-                </Link>
-
-                <form action={logout} className="flex items-center">
-                  <Button variant="secondary" size="sm">
-                    Logout
-                  </Button>
-                </form>
+                <UserDropdown user={user} />
               </div>
             ) : (
               <div className="hidden md:flex items-center gap-2.5">
