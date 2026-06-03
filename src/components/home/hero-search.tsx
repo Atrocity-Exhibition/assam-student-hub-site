@@ -2,8 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
-import { Search } from "lucide-react";
+import { Search, Briefcase, GraduationCap, Building2, Trophy, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export function HeroSearch() {
   const router = useRouter();
@@ -64,6 +65,48 @@ export function HeroSearch() {
         >
           Search
         </Button>
+      </div>
+
+      {/* Instant Category Chips */}
+      <div className="mt-4 flex flex-wrap gap-2.5 items-center">
+        <span className="text-[9px] font-bold text-muted uppercase tracking-widest mr-1">
+          Quick links:
+        </span>
+        <Link
+          href="/jobs"
+          className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-3.5 py-1.5 text-[11px] font-extrabold text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 transition-all duration-200 shadow-sm"
+        >
+          <Briefcase className="h-3.5 w-3.5" />
+          <span>Jobs</span>
+        </Link>
+        <Link
+          href="/categories/scholarships"
+          className="inline-flex items-center gap-1.5 rounded-full border border-pink-500/20 bg-pink-500/5 px-3.5 py-1.5 text-[11px] font-extrabold text-pink-600 dark:text-pink-400 hover:bg-pink-500/10 transition-all duration-200 shadow-sm"
+        >
+          <GraduationCap className="h-3.5 w-3.5" />
+          <span>Scholarships</span>
+        </Link>
+        <Link
+          href="/institutions"
+          className="inline-flex items-center gap-1.5 rounded-full border border-purple-500/20 bg-purple-500/5 px-3.5 py-1.5 text-[11px] font-extrabold text-purple-600 dark:text-purple-400 hover:bg-purple-500/10 transition-all duration-200 shadow-sm"
+        >
+          <Building2 className="h-3.5 w-3.5" />
+          <span>Universities</span>
+        </Link>
+        <Link
+          href="/categories/results"
+          className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/20 bg-blue-500/5 px-3.5 py-1.5 text-[11px] font-extrabold text-blue-600 dark:text-blue-400 hover:bg-blue-500/10 transition-all duration-200 shadow-sm"
+        >
+          <Trophy className="h-3.5 w-3.5" />
+          <span>Results</span>
+        </Link>
+        <Link
+          href="/categories/admissions"
+          className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/20 bg-amber-500/5 px-3.5 py-1.5 text-[11px] font-extrabold text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 transition-all duration-200 shadow-sm"
+        >
+          <ClipboardList className="h-3.5 w-3.5" />
+          <span>Admissions</span>
+        </Link>
       </div>
     </form>
   );

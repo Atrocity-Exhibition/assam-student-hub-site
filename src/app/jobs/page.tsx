@@ -26,6 +26,9 @@ type PageProps = {
     search?: string;
     page?: string;
     sort?: string;
+    source?: string;
+    institution?: string;
+    date?: string;
   }>;
 };
 
@@ -35,6 +38,9 @@ export default async function JobsPage({ searchParams }: PageProps) {
   const search = params.search || "";
   const page = Number(params.page || "1");
   const sort = params.sort || "newest";
+  const source = params.source || "";
+  const institution = params.institution || "";
+  const date = params.date || "";
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -119,6 +125,9 @@ export default async function JobsPage({ searchParams }: PageProps) {
             sort={sort}
             excludeId={importantNotice?.id}
             basePath="/jobs"
+            source={source}
+            institution={institution}
+            date={date}
           />
         </Container>
 

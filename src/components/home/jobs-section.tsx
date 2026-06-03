@@ -192,8 +192,9 @@ export async function JobsSection() {
                         <span className="text-xs text-muted font-semibold tracking-wide transition-colors duration-200">
                           {formattedDate}
                         </span>
-                        <span className={`inline-flex items-center gap-1 text-xs font-bold ${hoverClasses.text} transition-all duration-300`}>
-                          Read More &rarr;
+                        <span className={`inline-flex items-center gap-1 text-xs font-black ${hoverClasses.text} transition-all duration-300`}>
+                          View Notice
+                          <span className="group-hover:translate-x-1.5 transition-transform duration-300 ease-out font-normal">&rarr;</span>
                         </span>
                       </div>
                     </div>
@@ -247,9 +248,15 @@ export async function JobsSection() {
                               ) : null;
                             })()}
 
-                            <p className="mt-1.5 text-[9px] font-bold uppercase tracking-wider text-muted truncate">
-                              {notice.institutions?.name || notice.source}
-                            </p>
+                            <div className="mt-2.5 flex items-center justify-between border-t border-border/40 pt-2 gap-2">
+                              <span className="text-[9px] font-bold uppercase tracking-wider text-muted truncate max-w-[160px]">
+                                {notice.institutions?.name || notice.source}
+                              </span>
+                              <span className={`inline-flex items-center gap-0.5 text-[10px] font-black ${hoverClasses.text} transition-all duration-300`}>
+                                View Notice
+                                <span className="group-hover:translate-x-1 transition-transform duration-300 ease-out font-normal">&rarr;</span>
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>

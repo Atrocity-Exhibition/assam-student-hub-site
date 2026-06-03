@@ -82,6 +82,8 @@ type GetNoticesOptions = {
   institutionId?: number;
   userId?: string | null;
   excludeId?: number;
+  isOfficial?: boolean;
+  dateRange?: string;
 };
 
 const PAGE_SIZE = 12;
@@ -101,7 +103,9 @@ export async function getNotices(options?: GetNoticesOptions) {
   // ──────────────────────────────────────────────────────────────────────
   // SEARCH PATH: FTS → Fuzzy fallback → ilike fallback
   // ──────────────────────────────────────────────────────────────────────
-  if (search.length >= FTS_MIN_LENGTH) {
+  const hasFilters = options?.isOfficial !== undefined || options?.dateRange || options?.institutionSlug || options?.institutionId;
+
+  if (search.length >= FTS_MIN_LENGTH && !hasFilters) {
     const t0 = Date.now();
 
     // ---- Primary: PostgreSQL Full Text Search (ranked by relevance × recency) ----
@@ -241,6 +245,24 @@ export async function getNotices(options?: GetNoticesOptions) {
   }
   if (options?.institutionId) {
     query = query.eq("institution_id", options.institutionId);
+  }
+
+  if (options?.isOfficial !== undefined) {
+    query = query.eq("is_official", options.isOfficial);
+  }
+
+  if (options?.dateRange) {
+    const cutoff = new Date();
+    if (options.dateRange === "24h") {
+      cutoff.setHours(cutoff.getHours() - 24);
+      query = query.gte("posted_at", cutoff.toISOString());
+    } else if (options.dateRange === "7days") {
+      cutoff.setDate(cutoff.getDate() - 7);
+      query = query.gte("posted_at", cutoff.toISOString());
+    } else if (options.dateRange === "30days") {
+      cutoff.setDate(cutoff.getDate() - 30);
+      query = query.gte("posted_at", cutoff.toISOString());
+    }
   }
 
   switch (options?.sort) {
@@ -433,6 +455,24 @@ export async function getAcademicNotices(limit: number = 5): Promise<Notice[]> {
 
   return (data as Notice[]) || [];
 }
+
+export async function getRecentNotices(limit: number = 5): Promise<Notice[]> {
+  const { data, error } = await supabase
+    .from("notices")
+    .select("*, institutions(*)")
+    .eq("is_active", true)
+    .is("merged_into_notice_id", null)
+    .order("posted_at", { ascending: false, nullsFirst: false })
+    .limit(limit);
+
+  if (error) {
+    console.error("Error in getRecentNotices:", error);
+    return [];
+  }
+
+  return (data as Notice[]) || [];
+}
+
 
 export async function getImportantNotice(categoryType: "job" | "academic"): Promise<Notice | null> {
   let query = supabase

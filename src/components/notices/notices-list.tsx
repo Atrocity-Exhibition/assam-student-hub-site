@@ -3,6 +3,8 @@ import type { Notice } from "@/types/notice";
 import { getNotices } from "@/services/notices";
 import { NoticesSearch } from "./notices-search";
 import { NoticesSort } from "./notices-sort";
+import { NoticesFilterPanel } from "./notices-filter-panel";
+import { getInstitutions } from "@/services/institutions";
 import { getRelativeTime, extractSalary } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Banknote, Search, ChevronLeft, ChevronRight } from "lucide-react";
@@ -77,6 +79,9 @@ type Props = {
   sort?: string;
   excludeId?: number;
   basePath?: string;
+  source?: string;
+  institution?: string;
+  date?: string;
 };
 
 const academicCategories = [
@@ -95,14 +100,26 @@ export async function NoticesList({
   sort = "newest",
   excludeId,
   basePath = "/jobs",
+  source,
+  institution,
+  date,
 }: Props) {
+  const isOfficial = source === "official" ? true : source === "aggregator" ? false : undefined;
+  const dateRange = date || undefined;
+  const institutionSlug = institution || undefined;
+
   const { notices, totalPages } = await getNotices({
     search,
     category,
     page,
     sort,
     excludeId,
+    isOfficial,
+    dateRange,
+    institutionSlug,
   });
+
+  const institutions = await getInstitutions();
 
   const getParamsString = (pageNum: number) => {
     const params = new URLSearchParams();
@@ -111,6 +128,9 @@ export async function NoticesList({
       params.set("category", category);
     }
     if (sort) params.set("sort", sort);
+    if (source) params.set("source", source);
+    if (institution) params.set("institution", institution);
+    if (date) params.set("date", date);
     params.set("page", String(pageNum));
     return params.toString();
   };
@@ -164,6 +184,9 @@ export async function NoticesList({
         />
       </div>
 
+      {/* FILTER PANEL */}
+      <NoticesFilterPanel institutions={institutions} />
+
       {/* CATEGORY PILLS */}
       {category !== "recruitment" && (
         <div className="mt-5 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 overflow-x-auto scrollbar-hide">
@@ -210,7 +233,7 @@ export async function NoticesList({
           <p className="mt-3 text-zinc-600 dark:text-zinc-300 text-sm leading-relaxed">
             We couldn&apos;t find any announcements matching your current search or category filter. Try using different keywords, checking the spelling, or clearing filters.
           </p>
-          {(search || (category !== "All" && category !== "academic" && category !== "recruitment")) && (
+          {(search || source || institution || date || (category !== "All" && category !== "academic" && category !== "recruitment")) && (
             <Link href={basePath}>
               <Button variant="secondary" size="sm" className="mt-6">
                 Clear Filters
@@ -263,9 +286,20 @@ export async function NoticesList({
                       </div>
                     </div>
 
-                    <div className="mt-6 flex items-center justify-between border-t border-border pt-3.5 text-xs text-zinc-600 dark:text-zinc-300 font-semibold uppercase tracking-wider transition-colors duration-200">
-                      <span>{notice.source}</span>
-                      <span>{formattedDate}</span>
+                    <div className="mt-6 flex items-center justify-between border-t border-border pt-3.5 flex-wrap gap-3">
+                      <span className="text-xs text-muted font-semibold uppercase tracking-wider transition-colors duration-200">
+                        {notice.source}
+                      </span>
+                      
+                      <div className="flex items-center gap-4">
+                        <span className="text-xs text-muted font-semibold tracking-wide transition-colors duration-200">
+                          {formattedDate}
+                        </span>
+                        <span className={`inline-flex items-center gap-1 text-xs font-black ${hoverClasses.text} transition-all duration-300`}>
+                          View Notice
+                          <span className="group-hover:translate-x-1.5 transition-transform duration-300 ease-out font-normal">&rarr;</span>
+                        </span>
+                      </div>
                     </div>
                   </article>
                 </Link>

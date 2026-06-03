@@ -21,6 +21,9 @@ type PageProps = {
     search?: string;
     page?: string;
     sort?: string;
+    source?: string;
+    institution?: string;
+    date?: string;
   }>;
 };
 
@@ -40,6 +43,9 @@ export default async function BrowsePage({ searchParams }: PageProps) {
   const search = params.search || "";
   const page = Number(params.page || "1");
   const sort = params.sort || "newest";
+  const source = params.source || "";
+  const institution = params.institution || "";
+  const date = params.date || "";
 
   const supabase = await createClient();
   const {
@@ -91,6 +97,9 @@ export default async function BrowsePage({ searchParams }: PageProps) {
             page={page}
             sort={sort}
             basePath="/browse"
+            source={source}
+            institution={institution}
+            date={date}
           />
         </Container>
 
