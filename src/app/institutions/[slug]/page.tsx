@@ -12,6 +12,7 @@ import { getCategoryStyles, getCategoryHoverClasses } from "@/components/notices
 import { InstitutionStructuredData } from "@/components/shared/structured-data";
 import { getRelativeTime } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { InstitutionLogo } from "@/components/shared/institution-logo";
 
 
 
@@ -110,38 +111,45 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
 
       <Navbar />
 
-      <main className="min-h-screen bg-background text-foreground transition-colors duration-200 selection:bg-emerald-500/30 selection:text-emerald-500">
+      <main className="min-h-screen bg-background text-foreground transition-colors duration-200 selection:bg-brand/30 selection:text-brand-text">
         <Container className="py-14">
           {/* HERO */}
-          <div className="max-w-4xl">
-            <div className="inline-flex rounded-full border border-border bg-card/50 px-4 py-1.5 text-xs font-semibold text-muted uppercase tracking-wider">
-              Institution Profile
-            </div>
-
-            <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight">
-              {institution.name}
-            </h1>
-
-            <p className="mt-6 text-base sm:text-lg leading-relaxed text-muted">
-              {institution.description || "Official educational board or government department of the State of Assam."}
-            </p>
-
-            <div className="mt-8 flex flex-wrap gap-4 items-center">
-              <div className="rounded-2xl border border-border bg-card/30 backdrop-blur-sm px-5 py-3 text-sm text-muted font-medium flex items-center gap-1.5">
-                <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
-                <span>{institution.location || "Assam, India"}</span>
+          <div className="flex flex-col sm:flex-row sm:items-start gap-6 max-w-4xl">
+            <InstitutionLogo
+              logoUrl={institution.logo_url}
+              name={institution.name}
+              className="h-16 w-16 sm:h-20 sm:w-20 rounded-3xl bg-white/95 p-1 shadow-md border border-border/40 shrink-0"
+            />
+            <div className="min-w-0 flex-1">
+              <div className="inline-flex rounded-full border border-border bg-card/50 px-4 py-1.5 text-xs font-semibold text-muted uppercase tracking-wider">
+                Institution Profile
               </div>
 
-              {institution.website && (
-                <a
-                  href={institution.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-2xl bg-emerald-600 px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/10"
-                >
-                  Visit Official Website
-                </a>
-              )}
+              <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight">
+                {institution.name}
+              </h1>
+
+              <p className="mt-6 text-base sm:text-lg leading-relaxed text-muted">
+                {institution.description || "Official educational board or government department of the State of Assam."}
+              </p>
+
+              <div className="mt-8 flex flex-wrap gap-4 items-center">
+                <div className="rounded-2xl border border-border bg-card/30 backdrop-blur-sm px-5 py-3 text-sm text-muted font-medium flex items-center gap-1.5">
+                  <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  <span>{institution.location || "Assam, India"}</span>
+                </div>
+
+                {institution.website && (
+                  <a
+                    href={institution.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-2xl bg-brand px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:bg-brand/90 hover:shadow-lg hover:shadow-brand/10"
+                  >
+                    Visit Official Website
+                  </a>
+                )}
+              </div>
             </div>
           </div>
 

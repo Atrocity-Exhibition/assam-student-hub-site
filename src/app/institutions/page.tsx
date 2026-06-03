@@ -9,6 +9,7 @@ import { getInstitutions } from "@/services/institutions";
 import { NoticesList } from "@/components/notices/notices-list";
 import { getImportantNotice } from "@/services/notices";
 import { getRelativeTime } from "@/lib/utils";
+import { InstitutionLogo } from "@/components/shared/institution-logo";
 
 export const metadata: Metadata = {
   title: "Universities & Boards in Assam | AssamStudentHub",
@@ -63,7 +64,7 @@ export default async function InstitutionsPage({ searchParams }: PageProps) {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-background text-foreground transition-colors duration-200 selection:bg-emerald-500/30 selection:text-emerald-500">
+      <main className="min-h-screen bg-background text-foreground transition-colors duration-200 selection:bg-brand/30 selection:text-brand-text">
         <Container className="py-14">
           {/* HEADER */}
           <div className="max-w-3xl">
@@ -87,15 +88,22 @@ export default async function InstitutionsPage({ searchParams }: PageProps) {
                 key={institution.id}
                 href={`/institutions/${institution.slug}`}
               >
-                <article className="group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/40 p-7 transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-500/30 dark:hover:border-emerald-500/30 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/10 shadow-sm min-h-[220px]">
+                <article className="group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/40 p-7 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-border dark:hover:border-brand-border/40 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/10 shadow-sm min-h-[220px]">
                   <div>
                     <div className="inline-flex rounded-full border border-border bg-card px-3 py-1 text-xs text-muted font-bold uppercase tracking-wider">
                       Institution
                     </div>
 
-                    <h2 className="mt-5 text-2xl font-black text-foreground transition group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
-                      {institution.name}
-                    </h2>
+                    <div className="mt-5 flex items-start gap-4">
+                      <InstitutionLogo
+                        logoUrl={institution.logo_url}
+                        name={institution.name}
+                        className="h-12 w-12 rounded-xl"
+                      />
+                      <h2 className="text-2xl font-black text-foreground transition group-hover:text-brand-text leading-tight">
+                        {institution.name}
+                      </h2>
+                    </div>
 
                     <p className="mt-4 leading-7 text-muted text-sm line-clamp-3">
                       {institution.description}
@@ -108,7 +116,7 @@ export default async function InstitutionsPage({ searchParams }: PageProps) {
                       <span>{institution.location || "Assam, India"}</span>
                     </span>
 
-                    <span className="group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                    <span className="group-hover:text-brand-text transition-colors">
                       View Updates &rarr;
                     </span>
                   </div>
