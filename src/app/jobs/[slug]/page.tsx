@@ -36,7 +36,7 @@ export async function generateMetadata({
     title: `${notice.title} | AssamStudentHub`,
     description: notice.description || "Latest Assam government and university announcements.",
     alternates: {
-      canonical: `https://assamstudenthub.xyz/jobs/${notice.slug}`,
+      canonical: `https://www.assamstudenthub.xyz/jobs/${notice.slug}`,
     },
     openGraph: {
       title: notice.title,

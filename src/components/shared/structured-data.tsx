@@ -26,7 +26,7 @@ function getCategorySlug(categoryName: string): string {
   }
 }
 
-export function NoticeStructuredData({ notice, baseUrl = "https://assamstudenthub.xyz" }: NoticeSchemaProps) {
+export function NoticeStructuredData({ notice, baseUrl = "https://www.assamstudenthub.xyz" }: NoticeSchemaProps) {
   const noticeUrl = `${baseUrl}/jobs/${notice.slug}`;
   const categoryName = notice.category || "Notice";
   const postedDate = notice.posted_at || notice.created_at;
@@ -126,7 +126,7 @@ type InstitutionSchemaProps = {
   baseUrl?: string;
 };
 
-export function InstitutionStructuredData({ institution, baseUrl = "https://assamstudenthub.xyz" }: InstitutionSchemaProps) {
+export function InstitutionStructuredData({ institution, baseUrl = "https://www.assamstudenthub.xyz" }: InstitutionSchemaProps) {
   const institutionUrl = `${baseUrl}/institutions/${institution.slug}`;
 
   // Organization/EducationalOrganization schema
@@ -185,7 +185,7 @@ export function InstitutionStructuredData({ institution, baseUrl = "https://assa
   );
 }
 
-export function WebSiteStructuredData({ baseUrl = "https://assamstudenthub.xyz" }) {
+export function WebSiteStructuredData({ baseUrl = "https://www.assamstudenthub.xyz" }) {
   const siteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",

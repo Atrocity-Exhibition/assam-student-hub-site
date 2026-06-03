@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description:
     "Browse all government job recruitments, competitive exams, results, scholarships, university admissions, and official notices from Assam in one place.",
   alternates: {
-    canonical: "https://assamstudenthub.xyz/browse",
+    canonical: "https://www.assamstudenthub.xyz/browse",
   },
 };
 
