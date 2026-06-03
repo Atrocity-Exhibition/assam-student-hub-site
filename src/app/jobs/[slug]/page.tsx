@@ -128,9 +128,9 @@ export default async function NoticePage({ params }: PageProps) {
             </span>
           </div>
 
-          <div className="grid gap-10 lg:grid-cols-[1fr_340px] items-start">
+          <div className="grid gap-10 lg:grid-cols-[1fr_340px] items-start w-full min-w-0">
             {/* MAIN CONTENT */}
-            <div>
+            <div className="w-full min-w-0">
               {/* CATEGORY */}
               <div className={`mb-6 inline-flex rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-wider ${getCategoryStyles(notice.category)}`}>
                 {notice.category || "Notice"}
@@ -163,7 +163,7 @@ export default async function NoticePage({ params }: PageProps) {
                   ))}
                 </div>
               )}              {/* Announcement Details */}
-              <div className="rounded-3xl border border-border bg-card/30 backdrop-blur-sm p-6 shadow-lg mb-6">
+              <div className="rounded-2xl sm:rounded-3xl border border-border bg-card/30 backdrop-blur-sm p-4 sm:p-6 shadow-lg mb-6">
                 <h2 className="text-lg font-bold text-foreground border-b border-border pb-2 mb-4">Announcement Details</h2>
                 <p className="whitespace-pre-wrap text-foreground/90 text-sm leading-relaxed mb-4">
                   {notice.description || 'No description available.'}
@@ -179,9 +179,9 @@ export default async function NoticePage({ params }: PageProps) {
                   const hasScholarshipFields = md.award_amount || md.level || md.qualification || md.last_date || md.application_mode;
 
                   const Row = ({ label, value }: { label: string; value: React.ReactNode }) => (
-                    <div className="grid grid-cols-3 gap-2 py-2.5 border-t border-border/40 hover:bg-emerald-500/5 transition-colors duration-200 px-2 rounded-md">
+                    <div className="flex flex-col sm:grid sm:grid-cols-3 gap-1 sm:gap-2 py-2.5 border-t border-border/40 hover:bg-emerald-500/5 transition-colors duration-200 px-2 rounded-md">
                       <div className="font-semibold text-muted uppercase text-[10px] tracking-wider flex items-center">{label}</div>
-                      <div className="col-span-2 text-foreground text-sm font-medium break-all">{value}</div>
+                      <div className="sm:col-span-2 text-foreground text-sm font-medium break-all">{value}</div>
                     </div>
                   );
 
@@ -232,7 +232,7 @@ export default async function NoticePage({ params }: PageProps) {
 
               {/* ATTACHMENT INFO */}
               {notice.attachment_url && (
-                <div className="mt-6 rounded-3xl border border-border bg-card/30 backdrop-blur-sm p-8 shadow-xl">
+                <div className="mt-6 rounded-2xl sm:rounded-3xl border border-border bg-card/30 backdrop-blur-sm p-4 sm:p-6 lg:p-8 shadow-xl">
                   <h2 className="text-xl font-bold text-foreground border-b border-border pb-3">
                     Attached Document
                   </h2>
@@ -255,8 +255,8 @@ export default async function NoticePage({ params }: PageProps) {
             </div>
 
             {/* SIDEBAR */}
-            <aside className="lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto scrollbar-hide space-y-6">
-              <div className="rounded-3xl border border-border bg-card/60 backdrop-blur-sm p-6 shadow-xl space-y-6">
+            <aside className="w-full min-w-0 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto scrollbar-hide space-y-6">
+              <div className="rounded-2xl sm:rounded-3xl border border-border bg-card/60 backdrop-blur-sm p-4 sm:p-6 shadow-xl space-y-6">
                 <div className="flex flex-col gap-3">
                   {notice.attachment_url ? (
                     <a
@@ -354,7 +354,7 @@ export default async function NoticePage({ params }: PageProps) {
 
               {/* RELATED NOTICES */}
               {relatedNotices.length > 0 && (
-                <div className="mt-6 rounded-3xl border border-border bg-card/60 backdrop-blur-sm p-6 shadow-xl">
+                <div className="mt-6 rounded-2xl sm:rounded-3xl border border-border bg-card/60 backdrop-blur-sm p-4 sm:p-6 shadow-xl">
                   <h3 className="text-sm font-bold text-foreground uppercase tracking-wider border-b border-border pb-3 mb-4 flex items-center gap-2">
                     <Link2 className="h-4 w-4 text-emerald-500 shrink-0" />
                     <span>Related Notices</span>

@@ -38,6 +38,14 @@ const nextConfig: NextConfig = {
     ];
   },
   async headers() {
+    const isDev = process.env.NODE_ENV !== "production";
+    const scriptSrc = isDev 
+      ? "'self' 'unsafe-inline' 'unsafe-eval'" 
+      : "'self' 'unsafe-inline'";
+    const connectSrc = isDev 
+      ? "'self' https://*.supabase.co wss://*.supabase.co ws: wss:" 
+      : "'self' https://*.supabase.co wss://*.supabase.co";
+
     return [
       {
         source: "/(.*)",
@@ -64,7 +72,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            value: "default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https:; font-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; object-src 'none'; manifest-src 'self'; media-src 'self';",
+            value: `default-src 'none'; script-src ${scriptSrc}; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https:; font-src 'self' data:; connect-src ${connectSrc}; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; object-src 'none'; manifest-src 'self'; media-src 'self';`,
           },
         ],
       },
