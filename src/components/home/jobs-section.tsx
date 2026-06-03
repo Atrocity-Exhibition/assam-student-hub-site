@@ -3,6 +3,7 @@ import { getNotices } from "@/services/notices";
 import { getCategoryStyles, getCategoryHoverClasses } from "@/components/notices/notices-list";
 import { getRelativeTime, extractSalary } from "@/lib/utils";
 import { Banknote, Users, Calendar, GraduationCap, FileText } from "lucide-react";
+import { InstitutionLogo } from "@/components/shared/institution-logo";
 
 
 
@@ -64,7 +65,12 @@ export async function JobsSection() {
                       Featured Job Update
                     </span>
                     {importantNotice.institutions?.name && (
-                      <span className="text-[10px] text-muted font-semibold uppercase tracking-wider">
+                      <span className="inline-flex items-center gap-1.5 text-[10px] text-muted font-semibold uppercase tracking-wider font-sans">
+                        <InstitutionLogo
+                          logoUrl={importantNotice.institutions.logo_url}
+                          name={importantNotice.institutions.name}
+                          className="h-4.5 w-4.5 rounded-md"
+                        />
                         {importantNotice.institutions.name}
                       </span>
                     )}
@@ -107,7 +113,12 @@ export async function JobsSection() {
                             {featuredNotice.category || "Job"}
                           </span>
                           {featuredNotice.institutions?.name && (
-                            <span className="text-xs text-muted font-semibold uppercase tracking-wider truncate max-w-[200px] sm:max-w-[300px]">
+                            <span className="inline-flex items-center gap-1.5 text-xs text-muted font-semibold uppercase tracking-wider truncate max-w-[200px] sm:max-w-[300px]">
+                              <InstitutionLogo
+                                logoUrl={featuredNotice.institutions.logo_url}
+                                name={featuredNotice.institutions.name}
+                                className="h-5 w-5"
+                              />
                               {featuredNotice.institutions.name}
                             </span>
                           )}
@@ -249,8 +260,19 @@ export async function JobsSection() {
                             })()}
 
                             <div className="mt-2.5 flex items-center justify-between border-t border-border/40 pt-2 gap-2">
-                              <span className="text-[9px] font-bold uppercase tracking-wider text-muted truncate max-w-[160px]">
-                                {notice.institutions?.name || notice.source}
+                              <span className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider text-muted truncate max-w-[160px]">
+                                {notice.institutions?.name ? (
+                                  <>
+                                    <InstitutionLogo
+                                      logoUrl={notice.institutions.logo_url}
+                                      name={notice.institutions.name}
+                                      className="h-4.5 w-4.5 rounded-md"
+                                    />
+                                    {notice.institutions.name}
+                                  </>
+                                ) : (
+                                  notice.source
+                                )}
                               </span>
                               <span className={`inline-flex items-center gap-0.5 text-[10px] font-black ${hoverClasses.text} transition-all duration-300`}>
                                 View Notice

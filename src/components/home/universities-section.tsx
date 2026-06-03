@@ -4,6 +4,7 @@ import { getAcademicNotices } from "@/services/notices";
 import { getCategoryStyles, getCategoryHoverClasses } from "@/components/notices/notices-list";
 import { getRelativeTime } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { InstitutionLogo } from "@/components/shared/institution-logo";
 
 export async function UniversitiesSection() {
   const [allInstitutions, academicNotices] = await Promise.all([
@@ -61,14 +62,17 @@ export async function UniversitiesSection() {
           <Link
             key={uni.slug}
             href={`/institutions/${uni.slug}`}
-            className="group min-w-[280px] rounded-2xl border border-border bg-card/70 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-border hover:bg-brand-bg/30 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 dark:focus-visible:ring-brand/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="group min-w-[320px] rounded-2xl border border-border bg-card/70 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-border hover:bg-brand-bg/30 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 dark:focus-visible:ring-brand/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background flex gap-4 items-start"
           >
-            <h3 className="font-bold text-zinc-900 dark:text-zinc-100 transition group-hover:text-brand-text">
-              {uni.name}
-            </h3>
-            <p className="mt-2 text-xs text-muted leading-relaxed">
-              Official updates, announcements, schedules, results, and student services.
-            </p>
+            <InstitutionLogo logoUrl={uni.logo_url} name={uni.name} className="h-10 w-10 text-sm rounded-xl" />
+            <div className="min-w-0 flex-1">
+              <h3 className="font-bold text-zinc-900 dark:text-zinc-100 transition group-hover:text-brand-text truncate">
+                {uni.name}
+              </h3>
+              <p className="mt-2 text-xs text-muted leading-relaxed line-clamp-2">
+                Official updates, announcements, schedules, results, and student services.
+              </p>
+            </div>
           </Link>
         ))}
       </div>

@@ -8,6 +8,7 @@ import { getInstitutions } from "@/services/institutions";
 import { getRelativeTime, extractSalary } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Banknote, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { InstitutionLogo } from "@/components/shared/institution-logo";
 
 
 
@@ -263,7 +264,12 @@ export async function NoticesList({
                           </div>
                           
                           {notice.institutions?.name && (
-                            <span className="hidden sm:inline text-xs text-zinc-600 dark:text-zinc-300 font-bold uppercase tracking-wider truncate max-w-[200px] transition-colors duration-200">
+                            <span className="hidden sm:inline-flex items-center gap-1.5 text-xs text-zinc-600 dark:text-zinc-300 font-bold uppercase tracking-wider truncate max-w-[200px] transition-colors duration-200">
+                              <InstitutionLogo
+                                logoUrl={notice.institutions.logo_url}
+                                name={notice.institutions.name}
+                                className="h-4.5 w-4.5 rounded-md"
+                              />
                               {notice.institutions.name}
                             </span>
                           )}

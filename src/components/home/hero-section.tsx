@@ -4,6 +4,7 @@ import { TrendingSearches } from "@/components/shared/trending-searches";
 import Link from "next/link";
 import { FileText, Building2, Briefcase, Calendar } from "lucide-react";
 import { getRelativeTime } from "@/lib/utils";
+import { InstitutionLogo } from "@/components/shared/institution-logo";
 
 const quickLinks = [
   { name: "Government Jobs", href: "/categories/recruitment" },
@@ -153,7 +154,7 @@ export async function HeroSection() {
               </Link>
             </div>
             
-            <div className="divide-y divide-border/40">
+            <div className="divide-y divide-border/40 animate-fade-in">
               {recentNotices.length === 0 ? (
                 <div className="py-4 text-center text-xs text-muted">
                   No recent updates.
@@ -170,24 +171,27 @@ export async function HeroSection() {
                     <Link
                       key={notice.id}
                       href={`/jobs/${notice.slug}`}
-                      className="group flex flex-col py-2 hover:bg-zinc-200/20 dark:hover:bg-zinc-900/20 transition-colors rounded px-1.5 -mx-1.5"
+                      className="group flex gap-3 py-2.5 hover:bg-zinc-200/20 dark:hover:bg-zinc-900/20 transition-colors rounded px-2 -mx-2 items-start"
                     >
-                      <div className="flex items-center justify-between gap-2 mb-1">
-                        <span className={`inline-flex rounded-md border px-1.5 py-0.2 text-[8px] font-extrabold uppercase tracking-wider ${categoryStyle}`}>
-                          {notice.category || "Notice"}
-                        </span>
-                        <span className="text-[8px] text-muted font-semibold tracking-wider shrink-0 uppercase">
-                          {relativeTime}
-                        </span>
+                      <InstitutionLogo logoUrl={notice.institutions?.logo_url} name={notice.institutions?.name || notice.source} className="h-7 w-7 text-[10px] rounded-lg mt-0.5" />
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center justify-between gap-2 mb-1">
+                          <span className={`inline-flex rounded-md border px-1.5 py-0.2 text-[8px] font-extrabold uppercase tracking-wider ${categoryStyle}`}>
+                            {notice.category || "Notice"}
+                          </span>
+                          <span className="text-[8px] text-muted font-semibold tracking-wider shrink-0 uppercase">
+                            {relativeTime}
+                          </span>
+                        </div>
+                        <p className="text-[11px] font-bold leading-snug text-zinc-800 dark:text-zinc-200 line-clamp-1 group-hover:text-emerald-500 transition-colors">
+                          {notice.title}
+                        </p>
+                        {notice.institutions?.name && (
+                          <span className="text-[8px] text-muted uppercase tracking-wider font-bold truncate mt-0.5 block">
+                            {notice.institutions.name}
+                          </span>
+                        )}
                       </div>
-                      <p className="text-[11px] font-bold leading-snug text-zinc-800 dark:text-zinc-200 line-clamp-1 group-hover:text-emerald-500 transition-colors">
-                        {notice.title}
-                      </p>
-                      {notice.institutions?.name && (
-                        <span className="text-[8px] text-muted uppercase tracking-wider font-bold truncate mt-0.5">
-                          {notice.institutions.name}
-                        </span>
-                      )}
                     </Link>
                   );
                 })

@@ -13,6 +13,7 @@ import { SaveNoticeButton } from "@/components/notices/save-notice-button";
 import { NoticeStructuredData } from "@/components/shared/structured-data";
 import { supabase } from "@/lib/supabase";
 import { getRelativeTime } from "@/lib/utils";
+import { InstitutionLogo } from "@/components/shared/institution-logo";
 // NoticeDetailBody import removed per user request
 type MetadataProps = {
   params: Promise<{
@@ -131,23 +132,38 @@ export default async function NoticePage({ params }: PageProps) {
           <div className="grid gap-10 lg:grid-cols-[1fr_340px] items-start w-full min-w-0">
             {/* MAIN CONTENT */}
             <div className="w-full min-w-0">
-              {/* CATEGORY */}
-              <div className={`mb-6 inline-flex rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-wider ${getCategoryStyles(notice.category)}`}>
-                {notice.category || "Notice"}
-              </div>
+              <div className="flex flex-col sm:flex-row sm:items-start gap-4 mb-6">
+                {notice.institutions?.name && (
+                  <InstitutionLogo
+                    logoUrl={notice.institutions.logo_url}
+                    name={notice.institutions.name}
+                    className="h-14 w-14 rounded-2xl bg-white/90 p-1 shadow-md border border-border/40 shrink-0"
+                  />
+                )}
+                <div className="min-w-0 flex-1">
+                  {/* CATEGORY */}
+                  <div className={`mb-3 inline-flex rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-wider ${getCategoryStyles(notice.category)}`}>
+                    {notice.category || "Notice"}
+                  </div>
 
-              {/* TITLE */}
-              <h1 className="max-w-4xl text-3xl sm:text-4xl font-black leading-tight tracking-tight text-foreground">
-                {notice.title}
-              </h1>
+                  {/* TITLE */}
+                  <h1 className="max-w-4xl text-3xl sm:text-4xl font-black leading-tight tracking-tight text-foreground">
+                    {notice.title}
+                  </h1>
 
-              {/* META INFO */}
-              <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-muted font-semibold uppercase tracking-wider">
-                <span>{notice.source}</span>
-                <span className="text-border">•</span>
-                <span>
-                  {getRelativeTime(notice.posted_at || notice.created_at)}
-                </span>
+                  {/* META INFO */}
+                  <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-muted font-semibold uppercase tracking-wider">
+                    {notice.institutions?.name && (
+                      <span className="text-foreground font-bold">{notice.institutions.name}</span>
+                    )}
+                    {notice.institutions?.name && <span className="text-border">•</span>}
+                    <span>{notice.source}</span>
+                    <span className="text-border">•</span>
+                    <span>
+                      {getRelativeTime(notice.posted_at || notice.created_at)}
+                    </span>
+                  </div>
+                </div>
               </div>
 
               {/* TAGS */}
@@ -309,15 +325,24 @@ export default async function NoticePage({ params }: PageProps) {
                       <p className="text-xs text-muted font-semibold uppercase tracking-wider">
                         Institution
                       </p>
-                      <p className="mt-2 text-foreground text-sm font-medium">
-                        {notice.institutions.name}
-                      </p>
-                      {notice.institutions.location && (
-                        <p className="mt-1 text-xs text-muted flex items-center gap-1">
-                          <MapPin className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
-                          <span>{notice.institutions.location}</span>
-                        </p>
-                      )}
+                      <div className="mt-2.5 flex items-center gap-3">
+                        <InstitutionLogo
+                          logoUrl={notice.institutions.logo_url}
+                          name={notice.institutions.name}
+                          className="h-8 w-8 rounded-lg"
+                        />
+                        <div className="min-w-0">
+                          <p className="text-foreground text-sm font-bold leading-tight">
+                            {notice.institutions.name}
+                          </p>
+                          {notice.institutions.location && (
+                            <p className="mt-1 text-xs text-muted flex items-center gap-1">
+                              <MapPin className="h-3 w-3 shrink-0 text-muted-foreground" />
+                              <span className="truncate">{notice.institutions.location}</span>
+                            </p>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   )}
 
