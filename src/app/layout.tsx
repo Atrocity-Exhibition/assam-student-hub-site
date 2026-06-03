@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ScrollToTop } from "@/components/shared/scroll-to-top";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -37,6 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} dark`} style={{ colorScheme: "dark" }} suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://qktomyipkzgdlexhkuqr.supabase.co" crossOrigin="anonymous" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -59,6 +61,7 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased bg-background text-foreground transition-colors duration-200">
+        <ScrollToTop />
         {children}
       </body>
     </html>

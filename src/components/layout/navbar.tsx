@@ -57,6 +57,10 @@ export async function Navbar() {
             <img
               src="/logo.png"
               alt="Assam StudentHub Logo"
+              width="36"
+              height="36"
+              fetchPriority="high"
+              loading="eager"
               className="h-9 w-9 object-contain rounded-full shadow-md shadow-emerald-500/10 bg-white group-hover:scale-105 transition-transform duration-300"
             />
             <div className="leading-none">

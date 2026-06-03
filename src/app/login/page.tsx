@@ -55,6 +55,10 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             <img
               src="/logo.png"
               alt="Assam StudentHub Logo"
+              width="56"
+              height="56"
+              fetchPriority="high"
+              loading="eager"
               className="h-14 w-14 object-contain rounded-full shadow-md shadow-emerald-500/10 bg-white group-hover:scale-105 transition-transform duration-300"
             />
             <div className="leading-none mt-2">

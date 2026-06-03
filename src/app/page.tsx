@@ -7,6 +7,8 @@ import { HeroSection } from "@/components/home/hero-section";
 import { JobsSection } from "@/components/home/jobs-section";
 import { UniversitiesSection } from "@/components/home/universities-section";
 
+export const revalidate = 60; // Revalidate home page every 60 seconds
+
 export const metadata: Metadata = {
   title: "AssamStudentHub | Student Portal for Assam",
   description:

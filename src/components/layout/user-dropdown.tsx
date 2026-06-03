@@ -59,6 +59,10 @@ export function UserDropdown({ user }: UserDropdownProps) {
           <img
             src={avatarUrl}
             alt="Profile picture"
+            width="32"
+            height="32"
+            fetchPriority="low"
+            loading="eager"
             className="h-8 w-8 rounded-full border border-border bg-white object-cover shadow-sm"
             referrerPolicy="no-referrer"
           />
@@ -85,6 +89,9 @@ export function UserDropdown({ user }: UserDropdownProps) {
                 <img
                   src={avatarUrl}
                   alt="Profile picture"
+                  width="40"
+                  height="40"
+                  loading="lazy"
                   className="h-10 w-10 rounded-full border border-border bg-white object-cover"
                   referrerPolicy="no-referrer"
                 />
