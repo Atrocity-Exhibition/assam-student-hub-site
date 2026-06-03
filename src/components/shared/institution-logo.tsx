@@ -12,7 +12,7 @@ export function InstitutionLogo({ logoUrl, name, className = "h-8 w-8" }: Props)
       <img
         src={logoUrl}
         alt={`${name} Logo`}
-        className={cn("object-contain rounded-lg bg-white/80 dark:bg-white/95 p-0.5 shadow-sm border border-border/30 shrink-0", className)}
+        className={cn("object-contain rounded-full bg-white dark:bg-white p-0.5 shadow-sm border border-border/30 shrink-0", className)}
         loading="lazy"
       />
     );
@@ -36,7 +36,7 @@ export function InstitutionLogo({ logoUrl, name, className = "h-8 w-8" }: Props)
   return (
     <div
       className={cn(
-        "flex items-center justify-center rounded-xl bg-gradient-to-br font-extrabold select-none shrink-0 shadow-sm border border-white/10",
+        "flex items-center justify-center rounded-full bg-gradient-to-br font-extrabold select-none shrink-0 shadow-sm border border-white/10",
         gradient,
         className
       )}
@@ -45,3 +45,4 @@ export function InstitutionLogo({ logoUrl, name, className = "h-8 w-8" }: Props)
     </div>
   );
 }
+

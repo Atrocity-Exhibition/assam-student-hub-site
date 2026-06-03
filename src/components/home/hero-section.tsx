@@ -173,7 +173,7 @@ export async function HeroSection() {
                       href={`/jobs/${notice.slug}`}
                       className="group flex gap-3 py-2.5 hover:bg-zinc-200/20 dark:hover:bg-zinc-900/20 transition-colors rounded px-2 -mx-2 items-start"
                     >
-                      <InstitutionLogo logoUrl={notice.institutions?.logo_url} name={notice.institutions?.name || notice.source} className="h-7 w-7 text-[10px] rounded-lg mt-0.5" />
+                      <InstitutionLogo logoUrl={notice.institutions?.logo_url} name={notice.institutions?.name || notice.source} className="h-7 w-7 text-[10px] mt-0.5" />
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center justify-between gap-2 mb-1">
                           <span className={`inline-flex rounded-md border px-1.5 py-0.2 text-[8px] font-extrabold uppercase tracking-wider ${categoryStyle}`}>

@@ -64,7 +64,7 @@ export async function UniversitiesSection() {
             href={`/institutions/${uni.slug}`}
             className="group min-w-[320px] rounded-2xl border border-border bg-card/70 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-border hover:bg-brand-bg/30 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 dark:focus-visible:ring-brand/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background flex gap-4 items-start"
           >
-            <InstitutionLogo logoUrl={uni.logo_url} name={uni.name} className="h-10 w-10 text-sm rounded-xl" />
+            <InstitutionLogo logoUrl={uni.logo_url} name={uni.name} className="h-10 w-10 text-sm" />
             <div className="min-w-0 flex-1">
               <h3 className="font-bold text-zinc-900 dark:text-zinc-100 transition group-hover:text-brand-text truncate">
                 {uni.name}

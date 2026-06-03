@@ -98,7 +98,7 @@ export default async function InstitutionsPage({ searchParams }: PageProps) {
                       <InstitutionLogo
                         logoUrl={institution.logo_url}
                         name={institution.name}
-                        className="h-12 w-12 rounded-xl"
+                        className="h-12 w-12"
                       />
                       <h2 className="text-2xl font-black text-foreground transition group-hover:text-brand-text leading-tight">
                         {institution.name}

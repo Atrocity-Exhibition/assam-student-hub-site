@@ -118,7 +118,7 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
             <InstitutionLogo
               logoUrl={institution.logo_url}
               name={institution.name}
-              className="h-16 w-16 sm:h-20 sm:w-20 rounded-3xl bg-white/95 p-1 shadow-md border border-border/40 shrink-0"
+              className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-white dark:bg-white p-1 shadow-md border border-border/40 shrink-0"
             />
             <div className="min-w-0 flex-1">
               <div className="inline-flex rounded-full border border-border bg-card/50 px-4 py-1.5 text-xs font-semibold text-muted uppercase tracking-wider">

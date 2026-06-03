@@ -69,7 +69,7 @@ export async function JobsSection() {
                         <InstitutionLogo
                           logoUrl={importantNotice.institutions.logo_url}
                           name={importantNotice.institutions.name}
-                          className="h-4.5 w-4.5 rounded-md"
+                          className="h-4.5 w-4.5"
                         />
                         {importantNotice.institutions.name}
                       </span>
@@ -266,7 +266,7 @@ export async function JobsSection() {
                                     <InstitutionLogo
                                       logoUrl={notice.institutions.logo_url}
                                       name={notice.institutions.name}
-                                      className="h-4.5 w-4.5 rounded-md"
+                                      className="h-4.5 w-4.5"
                                     />
                                     {notice.institutions.name}
                                   </>
