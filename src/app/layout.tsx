@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { ScrollToTop } from "@/components/shared/scroll-to-top";
 
@@ -61,6 +62,14 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased bg-background text-foreground transition-colors duration-200">
+        {process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
+          <Script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
+        )}
         <ScrollToTop />
         {children}
       </body>

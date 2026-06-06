@@ -6,6 +6,7 @@ import { Footer } from "@/components/home/footer";
 import { HeroSection } from "@/components/home/hero-section";
 import { JobsSection } from "@/components/home/jobs-section";
 import { UniversitiesSection } from "@/components/home/universities-section";
+import { AdCard } from "@/components/shared/ad-card";
 
 export const revalidate = 60; // Revalidate home page every 60 seconds
 
@@ -27,6 +28,7 @@ export default function HomePage() {
         <Container>
           <HeroSection />
           <JobsSection />
+          <AdCard variant="horizontal" index={1} />
           <UniversitiesSection />
         </Container>
 

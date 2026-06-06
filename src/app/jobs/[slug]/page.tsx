@@ -14,7 +14,7 @@ import { NoticeStructuredData } from "@/components/shared/structured-data";
 import { supabase } from "@/lib/supabase";
 import { getRelativeTime } from "@/lib/utils";
 import { InstitutionLogo } from "@/components/shared/institution-logo";
-// NoticeDetailBody import removed per user request
+import { AdCard } from "@/components/shared/ad-card";
 type MetadataProps = {
   params: Promise<{
     slug: string;
@@ -376,6 +376,9 @@ export default async function NoticePage({ params }: PageProps) {
                   )}
                 </div>
               </div>
+
+              {/* SPONSOR AD */}
+              <AdCard variant="sidebar" index={notice.id} />
 
               {/* RELATED NOTICES */}
               {relatedNotices.length > 0 && (

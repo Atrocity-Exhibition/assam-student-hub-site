@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 import type { Notice } from "@/types/notice";
 import { getNotices } from "@/services/notices";
@@ -9,6 +10,7 @@ import { getRelativeTime, extractSalary } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Banknote, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { InstitutionLogo } from "@/components/shared/institution-logo";
+import { AdCard } from "@/components/shared/ad-card";
 
 
 
@@ -248,12 +250,12 @@ export async function NoticesList({
       {notices.length > 0 && (
         <>
           <div className="mt-8 grid gap-6 md:grid-cols-2">
-            {notices.map((notice: Notice) => {
+            {notices.map((notice: Notice, idx: number) => {
               const hoverClasses = getCategoryHoverClasses(notice.category);
               const formattedDate = getRelativeTime(notice.posted_at || notice.created_at);
               const salary = extractSalary(notice.title, notice.description, notice.metadata);
 
-              return (
+              const noticeCard = (
                 <Link key={notice.id} href={`/jobs/${notice.slug}`}>
                   <article className={`group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/50 p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-card/75 shadow-sm min-h-[190px] sm:min-h-[210px] ${hoverClasses.border}`}>
                     <div className="flex gap-4">
@@ -310,6 +312,17 @@ export async function NoticesList({
                   </article>
                 </Link>
               );
+
+              if (page === 1 && idx === 5) {
+                return (
+                  <React.Fragment key={`notice-and-ad-${notice.id}`}>
+                    <AdCard variant="grid" index={notice.id} />
+                    {noticeCard}
+                  </React.Fragment>
+                );
+              }
+
+              return noticeCard;
             })}
           </div>
 
