@@ -70,6 +70,7 @@ function formatTimeAgo(dateString: string | null): string {
   const now = new Date();
   const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
+  if (seconds < 0) return "In the future";
   if (seconds < 60) return "Just now";
 
   const minutes = Math.floor(seconds / 60);

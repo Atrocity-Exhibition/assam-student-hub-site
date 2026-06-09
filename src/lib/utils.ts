@@ -11,6 +11,17 @@ export function getRelativeTime(dateInput: string | Date | null): string {
   const now = new Date();
   
   const diffMs = now.getTime() - date.getTime();
+  
+  // If the date is in the future (more than 5 minutes), format as absolute date.
+  // This guards against clock drift while preventing future-dated items from showing as "Just now".
+  if (diffMs < -300000) {
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  }
+
   const diffMins = Math.floor(diffMs / 60000);
   const diffHours = Math.floor(diffMs / 3600000);
   
