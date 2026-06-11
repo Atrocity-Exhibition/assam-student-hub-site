@@ -82,7 +82,7 @@ export default async function SavedNoticesPage() {
                     href={`/jobs/${notice.slug}`}
                     className="block"
                   >
-                    <article className={`group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/40 backdrop-blur-sm p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-muted/5 shadow-sm ${hoverClasses.border}`}>
+                    <article className={`group h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-border bg-card/40 backdrop-blur-sm p-4 sm:p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-muted/5 shadow-sm min-h-[190px] sm:min-h-[210px] ${hoverClasses.border}`}>
                       <div className="flex gap-4">
                         <div className="flex-1 min-w-0">
                           <div className="mb-3.5 flex items-center justify-between gap-4">
