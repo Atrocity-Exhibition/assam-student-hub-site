@@ -129,7 +129,7 @@ export function AdCard({ variant = "sidebar", index = 0 }: AdCardProps) {
 
     if (variant === "grid") {
       return (
-        <div className="group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/30 p-6 shadow-sm min-h-[190px] sm:min-h-[210px] relative overflow-hidden transition-all duration-300 hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-card/50">
+        <div className="group h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-border bg-card/30 p-4 sm:p-6 shadow-sm min-h-[190px] sm:min-h-[210px] relative overflow-hidden transition-all duration-300 hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-card/50">
           <div className="absolute top-2.5 right-3 text-[9px] font-bold text-muted-foreground/60 tracking-widest uppercase z-20">
             Advertisement
           </div>
@@ -142,7 +142,7 @@ export function AdCard({ variant = "sidebar", index = 0 }: AdCardProps) {
 
     if (variant === "horizontal") {
       return (
-        <div className="w-full relative overflow-hidden rounded-3xl border border-border bg-card/40 backdrop-blur-sm p-6 md:p-8 mt-10">
+        <div className="w-full relative overflow-hidden rounded-2xl sm:rounded-3xl border border-border bg-card/40 backdrop-blur-sm p-4 sm:p-6 md:p-8 mt-10">
           <div className="absolute top-2.5 right-4 text-[9px] font-bold text-muted-foreground/60 tracking-widest uppercase z-20">
             Advertisement
           </div>
@@ -164,7 +164,7 @@ export function AdCard({ variant = "sidebar", index = 0 }: AdCardProps) {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="w-full relative overflow-hidden rounded-3xl border border-border bg-card/40 backdrop-blur-sm p-6 md:p-8 mt-10 transition-colors duration-300 hover:border-zinc-400 dark:hover:border-zinc-700"
+        className="w-full relative overflow-hidden rounded-2xl sm:rounded-3xl border border-border bg-card/40 backdrop-blur-sm p-4 sm:p-6 md:p-8 mt-10 transition-colors duration-300 hover:border-zinc-400 dark:hover:border-zinc-700"
       >
         {/* Background Gradient Circle */}
         <div className={`absolute -right-10 -bottom-10 h-40 w-40 rounded-full bg-gradient-to-br ${ad.gradient} blur-3xl opacity-60`} />
@@ -214,7 +214,7 @@ export function AdCard({ variant = "sidebar", index = 0 }: AdCardProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
           whileHover={{ y: -2 }}
-          className="group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/30 p-6 shadow-sm min-h-[190px] sm:min-h-[210px] relative overflow-hidden transition-all duration-300 hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-card/50"
+          className="group h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-border bg-card/30 p-4 sm:p-6 shadow-sm min-h-[190px] sm:min-h-[210px] relative overflow-hidden transition-all duration-300 hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-card/50"
         >
           {/* Subtle Accent Glow */}
           <div className={`absolute -right-8 -bottom-8 h-24 w-24 rounded-full bg-gradient-to-br ${ad.gradient} blur-2xl opacity-50`} />

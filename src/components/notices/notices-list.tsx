@@ -230,7 +230,7 @@ export async function NoticesList({
 
       {/* EMPTY STATE */}
       {notices.length === 0 && (
-        <div className="mt-12 rounded-3xl border border-border bg-card/50 backdrop-blur-sm p-12 text-center shadow-sm max-w-2xl mx-auto">
+        <div className="mt-12 rounded-2xl sm:rounded-3xl border border-border bg-card/50 backdrop-blur-sm p-6 sm:p-12 text-center shadow-sm max-w-2xl mx-auto">
           <Search className="h-10 w-10 text-muted mx-auto mb-4" />
           <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-200 transition-colors duration-200">No notices found</h2>
           <p className="mt-3 text-zinc-600 dark:text-zinc-300 text-sm leading-relaxed">
@@ -257,7 +257,7 @@ export async function NoticesList({
 
               const noticeCard = (
                 <Link key={notice.id} href={`/jobs/${notice.slug}`}>
-                  <article className={`group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/50 p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-card/75 shadow-sm min-h-[190px] sm:min-h-[210px] ${hoverClasses.border}`}>
+                  <article className={`group h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-border bg-card/50 p-4 sm:p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-card/75 shadow-sm min-h-[190px] sm:min-h-[210px] ${hoverClasses.border}`}>
                     <div className="flex gap-4">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-4 mb-3.5">

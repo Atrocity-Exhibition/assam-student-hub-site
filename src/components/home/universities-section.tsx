@@ -154,7 +154,7 @@ export async function UniversitiesSection() {
 
         {/* ACADEMIC NOTICES GRID */}
         {gridAcademicNotices.length === 0 ? (
-          <div className="mt-6 md:mt-8 w-full rounded-3xl border border-border bg-card/50 backdrop-blur-sm p-10 text-center">
+          <div className="mt-6 md:mt-8 w-full rounded-2xl sm:rounded-3xl border border-border bg-card/50 backdrop-blur-sm p-6 sm:p-10 text-center">
             <p className="text-muted text-sm">No academic announcements indexed yet.</p>
           </div>
         ) : (

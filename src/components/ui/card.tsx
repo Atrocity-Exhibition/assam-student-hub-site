@@ -10,7 +10,7 @@ export function Card({
 }: Props) {
   return (
     <div
-      className={`rounded-3xl border border-border bg-card/50 backdrop-blur-sm ${className}`}
+      className={`rounded-2xl sm:rounded-3xl border border-border bg-card/50 backdrop-blur-sm ${className}`}
     >
       {children}
     </div>

@@ -154,7 +154,7 @@ export async function JobsList({
 
       {/* EMPTY */}
       {jobs.length === 0 && (
-        <div className="mt-16 rounded-3xl border border-border bg-card/50 backdrop-blur-sm p-10 text-center">
+        <div className="mt-16 rounded-2xl sm:rounded-3xl border border-border bg-card/50 backdrop-blur-sm p-6 sm:p-10 text-center">
           <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-200">
             No jobs found
           </h2>
@@ -174,7 +174,7 @@ export async function JobsList({
                 key={job.id}
                 href={`/jobs/${job.slug}`}
               >
-                <article className="group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/50 p-7 transition duration-300 hover:-translate-y-1 hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-card/75 hover:shadow-[0_0_30px_rgba(0,0,0,0.02)] dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.01)] min-h-[220px] sm:min-h-[240px]">
+                <article className="group h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-border bg-card/50 p-4 sm:p-6 lg:p-7 transition duration-300 hover:-translate-y-1 hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-card/75 hover:shadow-[0_0_30px_rgba(0,0,0,0.02)] dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.01)] min-h-[220px] sm:min-h-[240px]">
                   <div>
                     <div className="mb-4 inline-flex rounded-full border border-border bg-card/40 px-3 py-1 text-xs text-foreground font-semibold">
                       {job.category ||

@@ -83,7 +83,7 @@ export function NoticesFilterPanel({ institutions }: Props) {
 
       {/* Expandable Filter Grid */}
       {isOpen && (
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4 rounded-3xl border border-border bg-card/30 p-5 backdrop-blur-sm shadow-sm transition-all duration-300">
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4 rounded-2xl sm:rounded-3xl border border-border bg-card/30 p-4 sm:p-5 backdrop-blur-sm shadow-sm transition-all duration-300">
           {/* 1. Source Filter */}
           <div className="flex flex-col gap-1.5">
             <label className="text-[10px] font-extrabold uppercase tracking-wider text-muted flex items-center gap-1.5">
