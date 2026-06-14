@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description:
     "Discover Assam government updates, university notices, scholarships, and student announcements in one place.",
   alternates: {
-    canonical: "https://www.assamstudenthub.xyz",
+    canonical: "https://assamstudenthub.xyz",
   },
 };
 

@@ -78,7 +78,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: `${title} | AssamStudentHub`,
     description: `Stay updated with the latest verified ${categoryName.toLowerCase()} notifications, announcements, results, timetables, and official notices from universities and boards in Assam.`,
     alternates: {
-      canonical: `https://www.assamstudenthub.xyz/categories/${slug.toLowerCase()}`,
+      canonical: `https://assamstudenthub.xyz/categories/${slug.toLowerCase()}`,
     },
   };
 }

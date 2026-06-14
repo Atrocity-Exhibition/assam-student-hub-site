@@ -5,7 +5,7 @@ import { getInstitutions } from "@/services/institutions";
 // Cache sitemap DB queries for 1 hour (3600 seconds)
 export const revalidate = 3600;
 
-const BASE_URL = "https://www.assamstudenthub.xyz";
+const BASE_URL = "https://assamstudenthub.xyz";
 const NOTICES_PER_SITEMAP = 1000;
 
 const CATEGORY_SLUGS = [

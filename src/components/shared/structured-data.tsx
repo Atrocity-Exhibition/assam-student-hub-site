@@ -293,7 +293,7 @@ function parseLastDate(lastDateStr: string | null | undefined): string | null {
   return null;
 }
 
-export function NoticeStructuredData({ notice, baseUrl = "https://www.assamstudenthub.xyz" }: NoticeSchemaProps) {
+export function NoticeStructuredData({ notice, baseUrl = "https://assamstudenthub.xyz" }: NoticeSchemaProps) {
   const noticeUrl = `${baseUrl}/jobs/${notice.slug}`;
   const categoryName = notice.category || "Notice";
   const postedDate = notice.posted_at || notice.created_at;
@@ -443,7 +443,7 @@ type InstitutionSchemaProps = {
   baseUrl?: string;
 };
 
-export function InstitutionStructuredData({ institution, baseUrl = "https://www.assamstudenthub.xyz" }: InstitutionSchemaProps) {
+export function InstitutionStructuredData({ institution, baseUrl = "https://assamstudenthub.xyz" }: InstitutionSchemaProps) {
   const institutionUrl = `${baseUrl}/institutions/${institution.slug}`;
   const addr = getAddressDetails(institution.slug, institution.location);
 
@@ -505,7 +505,7 @@ export function InstitutionStructuredData({ institution, baseUrl = "https://www.
   );
 }
 
-export function WebSiteStructuredData({ baseUrl = "https://www.assamstudenthub.xyz" }) {
+export function WebSiteStructuredData({ baseUrl = "https://assamstudenthub.xyz" }) {
   const siteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
