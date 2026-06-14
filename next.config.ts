@@ -48,7 +48,7 @@ const nextConfig: NextConfig = {
 
     return [
       {
-        source: "/(.*)",
+        source: "/((?!sitemap\\.xml$|robots\\.txt$|ads\\.txt$|favicon\\.ico$).*)",
         headers: [
           {
             key: "X-DNS-Prefetch-Control",
