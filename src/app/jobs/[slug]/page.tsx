@@ -181,9 +181,9 @@ export default async function NoticePage({ params }: PageProps) {
               )}              {/* Announcement Details */}
               <div className="rounded-2xl sm:rounded-3xl border border-border bg-card/30 backdrop-blur-sm p-4 sm:p-6 shadow-lg mb-6">
                 <h2 className="text-lg font-bold text-foreground border-b border-border pb-2 mb-4">Announcement Details</h2>
-                <p className="whitespace-pre-wrap text-foreground/90 text-sm leading-relaxed mb-4">
-                  {notice.description || 'No description available.'}
-                </p>
+                <div className="space-y-1">
+                  {notice.description ? parseDescriptionMarkdown(notice.description) : 'No description available.'}
+                </div>
 
                 {/* Inline Category-Specific Details */}
                 {(() => {
@@ -436,4 +436,90 @@ export default async function NoticePage({ params }: PageProps) {
       </main>
     </>
   );
+}
+
+function parseDescriptionMarkdown(text: string) {
+  if (!text) return null;
+
+  const lines = text.split("\n");
+  
+  return lines.map((line, index) => {
+    const trimmed = line.trim();
+
+    // Headers: ### Header
+    if (trimmed.startsWith("### ")) {
+      const headerText = trimmed.replace("### ", "");
+      return (
+        <h3 key={index} className="text-base font-bold text-emerald-400 mt-6 mb-3 first:mt-0 uppercase tracking-wider">
+          {parseInlineFormatting(headerText)}
+        </h3>
+      );
+    }
+    
+    // Headers: ## Header
+    if (trimmed.startsWith("## ")) {
+      const headerText = trimmed.replace("## ", "");
+      return (
+        <h2 key={index} className="text-lg font-extrabold text-foreground mt-8 mb-4 first:mt-0">
+          {parseInlineFormatting(headerText)}
+        </h2>
+      );
+    }
+
+    // Bullet list: - Item or * Item
+    if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
+      const itemText = trimmed.substring(2);
+      return (
+        <li key={index} className="list-disc list-inside ml-4 text-foreground/90 text-sm leading-relaxed my-1">
+          {parseInlineFormatting(itemText)}
+        </li>
+      );
+    }
+
+    // Numbered list: 1. Item or 2. Item
+    const numListMatch = trimmed.match(/^(\d+)\.\s+(.*)/);
+    if (numListMatch) {
+      const itemText = numListMatch[2];
+      return (
+        <li key={index} className="list-decimal list-inside ml-4 text-foreground/90 text-sm leading-relaxed my-1">
+          {parseInlineFormatting(itemText)}
+        </li>
+      );
+    }
+
+    // Empty lines
+    if (trimmed === "") {
+      return <div key={index} className="h-2" />;
+    }
+
+    // Standard paragraph
+    return (
+      <p key={index} className="text-foreground/90 text-sm leading-relaxed mb-3">
+        {parseInlineFormatting(line)}
+      </p>
+    );
+  });
+}
+
+function parseInlineFormatting(text: string): React.ReactNode[] | string {
+  if (!text.includes("**") && !text.includes("http://") && !text.includes("https://")) {
+    return text;
+  }
+
+  const regex = /(\*\*.*?\*\*|https?:\/\/[^\s\)\(]+)/g;
+  const tokens = text.split(regex);
+
+  return tokens.map((token, i) => {
+    if (token.startsWith("**") && token.endsWith("**")) {
+      return <strong key={i} className="font-semibold text-foreground">{token.slice(2, -2)}</strong>;
+    }
+    if (token.startsWith("http://") || token.startsWith("https://")) {
+      return (
+        <a key={i} href={token} target="_blank" rel="noopener noreferrer" className="text-emerald-500 hover:text-emerald-400 hover:underline break-all font-medium transition-colors">
+          {token}
+        </a>
+      );
+    }
+    return token;
+  });
 }
