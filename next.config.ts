@@ -43,8 +43,8 @@ const nextConfig: NextConfig = {
       ? "'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://adservice.google.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://*.google-analytics.com" 
       : "'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://adservice.google.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://*.google-analytics.com";
     const connectSrc = isDev 
-      ? "'self' https://*.supabase.co wss://*.supabase.co ws: wss: https://pagead2.googlesyndication.com https://*.google.com https://*.doubleclick.net https://*.googlesyndication.com" 
-      : "'self' https://*.supabase.co wss://*.supabase.co https://pagead2.googlesyndication.com https://*.google.com https://*.doubleclick.net https://*.googlesyndication.com";
+      ? "'self' https://*.supabase.co wss://*.supabase.co ws: wss: https://pagead2.googlesyndication.com https://*.google.com https://*.doubleclick.net https://*.googlesyndication.com https://*.adtrafficquality.google" 
+      : "'self' https://*.supabase.co wss://*.supabase.co https://pagead2.googlesyndication.com https://*.google.com https://*.doubleclick.net https://*.googlesyndication.com https://*.adtrafficquality.google";
 
     return [
       {

@@ -30,14 +30,18 @@ function AdSenseAd({ clientId, slot, format = "auto", responsive = "true", style
     if (!mounted) return;
     if (!clientId) return;
     if (initiated.current) return;
-    initiated.current = true;
 
-    try {
-      // @ts-ignore
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (err) {
-      console.error("AdSense trigger error:", err);
-    }
+    const timer = setTimeout(() => {
+      try {
+        // @ts-ignore
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+        initiated.current = true;
+      } catch (err) {
+        console.error("AdSense trigger error:", err);
+      }
+    }, 150);
+
+    return () => clearTimeout(timer);
   }, [mounted, clientId]);
 
   if (!mounted) {
