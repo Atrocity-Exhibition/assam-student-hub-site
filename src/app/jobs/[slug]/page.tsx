@@ -279,9 +279,24 @@ export default async function NoticePage({ params }: PageProps) {
                       href={notice.attachment_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full block rounded-2xl bg-emerald-600 px-6 py-3.5 text-center text-sm font-semibold text-white transition-all duration-300 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/10"
+                      className={`w-full block rounded-2xl px-6 py-3.5 text-center text-sm font-semibold transition-all duration-300 ${
+                        (notice.metadata && (notice.metadata as any).apply_url)
+                          ? "border border-border bg-background text-foreground hover:bg-muted/10"
+                          : "bg-emerald-600 text-white hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/10"
+                      }`}
                     >
                       Download PDF
+                    </a>
+                  ) : null}
+
+                  {notice.metadata && (notice.metadata as any).apply_url ? (
+                    <a
+                      href={(notice.metadata as any).apply_url as string}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full block rounded-2xl bg-emerald-600 px-6 py-3.5 text-center text-sm font-semibold text-white transition-all duration-300 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/10"
+                    >
+                      Apply Online
                     </a>
                   ) : null}
 
@@ -290,7 +305,7 @@ export default async function NoticePage({ params }: PageProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`w-full block rounded-2xl px-6 py-3.5 text-center text-sm font-semibold transition-all duration-300 ${
-                      notice.attachment_url
+                      notice.attachment_url || (notice.metadata && (notice.metadata as any).apply_url)
                         ? "border border-border bg-background text-foreground hover:bg-muted/10"
                         : "bg-emerald-600 text-white hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/10"
                     }`}
