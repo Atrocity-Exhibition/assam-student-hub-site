@@ -20,6 +20,7 @@ type AdSenseAdProps = {
 
 function AdSenseAd({ clientId, slot, format = "auto", responsive = "true", style }: AdSenseAdProps) {
   const initiated = useRef(false);
+  const insRef = useRef<HTMLModElement>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -31,17 +32,40 @@ function AdSenseAd({ clientId, slot, format = "auto", responsive = "true", style
     if (!clientId) return;
     if (initiated.current) return;
 
-    const timer = setTimeout(() => {
-      try {
-        // @ts-ignore
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-        initiated.current = true;
-      } catch (err) {
-        console.error("AdSense trigger error:", err);
-      }
-    }, 150);
+    let attempts = 0;
+    const maxAttempts = 50; // Max 5 seconds
+    let intervalId: NodeJS.Timeout;
 
-    return () => clearTimeout(timer);
+    const checkAndPush = () => {
+      attempts++;
+      const width = insRef.current?.clientWidth || 0;
+      if (width > 0) {
+        try {
+          // @ts-ignore
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+          initiated.current = true;
+          if (intervalId) clearInterval(intervalId);
+        } catch (err) {
+          console.error("AdSense trigger error:", err);
+          if (intervalId) clearInterval(intervalId);
+        }
+      } else if (attempts >= maxAttempts) {
+        if (intervalId) clearInterval(intervalId);
+      }
+    };
+
+    // Run first check immediately in next macro-tick (after DOM commit)
+    const timer = setTimeout(() => {
+      checkAndPush();
+      if (!initiated.current) {
+        intervalId = setInterval(checkAndPush, 100);
+      }
+    }, 50);
+
+    return () => {
+      clearTimeout(timer);
+      if (intervalId) clearInterval(intervalId);
+    };
   }, [mounted, clientId]);
 
   if (!mounted) {
@@ -56,6 +80,7 @@ function AdSenseAd({ clientId, slot, format = "auto", responsive = "true", style
   return (
     <div className="adsense-container w-full overflow-hidden flex justify-center py-2 z-10">
       <ins
+        ref={insRef}
         className="adsbygoogle"
         style={style || { display: "block" }}
         data-ad-client={clientId}
