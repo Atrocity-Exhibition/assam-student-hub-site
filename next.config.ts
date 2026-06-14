@@ -40,11 +40,11 @@ const nextConfig: NextConfig = {
   async headers() {
     const isDev = process.env.NODE_ENV !== "production";
     const scriptSrc = isDev 
-      ? "'self' 'unsafe-inline' 'unsafe-eval'" 
-      : "'self' 'unsafe-inline'";
+      ? "'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://adservice.google.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://*.google-analytics.com" 
+      : "'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://adservice.google.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://*.google-analytics.com";
     const connectSrc = isDev 
-      ? "'self' https://*.supabase.co wss://*.supabase.co ws: wss:" 
-      : "'self' https://*.supabase.co wss://*.supabase.co";
+      ? "'self' https://*.supabase.co wss://*.supabase.co ws: wss: https://pagead2.googlesyndication.com https://*.google.com https://*.doubleclick.net https://*.googlesyndication.com" 
+      : "'self' https://*.supabase.co wss://*.supabase.co https://pagead2.googlesyndication.com https://*.google.com https://*.doubleclick.net https://*.googlesyndication.com";
 
     return [
       {
@@ -72,7 +72,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            value: `default-src 'none'; script-src ${scriptSrc}; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https:; font-src 'self' data:; connect-src ${connectSrc}; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; object-src 'none'; manifest-src 'self'; media-src 'self';`,
+            value: `default-src 'none'; script-src ${scriptSrc}; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https:; font-src 'self' data:; connect-src ${connectSrc}; frame-src 'self' https://googleads.g.doubleclick.net https://*.doubleclick.net https://*.google.com https://*.googlesyndication.com; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; object-src 'none'; manifest-src 'self'; media-src 'self';`,
           },
         ],
       },
