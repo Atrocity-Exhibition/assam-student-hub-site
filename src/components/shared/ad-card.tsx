@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { GraduationCap, FileSpreadsheet, BookOpen, Code, ExternalLink } from "lucide-react";
 
@@ -20,8 +20,14 @@ type AdSenseAdProps = {
 
 function AdSenseAd({ clientId, slot, format = "auto", responsive = "true", style }: AdSenseAdProps) {
   const initiated = useRef(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     if (!clientId) return;
     if (initiated.current) return;
     initiated.current = true;
@@ -32,7 +38,16 @@ function AdSenseAd({ clientId, slot, format = "auto", responsive = "true", style
     } catch (err) {
       console.error("AdSense trigger error:", err);
     }
-  }, [clientId]);
+  }, [mounted, clientId]);
+
+  if (!mounted) {
+    const minHeight = style?.minHeight || "250px";
+    return (
+      <div className="w-full flex justify-center py-2 z-10 animate-pulse">
+        <div style={{ display: "block", minHeight }} className="w-full bg-card/20 rounded-2xl border border-border/40" />
+      </div>
+    );
+  }
 
   return (
     <div className="adsense-container w-full overflow-hidden flex justify-center py-2 z-10">
