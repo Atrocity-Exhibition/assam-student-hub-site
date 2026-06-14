@@ -44,6 +44,8 @@ export function HeroSearch() {
           <input
             ref={inputRef}
             type="text"
+            id="hero-search-input"
+            name="search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search jobs, scholarships, universities, recruitment..."

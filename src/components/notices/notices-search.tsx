@@ -112,6 +112,8 @@ export function NoticesSearch({ initialSearch = "", currentCategory = "All", bas
           <input
             ref={inputRef}
             type="text"
+            id="notices-search-input"
+            name="search"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder={placeholder}
