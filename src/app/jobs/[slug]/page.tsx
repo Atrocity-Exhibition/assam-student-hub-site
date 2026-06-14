@@ -442,63 +442,98 @@ function parseDescriptionMarkdown(text: string) {
   if (!text) return null;
 
   const lines = text.split("\n");
-  
-  return lines.map((line, index) => {
+  const blocks: React.ReactNode[] = [];
+  let currentList: { type: "ul" | "ol"; items: string[] } | null = null;
+  let blockKey = 0;
+
+  const flushList = () => {
+    if (currentList) {
+      const Tag = currentList.type === "ul" ? "ul" : "ol";
+      const listClass = currentList.type === "ul" ? "list-disc list-inside ml-4 my-2" : "list-decimal list-inside ml-4 my-2";
+      blocks.push(
+        <Tag key={`list-${blockKey++}`} className={listClass}>
+          {currentList.items.map((item, idx) => (
+            <li key={idx} className="text-foreground/90 text-sm leading-relaxed my-1 pl-1">
+              {parseInlineFormatting(item)}
+            </li>
+          ))}
+        </Tag>
+      );
+      currentList = null;
+    }
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
     const trimmed = line.trim();
 
     // Headers: ### Header
     if (trimmed.startsWith("### ")) {
+      flushList();
       const headerText = trimmed.replace("### ", "");
-      return (
-        <h3 key={index} className="text-base font-bold text-emerald-400 mt-6 mb-3 first:mt-0 uppercase tracking-wider">
+      blocks.push(
+        <h3 key={`h3-${blockKey++}`} className="text-base font-bold text-emerald-400 mt-6 mb-3 first:mt-0 uppercase tracking-wider">
           {parseInlineFormatting(headerText)}
         </h3>
       );
+      continue;
     }
     
     // Headers: ## Header
     if (trimmed.startsWith("## ")) {
+      flushList();
       const headerText = trimmed.replace("## ", "");
-      return (
-        <h2 key={index} className="text-lg font-extrabold text-foreground mt-8 mb-4 first:mt-0">
+      blocks.push(
+        <h2 key={`h2-${blockKey++}`} className="text-lg font-extrabold text-foreground mt-8 mb-4 first:mt-0">
           {parseInlineFormatting(headerText)}
         </h2>
       );
+      continue;
     }
 
     // Bullet list: - Item or * Item
     if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
       const itemText = trimmed.substring(2);
-      return (
-        <li key={index} className="list-disc list-inside ml-4 text-foreground/90 text-sm leading-relaxed my-1">
-          {parseInlineFormatting(itemText)}
-        </li>
-      );
+      if (currentList && currentList.type === "ul") {
+        currentList.items.push(itemText);
+      } else {
+        flushList();
+        currentList = { type: "ul", items: [itemText] };
+      }
+      continue;
     }
 
     // Numbered list: 1. Item or 2. Item
     const numListMatch = trimmed.match(/^(\d+)\.\s+(.*)/);
     if (numListMatch) {
       const itemText = numListMatch[2];
-      return (
-        <li key={index} className="list-decimal list-inside ml-4 text-foreground/90 text-sm leading-relaxed my-1">
-          {parseInlineFormatting(itemText)}
-        </li>
-      );
+      if (currentList && currentList.type === "ol") {
+        currentList.items.push(itemText);
+      } else {
+        flushList();
+        currentList = { type: "ol", items: [itemText] };
+      }
+      continue;
     }
 
     // Empty lines
     if (trimmed === "") {
-      return <div key={index} className="h-2" />;
+      flushList();
+      blocks.push(<div key={`space-${blockKey++}`} className="h-2" />);
+      continue;
     }
 
     // Standard paragraph
-    return (
-      <p key={index} className="text-foreground/90 text-sm leading-relaxed mb-3">
+    flushList();
+    blocks.push(
+      <p key={`p-${blockKey++}`} className="text-foreground/90 text-sm leading-relaxed mb-3">
         {parseInlineFormatting(line)}
       </p>
     );
-  });
+  }
+
+  flushList(); // Flush any remaining list at the end
+  return blocks;
 }
 
 function parseInlineFormatting(text: string): React.ReactNode[] | string {
