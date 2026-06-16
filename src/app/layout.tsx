@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ScrollToTop } from "@/components/shared/scroll-to-top";
+import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -40,14 +41,7 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://qktomyipkzgdlexhkuqr.supabase.co" crossOrigin="anonymous" />
         {process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
-          <>
-            <meta name="google-adsense-account" content={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID} />
-            <script
-              async
-              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
-              crossOrigin="anonymous"
-            />
-          </>
+          <meta name="google-adsense-account" content={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID} />
         )}
         <script
           dangerouslySetInnerHTML={{
@@ -72,6 +66,13 @@ export default function RootLayout({
       </head>
       <body className="antialiased bg-background text-foreground transition-colors duration-200">
         <ScrollToTop />
+        {process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
+          <Script
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
+        )}
         {children}
       </body>
     </html>

@@ -6,14 +6,6 @@ import { FileText, Building2, Briefcase, Calendar } from "lucide-react";
 import { getRelativeTime } from "@/lib/utils";
 import { InstitutionLogo } from "@/components/shared/institution-logo";
 
-const quickLinks = [
-  { name: "Government Jobs", href: "/categories/recruitment" },
-  { name: "Scholarships", href: "/categories/scholarships" },
-  { name: "Admissions", href: "/categories/admissions" },
-  { name: "Exam Routines", href: "/categories/exams" },
-  { name: "Results", href: "/categories/results" },
-  { name: "Universities", href: "/institutions" },
-];
 
 export async function HeroSection() {
   const stats = await getPlatformStats();
@@ -83,22 +75,6 @@ export async function HeroSection() {
           {/* TRENDING / FALLBACK SEARCHES */}
           <div className="max-w-3xl">
             <TrendingSearches />
-          </div>
-
-          {/* QUICK LINKS */}
-          <div className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-2.5">
-            <span className="text-[10px] font-bold text-muted uppercase tracking-widest mr-1">
-              Browse By:
-            </span>
-            {quickLinks.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="rounded-full border border-border bg-card/40 px-4 py-1.5 text-xs font-medium text-muted backdrop-blur-sm transition-all duration-200 hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-card hover:text-foreground"
-              >
-                {item.name}
-              </Link>
-            ))}
           </div>
         </div>
 

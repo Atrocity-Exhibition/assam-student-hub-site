@@ -20,9 +20,9 @@ export async function TrendingSearches() {
   ];
 
   return (
-    <div className="mt-8">
-      <p className="text-[10px] font-bold text-muted uppercase tracking-widest mb-3">
-        Trending Searches:
+    <div className="mt-4">
+      <p className="text-[9px] font-bold text-muted/70 uppercase tracking-widest mb-2.5">
+        Trending:
       </p>
       <div className="flex flex-wrap gap-2">
         {displayTrends.map((query) => (
