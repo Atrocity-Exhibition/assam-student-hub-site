@@ -41,7 +41,14 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://qktomyipkzgdlexhkuqr.supabase.co" crossOrigin="anonymous" />
         {process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
-          <meta name="google-adsense-account" content={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID} />
+          <>
+            <meta name="google-adsense-account" content={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID} />
+            <script
+              async
+              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
+              crossOrigin="anonymous"
+            />
+          </>
         )}
         <script
           dangerouslySetInnerHTML={{
@@ -66,13 +73,6 @@ export default function RootLayout({
       </head>
       <body className="antialiased bg-background text-foreground transition-colors duration-200">
         <ScrollToTop />
-        {process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
-          <Script
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
-            crossOrigin="anonymous"
-            strategy="afterInteractive"
-          />
-        )}
         {children}
       </body>
     </html>
