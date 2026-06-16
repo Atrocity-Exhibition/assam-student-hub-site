@@ -257,7 +257,7 @@ export async function NoticesList({
 
               const noticeCard = (
                 <Link key={notice.id} href={`/jobs/${notice.slug}`}>
-                  <article className={`group h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-border bg-card/50 p-4 sm:p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-card/75 shadow-sm min-h-[190px] sm:min-h-[210px] ${hoverClasses.border}`}>
+                  <article className={`group h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-border bg-card/50 p-4 sm:p-6 overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:bg-card/75 shadow-sm min-h-[190px] sm:min-h-[210px] ${hoverClasses.border}`}>
                     <div className="flex gap-4">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-4 mb-3.5">

@@ -174,7 +174,7 @@ export async function JobsList({
                 key={job.id}
                 href={`/jobs/${job.slug}`}
               >
-                <article className="group h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-border bg-card/50 p-4 sm:p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-card/75 shadow-sm min-h-[190px] sm:min-h-[210px] hover:border-emerald-500/30 dark:hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.04)] dark:hover:shadow-[0_0_30px_rgba(16,185,129,0.08)]">
+                <article className="group h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-border bg-card/50 p-4 sm:p-6 overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:bg-card/75 shadow-sm min-h-[190px] sm:min-h-[210px] hover:border-emerald-500/30 dark:hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.04)] dark:hover:shadow-[0_0_30px_rgba(16,185,129,0.08)]">
                   <div>
                     <div className="mb-3.5 inline-flex rounded-full border px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider border-emerald-550/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                       {job.category || "Job"}

@@ -105,7 +105,7 @@ export async function JobsSection() {
 
               return (
                 <Link href={`/jobs/${featuredNotice.slug}`} className="block h-full">
-                  <article className={`group h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-border bg-card/70 p-4 sm:p-6 lg:p-8 transition-all duration-300 dark:hover:bg-zinc-900/10 hover:bg-zinc-50/50 shadow-sm ${hoverClasses.border} min-h-fit sm:min-h-[340px]`}>
+                  <article className={`group h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-border bg-card/70 p-4 sm:p-6 lg:p-8 overflow-hidden transition-all duration-300 dark:hover:bg-zinc-900/10 hover:bg-zinc-50/50 shadow-sm ${hoverClasses.border} min-h-fit sm:min-h-[340px]`}>
                     <div className="flex gap-4">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-4 mb-4">

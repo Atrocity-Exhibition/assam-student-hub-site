@@ -88,7 +88,7 @@ export default async function InstitutionsPage({ searchParams }: PageProps) {
                 key={institution.id}
                 href={`/institutions/${institution.slug}`}
               >
-                <article className="group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/40 p-7 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-border dark:hover:border-brand-border/40 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/10 shadow-sm min-h-[220px]">
+                <article className="group h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-border bg-card/40 p-5 sm:p-7 overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-border dark:hover:border-brand-border/40 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/10 shadow-sm min-h-[220px]">
                   <div>
                     <div className="inline-flex rounded-full border border-border bg-card px-3 py-1 text-xs text-muted font-bold uppercase tracking-wider">
                       Institution

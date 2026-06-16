@@ -187,7 +187,7 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
                     
                     return (
                       <Link key={notice.id} href={`/jobs/${notice.slug}`}>
-                        <article className={`group h-full flex flex-col justify-between rounded-3xl border border-border bg-card/40 backdrop-blur-sm p-6 transition-all duration-300 hover:-translate-y-0.5 hover:bg-muted/5 shadow-sm ${hoverClasses.border}`}>
+                        <article className={`group h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-border bg-card/40 backdrop-blur-sm p-4 sm:p-6 overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:bg-muted/5 shadow-sm ${hoverClasses.border}`}>
                           <div className="flex gap-4">
                             <div className="flex-1 min-w-0">
                               <div className="mb-3.5 flex items-center justify-between gap-4">
