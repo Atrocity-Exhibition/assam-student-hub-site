@@ -31,10 +31,32 @@ export default function ChangelogPage() {
           {/* Timeline */}
           <div className="relative border-l border-border ml-3 space-y-12">
             
-            {/* Version 1.2.0 */}
+            {/* Version 1.3.0 */}
             <div className="relative pl-8">
               {/* Circle indicator */}
               <div className="absolute -left-[6px] top-1.5 h-3 w-3 rounded-full border-2 border-brand bg-background" />
+              
+              <div className="space-y-3">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="font-mono text-sm font-bold text-foreground">v1.3.0</span>
+                  <span className="inline-flex items-center gap-1 text-xs text-muted">
+                    <Calendar className="h-3 w-3" />
+                    June 2026
+                  </span>
+                </div>
+                <h3 className="text-lg font-bold text-foreground">SEO Redirection & Mobile Layout Polishing</h3>
+                <ul className="list-disc pl-5 text-sm text-muted space-y-2 leading-relaxed">
+                  <li>Enforced permanent (308) redirection from the <code>www</code> subdomain to the canonical root domain, resolving sitemap indexing and search engine crawler validation errors in Google Search Console.</li>
+                  <li>Refactored exams, institutions, and categories card components to prevent notice metadata and &quot;View Notice&quot; triggers from overflowing or being cut off on mobile breakpoints.</li>
+                  <li>Cleaned up spacing and layout for home page quick-links/pills, resolving clutter on smaller viewports.</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Version 1.2.0 */}
+            <div className="relative pl-8">
+              {/* Circle indicator */}
+              <div className="absolute -left-[6px] top-1.5 h-3 w-3 rounded-full border-2 border-border bg-background" />
               
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-3">

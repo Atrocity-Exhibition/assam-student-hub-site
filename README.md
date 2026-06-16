@@ -17,6 +17,7 @@ It also features a securely protected Admin Dashboard for orchestrating the Pyth
 - **Glassmorphism UI:** Premium, animated user interfaces with fully responsive mobile and desktop layouts.
 - **Admin Dashboard:** A protected route (`/admin`) guarded by email whitelisting, allowing administrators to manually trigger GitHub Actions workflows via Webhooks.
 - **Monitoring Portal:** A live `/monitoring` page connected to the Supabase telemetry tables showing the exact health and execution time of all 32 scraper pipelines.
+- **SEO & Canonical Controls:** Configured with permanent 308 redirection to map all `www` requests to the canonical root domain (`https://assamstudenthub.xyz`), consolidating index rankings and resolving Search Console sitemap issues.
 
 ## Environment Variables
 
