@@ -207,13 +207,13 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                   const hoverClasses = getCategoryHoverClasses(notice.category);
                   
                   return (
-                    <Link key={notice.id} href={`/jobs/${notice.slug}`}>
+                    <Link key={notice.id} href={`/jobs/${notice.slug}`} className="min-w-0">
                       <article className={`group h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-border bg-card/50 p-4 sm:p-6 overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:bg-card/75 shadow-sm min-h-[190px] sm:min-h-[210px] ${hoverClasses.border}`}>
-                        <div className="flex gap-4">
+                        <div className="flex gap-4 min-w-0">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between gap-4 mb-3.5">
                               <div
-                                className={`inline-flex rounded-full border px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider ${getCategoryStyles(
+                                className={`inline-flex rounded-full border px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider shrink-0 ${getCategoryStyles(
                                   notice.category
                                 )}`}
                               >
@@ -248,9 +248,19 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                           </div>
                         </div>
 
-                        <div className="mt-6 flex items-center justify-between border-t border-border/60 pt-3.5 text-xs text-muted font-semibold uppercase tracking-wider">
-                          <span>{notice.source}</span>
-                          <span>{getRelativeTime(notice.posted_at || notice.created_at)}</span>
+                        <div className="mt-6 flex items-center justify-between border-t border-border/60 pt-3.5 flex-wrap gap-3">
+                          <span className="text-xs text-muted font-semibold uppercase tracking-wider truncate">
+                            {notice.source}
+                          </span>
+                          <div className="flex items-center gap-4 shrink-0">
+                            <span className="text-xs text-muted font-semibold tracking-wide">
+                              {getRelativeTime(notice.posted_at || notice.created_at)}
+                            </span>
+                            <span className={`inline-flex items-center gap-1 text-xs font-black ${hoverClasses.text} transition-all duration-300`}>
+                              View Notice
+                              <span className="group-hover:translate-x-1.5 transition-transform duration-300 ease-out font-normal">&rarr;</span>
+                            </span>
+                          </div>
                         </div>
                       </article>
                     </Link>

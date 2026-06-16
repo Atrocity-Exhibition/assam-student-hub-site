@@ -21,6 +21,12 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.assamstudenthub.xyz" }],
+        destination: "https://assamstudenthub.xyz/:path*",
+        permanent: true,
+      },
+      {
         source: "/notices",
         destination: "/jobs",
         permanent: true,
