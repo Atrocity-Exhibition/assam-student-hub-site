@@ -37,7 +37,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} dark`} style={{ colorScheme: "dark" }} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} light`} style={{ colorScheme: "light" }} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://qktomyipkzgdlexhkuqr.supabase.co" crossOrigin="anonymous" />
         {process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
@@ -56,14 +56,14 @@ export default function RootLayout({
               (function() {
                 try {
                   var theme = localStorage.getItem('theme');
-                  if (theme === 'light') {
-                    document.documentElement.classList.remove('dark');
-                    document.documentElement.classList.add('light');
-                    document.documentElement.style.colorScheme = 'light';
-                  } else {
-                    document.documentElement.classList.add('dark');
+                  if (theme === 'dark') {
                     document.documentElement.classList.remove('light');
+                    document.documentElement.classList.add('dark');
                     document.documentElement.style.colorScheme = 'dark';
+                  } else {
+                    document.documentElement.classList.add('light');
+                    document.documentElement.classList.remove('dark');
+                    document.documentElement.style.colorScheme = 'light';
                   }
                 } catch (e) {}
               })()
