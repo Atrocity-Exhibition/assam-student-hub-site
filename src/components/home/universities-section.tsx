@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getInstitutions } from "@/services/institutions";
 import { getAcademicNotices } from "@/services/notices";
 import { getCategoryStyles, getCategoryHoverClasses } from "@/components/notices/notices-list";
-import { getRelativeTime } from "@/lib/utils";
+import { getRelativeTime, cleanDescription } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { InstitutionLogo } from "@/components/shared/institution-logo";
 
@@ -187,7 +187,7 @@ export async function UniversitiesSection() {
                       </h3>
                       
                       <p className="mt-2 text-xs text-muted line-clamp-2">
-                        {notice.description || "Click to view full details and official document."}
+                        {cleanDescription(notice.description) || "Click to view full details and official document."}
                       </p>
                     </div>
 

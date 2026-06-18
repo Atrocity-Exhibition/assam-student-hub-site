@@ -6,7 +6,7 @@ import { getJobs } from "@/services/jobs";
 import { JobsSearch } from "./jobs-search";
 import { JobsSort } from "./jobs-sort";
 import { Button } from "@/components/ui/button";
-import { extractSalary } from "@/lib/utils";
+import { extractSalary, cleanDescription } from "@/lib/utils";
 import { Banknote, ChevronLeft, ChevronRight } from "lucide-react";
 
 const categories = [
@@ -185,7 +185,7 @@ export async function JobsList({
                     </h2>
 
                     <p className="mt-2.5 line-clamp-2 text-xs sm:text-sm leading-relaxed text-zinc-600 dark:text-zinc-300 transition-colors duration-200">
-                      {job.description || "No description available."}
+                      {cleanDescription(job.description) || "No description available."}
                     </p>
 
                     {(() => {

@@ -109,3 +109,27 @@ export function extractSalary(
 
   return null;
 }
+
+export function cleanDescription(desc?: string | null): string {
+  if (!desc) return "";
+  
+  // 1. Remove Markdown headers (e.g. ### Overview)
+  let cleaned = desc.replace(/^#+\s+/gm, "");
+  
+  // 2. Remove Bold / Italic / Strikethrough markers (e.g. **text**, *text*, ~~text~~)
+  cleaned = cleaned.replace(/\*\*([^*]+)\*\*/g, "$1");
+  cleaned = cleaned.replace(/\*([^*]+)\*/g, "$1");
+  cleaned = cleaned.replace(/~~([^~]+)~~/g, "$1");
+  
+  // 3. Remove list indicators (e.g. - item, * item, or 1. item) at start of lines
+  cleaned = cleaned.replace(/^[\s\t]*[-*+]\s+/gm, "");
+  cleaned = cleaned.replace(/^[\s\t]*\d+\.\s+/gm, "");
+  
+  // 4. Remove Markdown links [text](url) -> keep text only
+  cleaned = cleaned.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
+  
+  // 5. Replace double newlines / multiple spaces with a single space to make a clean snippet
+  cleaned = cleaned.replace(/\s+/g, " ").trim();
+  
+  return cleaned;
+}

@@ -6,7 +6,7 @@ import { NoticesSearch } from "./notices-search";
 import { NoticesSort } from "./notices-sort";
 import { NoticesFilterPanel } from "./notices-filter-panel";
 import { getInstitutions } from "@/services/institutions";
-import { getRelativeTime, extractSalary } from "@/lib/utils";
+import { getRelativeTime, extractSalary, cleanDescription } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Banknote, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { InstitutionLogo } from "@/components/shared/institution-logo";
@@ -282,7 +282,7 @@ export async function NoticesList({
                         </h2>
 
                         <p className="mt-2.5 line-clamp-2 text-xs sm:text-sm leading-relaxed text-zinc-600 dark:text-zinc-300 transition-colors duration-200">
-                          {notice.description || "No description provided. Click to view the full announcement details and official attachments."}
+                          {cleanDescription(notice.description) || "No description provided. Click to view the full announcement details and official attachments."}
                         </p>
 
                         {salary && (

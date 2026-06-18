@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getNotices } from "@/services/notices";
 import { getCategoryStyles, getCategoryHoverClasses } from "@/components/notices/notices-list";
-import { getRelativeTime, extractSalary } from "@/lib/utils";
+import { getRelativeTime, extractSalary, cleanDescription } from "@/lib/utils";
 import { Banknote, Users, Calendar, GraduationCap, FileText } from "lucide-react";
 import { InstitutionLogo } from "@/components/shared/institution-logo";
 
@@ -129,7 +129,7 @@ export async function JobsSection() {
                         </h3>
 
                         <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400 line-clamp-3 transition-colors duration-200">
-                          {featuredNotice.description || "No description available. Click to view the official recruitment details."}
+                          {cleanDescription(featuredNotice.description) || "No description available. Click to view the official recruitment details."}
                         </p>
 
                         {/* Rich Badges Grid */}
