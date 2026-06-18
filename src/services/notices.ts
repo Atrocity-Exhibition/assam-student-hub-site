@@ -267,14 +267,18 @@ export async function getNotices(options?: GetNoticesOptions) {
 
   switch (options?.sort) {
     case "oldest":
-      query = query.order("posted_at", { ascending: true, nullsFirst: false });
+      query = query
+        .order("posted_at", { ascending: true, nullsFirst: false })
+        .order("created_at", { ascending: true });
       break;
     case "alphabetical":
       query = query.order("title", { ascending: true });
       break;
     case "latest":
     default:
-      query = query.order("posted_at", { ascending: false, nullsFirst: false });
+      query = query
+        .order("posted_at", { ascending: false, nullsFirst: false })
+        .order("created_at", { ascending: false });
   }
 
   const { data, error, count } = await query;
@@ -327,7 +331,8 @@ export async function getNoticesByInstitution(
     .select("*")
     .eq("institution_id", institutionId)
     .eq("is_active", true)
-    .order("posted_at", { ascending: false, nullsFirst: false });
+    .order("posted_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false });
 
   if (limit) {
     query = query.limit(limit);

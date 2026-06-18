@@ -10,7 +10,7 @@ import { getInstitutionBySlug, getInstitutions } from "@/services/institutions";
 import { getNotices } from "@/services/notices";
 import { getCategoryStyles, getCategoryHoverClasses } from "@/components/notices/notices-list";
 import { InstitutionStructuredData } from "@/components/shared/structured-data";
-import { getRelativeTime } from "@/lib/utils";
+import { getRelativeTime, cleanDescription } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { InstitutionLogo } from "@/components/shared/institution-logo";
 
@@ -203,7 +203,7 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
                               </h3>
 
                               <p className="mt-2.5 line-clamp-2 text-xs sm:text-sm leading-relaxed text-muted transition-colors duration-200">
-                                {notice.description || "No description provided. Click to view the full announcement details and official attachments."}
+                                {cleanDescription(notice.description) || "No description provided. Click to view the full announcement details and official attachments."}
                               </p>
                             </div>
                           </div>
