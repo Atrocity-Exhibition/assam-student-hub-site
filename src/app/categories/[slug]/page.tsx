@@ -11,7 +11,7 @@ import { NoticesSearch } from "@/components/notices/notices-search";
 import { NoticesSort } from "@/components/notices/notices-sort";
 import { Button } from "@/components/ui/button";
 import type { Notice } from "@/types/notice";
-import { getRelativeTime, extractSalary } from "@/lib/utils";
+import { getRelativeTime, extractSalary, cleanDescription } from "@/lib/utils";
 import { Banknote, ChevronLeft, ChevronRight } from "lucide-react";
 
 
@@ -232,7 +232,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                             </h2>
 
                             <p className="mt-2.5 line-clamp-2 text-xs sm:text-sm leading-relaxed text-muted transition-colors duration-200">
-                              {notice.description ||
+                              {cleanDescription(notice.description) ||
                                 "No description provided. Click to view the full announcement details and official attachments."}
                             </p>
 

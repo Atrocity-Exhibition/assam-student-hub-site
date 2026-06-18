@@ -8,7 +8,7 @@ import { Footer } from "@/components/home/footer";
 import { getSavedNotices } from "@/services/saved-notices";
 import { createClient } from "@/lib/supabase/server";
 import { getCategoryStyles, getCategoryHoverClasses } from "@/components/notices/notices-list";
-import { getRelativeTime } from "@/lib/utils";
+import { getRelativeTime, cleanDescription } from "@/lib/utils";
 
 
 
@@ -102,7 +102,7 @@ export default async function SavedNoticesPage() {
                           </h2>
 
                           <p className="mt-2.5 line-clamp-2 text-xs sm:text-sm leading-relaxed text-muted transition-colors duration-200">
-                            {notice.description || "No description provided. Click to view the full announcement details and official attachments."}
+                            {cleanDescription(notice.description) || "No description provided. Click to view the full announcement details and official attachments."}
                           </p>
                         </div>
                       </div>
