@@ -278,7 +278,8 @@ export async function getNotices(options?: GetNoticesOptions) {
     default:
       query = query
         .order("posted_at", { ascending: false, nullsFirst: false })
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false })
+        .order("id", { ascending: false });
   }
 
   const { data, error, count } = await query;
@@ -332,7 +333,8 @@ export async function getNoticesByInstitution(
     .eq("institution_id", institutionId)
     .eq("is_active", true)
     .order("posted_at", { ascending: false, nullsFirst: false })
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .order("id", { ascending: false });
 
   if (limit) {
     query = query.limit(limit);
@@ -451,6 +453,8 @@ export async function getAcademicNotices(limit: number = 5): Promise<Notice[]> {
     .neq("category", "recruitment")
     .or(`institution_slug.not.in.("${NON_ACADEMIC_SLUGS.join('","')}"),institution_slug.is.null`)
     .order("posted_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false })
+    .order("id", { ascending: false })
     .limit(limit);
 
   if (error) {
@@ -468,6 +472,8 @@ export async function getRecentNotices(limit: number = 5): Promise<Notice[]> {
     .eq("is_active", true)
     .is("merged_into_notice_id", null)
     .order("posted_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false })
+    .order("id", { ascending: false })
     .limit(limit);
 
   if (error) {

@@ -22,6 +22,7 @@ type Props = {
   }>;
   searchParams: Promise<{
     page?: string;
+    category?: string;
   }>;
 };
 
@@ -61,15 +62,37 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
     notFound();
   }
 
-  // Parse page number
-  const currentPage = Number((await searchParams).page) || 1;
+  // Parse page number and category
+  const sParams = await searchParams;
+  const currentPage = Number(sParams.page) || 1;
+  const currentCategory = sParams.category && sParams.category !== "All" ? sParams.category : "All";
 
   // Fetch notices linked to this institution with pagination
   const { notices, totalPages } = await getNotices({
     institutionId: institution.id,
     page: currentPage,
     sort: "latest",
+    category: currentCategory === "All" ? undefined : currentCategory,
   });
+
+  const getParamsString = (pageNum: number) => {
+    const params = new URLSearchParams();
+    if (currentCategory && currentCategory !== "All") {
+      params.set("category", currentCategory);
+    }
+    params.set("page", String(pageNum));
+    return params.toString();
+  };
+
+  const filterCategories = [
+    { label: "All Updates", value: "All" },
+    { label: "Recruitments", value: "Recruitment" },
+    { label: "Results", value: "Result" },
+    { label: "Exams", value: "Exam" },
+    { label: "Admissions", value: "Admission" },
+    { label: "Scholarships", value: "Scholarship" },
+    { label: "General Notices", value: "Notice" },
+  ];
 
   const getPageNumbers = (currentPage: number, total: number) => {
     if (total <= 7) {
@@ -164,11 +187,40 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
               Real-time feed of parsed announcements retrieved from {institution.name}.
             </p>
 
+            {/* CATEGORY PILLS */}
+            <div className="mt-6 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 overflow-x-auto scrollbar-hide">
+              <div className="flex gap-2.5 pb-2 w-max min-w-full">
+                {filterCategories.map((item) => {
+                  const isActive = item.value === currentCategory;
+                  const params = new URLSearchParams();
+                  if (item.value !== "All") {
+                    params.set("category", item.value);
+                  }
+                  
+                  return (
+                    <Link
+                      key={item.value}
+                      href={`/institutions/${slug}?${params.toString()}`}
+                      className={`shrink-0 rounded-full border px-4 py-1.5 text-xs font-bold transition-all duration-300 ${
+                        isActive
+                          ? "border-brand bg-brand text-primary-foreground shadow shadow-brand/10"
+                          : "border-border bg-card/40 text-foreground hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-card"
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+
             {notices.length === 0 ? (
               <div className="mt-8 rounded-3xl border border-border bg-card/30 backdrop-blur-sm p-10 text-center shadow-md">
                 <h3 className="text-xl font-bold text-foreground">No active updates found</h3>
                 <p className="mt-3 text-muted text-sm max-w-xl mx-auto leading-relaxed">
-                  We currently haven&apos;t scraped any active alerts, results, or exam routines for this institution. Check back soon as our automated pipeline indexes portals daily.
+                  {currentCategory !== "All"
+                    ? `We haven't indexed any active ${currentCategory.toLowerCase()} updates for this institution yet. Try checking other categories or general updates.`
+                    : "We currently haven't scraped any active alerts, results, or exam routines for this institution. Check back soon as our automated pipeline indexes portals daily."}
                 </p>
                 <div className="mt-8 flex justify-center gap-2 flex-wrap">
                   {["Admissions", "Exam Routines", "Results", "Recruitment", "Scholarships"].map((cat) => (
@@ -234,7 +286,7 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
                     {/* Previous button */}
                     {currentPage > 1 ? (
                       <Link
-                        href={`/institutions/${slug}?page=${currentPage - 1}`}
+                        href={`/institutions/${slug}?${getParamsString(currentPage - 1)}`}
                         className="transition-transform active:scale-95 duration-100"
                       >
                         <Button
@@ -274,7 +326,7 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
                       return (
                         <Link
                           key={pageNumber}
-                          href={`/institutions/${slug}?page=${pageNumber}`}
+                          href={`/institutions/${slug}?${getParamsString(Number(pageNumber))}`}
                           className="relative inline-flex items-center justify-center transition-transform active:scale-95 duration-100 after:absolute after:-inset-2.5 after:content-['']"
                         >
                           <Button
@@ -290,7 +342,7 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
                     {/* Next button */}
                     {currentPage < totalPages ? (
                       <Link
-                        href={`/institutions/${slug}?page=${currentPage + 1}`}
+                        href={`/institutions/${slug}?${getParamsString(currentPage + 1)}`}
                         className="transition-transform active:scale-95 duration-100"
                       >
                         <Button
