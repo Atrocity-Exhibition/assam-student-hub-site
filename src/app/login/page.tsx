@@ -94,12 +94,13 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         {/* FORM CONTAINER */}
         <form className="mt-6 space-y-4">
           <div className="space-y-1.5">
-            <label className="text-[10px] font-bold text-muted tracking-widest uppercase px-1">Email Address</label>
+            <label htmlFor="email-input" className="text-[10px] font-bold text-muted tracking-widest uppercase px-1">Email Address</label>
             <div className="relative">
               <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-muted pointer-events-none">
                 <Mail className="h-4 w-4" />
               </span>
               <input
+                id="email-input"
                 type="email"
                 name="email"
                 required
@@ -110,12 +111,13 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-[10px] font-bold text-muted tracking-widest uppercase px-1">Password</label>
+            <label htmlFor="password-input" className="text-[10px] font-bold text-muted tracking-widest uppercase px-1">Password</label>
             <div className="relative">
               <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-muted pointer-events-none">
                 <Lock className="h-4 w-4" />
               </span>
               <input
+                id="password-input"
                 type="password"
                 name="password"
                 required

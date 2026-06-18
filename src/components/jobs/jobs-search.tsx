@@ -46,9 +46,12 @@ export function JobsSearch({ initialSearch = "" }: Props) {
       <div className="flex flex-col sm:flex-row gap-3 w-full">
         <div className="relative flex-1 flex items-center gap-3 rounded-2xl sm:rounded-3xl border border-border bg-card/50 p-1.5 focus-within:border-brand-border focus-within:ring-2 focus-within:ring-brand/15 dark:focus-within:ring-brand/20 transition-all duration-300">
           <Search className="ml-3 h-5 w-5 text-muted shrink-0" />
+          <label htmlFor="jobs-search-input" className="sr-only">Search jobs...</label>
           <input
             ref={inputRef}
             type="text"
+            id="jobs-search-input"
+            name="search"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search jobs..."

@@ -109,6 +109,7 @@ export function NoticesSearch({ initialSearch = "", currentCategory = "All", bas
             </span>
           )}
 
+          <label htmlFor="notices-search-input" className="sr-only">Search notices...</label>
           <input
             ref={inputRef}
             type="text"

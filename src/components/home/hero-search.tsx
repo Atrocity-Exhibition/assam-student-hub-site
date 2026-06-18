@@ -41,6 +41,7 @@ export function HeroSearch() {
       <div className="flex flex-col sm:flex-row gap-3 w-full">
         <div className="relative flex-1 flex items-center rounded-2xl sm:rounded-3xl border border-border bg-card/50 p-1.5 focus-within:border-brand-border focus-within:ring-2 focus-within:ring-brand/15 dark:focus-within:ring-brand/20 transition-all duration-300">
           <Search className="ml-4 h-5 w-5 text-muted shrink-0" />
+          <label htmlFor="hero-search-input" className="sr-only">Search notices, exams, recruitment...</label>
           <input
             ref={inputRef}
             type="text"
