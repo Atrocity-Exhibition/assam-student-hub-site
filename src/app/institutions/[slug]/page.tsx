@@ -13,6 +13,7 @@ import { InstitutionStructuredData } from "@/components/shared/structured-data";
 import { getRelativeTime, cleanDescription } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { InstitutionLogo } from "@/components/shared/institution-logo";
+import { InstitutionDescription } from "@/components/shared/institution-description";
 
 
 
@@ -153,9 +154,9 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
                   {institution.name}
                 </h1>
 
-                <p className="mt-6 text-base sm:text-lg leading-relaxed text-muted">
-                  {institution.description || "Official educational board or government department of the State of Assam."}
-                </p>
+                <InstitutionDescription
+                  description={institution.description || "Official educational board or government department of the State of Assam."}
+                />
 
                 <div className="mt-8 flex flex-wrap gap-4 items-center">
                   <div className="rounded-2xl border border-border bg-card/30 backdrop-blur-sm px-5 py-3 text-sm text-muted font-medium flex items-center gap-1.5">
