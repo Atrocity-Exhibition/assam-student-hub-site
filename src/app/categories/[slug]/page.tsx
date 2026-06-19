@@ -207,7 +207,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                   const hoverClasses = getCategoryHoverClasses(notice.category);
                   
                   return (
-                    <Link key={notice.id} href={`/jobs/${notice.slug}`} className="min-w-0">
+                    <Link key={notice.id} href={`/jobs/${notice.slug}`} className="block w-full min-w-0">
                       <article className={`group h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-border bg-card/50 p-4 sm:p-6 overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:bg-card/75 shadow-sm min-h-[190px] sm:min-h-[210px] ${hoverClasses.border}`}>
                         <div className="flex gap-4 min-w-0">
                           <div className="flex-1 min-w-0">
