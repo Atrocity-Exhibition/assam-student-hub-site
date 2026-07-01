@@ -268,6 +268,37 @@ export default async function NoticePage({ params }: PageProps) {
                   </div>
                 </div>
               )}
+
+              {/* Notice Verification & Advisory FAQ */}
+              <div className="mt-8 rounded-2xl sm:rounded-3xl border border-border bg-card/30 backdrop-blur-sm p-4 sm:p-6 shadow-lg">
+                <h2 className="text-lg font-bold text-foreground border-b border-border pb-2 mb-4">Notice Verification & Advisory FAQ</h2>
+                <div className="space-y-4">
+                  <div className="space-y-1">
+                    <h3 className="text-sm font-bold text-foreground">How can I verify the authenticity of this announcement?</h3>
+                    <p className="text-muted text-xs sm:text-sm leading-relaxed">
+                      Every notice on AssamStudentHub includes a direct link to its official source website (under the &quot;Official Source Website&quot; button in the sidebar). We always advise users to click this link to verify information directly on the official university or government department domain.
+                    </p>
+                  </div>
+                  <div className="space-y-1 border-t border-border/40 pt-3">
+                    <h3 className="text-sm font-bold text-foreground">What should I do if the apply link or PDF is not loading?</h3>
+                    <p className="text-muted text-xs sm:text-sm leading-relaxed">
+                      State university and department websites can sometimes undergo maintenance or experience heavy traffic. If the attachment PDF or application link fails to load, please attempt to visit the &quot;Official Source Website&quot; directly or try again later.
+                    </p>
+                  </div>
+                  <div className="space-y-1 border-t border-border/40 pt-3">
+                    <h3 className="text-sm font-bold text-foreground">Is AssamStudentHub affiliated with the publishing institution?</h3>
+                    <p className="text-muted text-xs sm:text-sm leading-relaxed">
+                      No. AssamStudentHub is an independent, crowdsourced notification aggregator. We are not officially affiliated, sponsored, associated, or endorsed by any college, university, board, or government department in Assam.
+                    </p>
+                  </div>
+                  <div className="space-y-1 border-t border-border/40 pt-3">
+                    <h3 className="text-sm font-bold text-foreground">Where can I find more updates regarding exams or results?</h3>
+                    <p className="text-muted text-xs sm:text-sm leading-relaxed">
+                      You can use the search bar on our homepage to look up your specific college or department, or browse similar updates by navigating to the Admissions, Exams, Results, Scholarships, or Recruitment categories from the main menu.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* SIDEBAR */}

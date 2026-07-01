@@ -150,11 +150,21 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-border/80 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted">
+        {/* DISCLAIMER */}
+        <div className="mt-12 border-t border-border/40 pt-6 text-[11px] leading-relaxed text-muted max-w-5xl">
+          <span className="font-bold text-foreground uppercase tracking-wider text-[9px] block mb-1.5">Disclaimer</span>
+          AssamStudentHub is an independent, crowdsourced educational information aggregator. We are not affiliated, associated, authorized, endorsed by, or in any way officially connected with any government agency, department, board (such as AHSEC, SEBA, APSC, SLPRB), or academic institution (such as Gauhati University, Dibrugarh University, Cotton University, Tezpur University, etc.). All official announcements, logos, names, and notices displayed are trademarks and copyrights of their respective owners. The direct source links are provided solely for user reference and verification.
+        </div>
+
+        <div className="mt-8 border-t border-border/80 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted">
           <div>
             © {new Date().getFullYear()} AssamStudentHub. Sourced from official websites.
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-4 flex-wrap justify-center">
+            <Link href="/about" className="hover:text-foreground transition-colors">About Us</Link>
+            <span>·</span>
+            <Link href="/contact" className="hover:text-foreground transition-colors">Contact Us</Link>
+            <span>·</span>
             <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
             <span>·</span>
             <Link href="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link>
