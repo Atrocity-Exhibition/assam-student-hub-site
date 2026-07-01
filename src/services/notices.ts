@@ -31,53 +31,6 @@ export const NON_ACADEMIC_SLUGS = [
   "ahsec",
 ];
 
-export function isCollegeOrUniversity(notice: Notice): boolean {
-  const slug = (notice.institution_slug || "").toLowerCase();
-  const name = (notice.institution || "").toLowerCase();
-  
-  if (EXCLUDED_ACADEMIC_SLUGS.includes(slug)) return true;
-  if (NON_ACADEMIC_SLUGS.includes(slug)) return false;
-  
-  return (
-    slug.includes("college") ||
-    slug.includes("university") ||
-    slug.includes("uni-") ||
-    slug.startsWith("uni") ||
-    slug.includes("iit") ||
-    slug.includes("lnipe") ||
-    name.includes("college") ||
-    name.includes("university") ||
-    name.includes("institute") ||
-    name.includes("school")
-  );
-}
-
-export function sortAcademicNotices(notices: Notice[]): Notice[] {
-  return [...notices].sort((a, b) => {
-    const aIsAcademic = isCollegeOrUniversity(a);
-    const bIsAcademic = isCollegeOrUniversity(b);
-
-    if (aIsAcademic && bIsAcademic) {
-      const aDesc = ((a.description || "") + " " + (a.title || "")).toLowerCase();
-      const bDesc = ((b.description || "") + " " + (b.title || "")).toLowerCase();
-
-      const aHas2027 = aDesc.includes("2027");
-      const bHas2027 = bDesc.includes("2027");
-
-      if (aHas2027 && !bHas2027) return -1;
-      if (!aHas2027 && bHas2027) return 1;
-
-      const aHas2026 = aDesc.includes("2026");
-      const bHas2026 = bDesc.includes("2026");
-
-      if (aHas2026 && !bHas2026) return -1;
-      if (!aHas2026 && bHas2026) return 1;
-    }
-
-    return 0;
-  });
-}
-
 /**
  * Checks if a category is a competitive exam/result category that requires partitioning academic notices.
  */
@@ -199,7 +152,7 @@ export async function getNotices(options?: GetNoticesOptions) {
         logSearch({ query: search, resultsCount: notices.length, searchType: "fts", durationMs, category, userId: options?.userId });
 
         // For FTS results we can't do a cheap exact count — return results + signal
-        return { notices: sortAcademicNotices(notices), totalPages: notices.length === PAGE_SIZE ? page + 1 : page };
+        return { notices, totalPages: notices.length === PAGE_SIZE ? page + 1 : page };
       }
     } catch {
       // FTS failed (e.g. migration not yet run) — fall through to ilike
@@ -246,7 +199,7 @@ export async function getNotices(options?: GetNoticesOptions) {
 
         logSearch({ query: search, resultsCount: notices.length, searchType: "fuzzy", durationMs, category, userId: options?.userId });
 
-        return { notices: sortAcademicNotices(notices), totalPages: 1, wasFuzzyFallback: true };
+        return { notices, totalPages: 1, wasFuzzyFallback: true };
       }
     } catch {
       // Fuzzy failed (pg_trgm not yet enabled) — fall through to ilike
@@ -350,7 +303,7 @@ export async function getNotices(options?: GetNoticesOptions) {
   }
 
   return {
-    notices: sortAcademicNotices(notices),
+    notices,
     totalPages: Math.max(1, Math.ceil((count || 0) / PAGE_SIZE)),
   };
 }
@@ -393,7 +346,7 @@ export async function getNoticesByInstitution(
     return [];
   }
 
-  return sortAcademicNotices((data as Notice[]) || []);
+  return (data as Notice[]) || [];
 }
 
 /**
@@ -509,7 +462,7 @@ export async function getAcademicNotices(limit: number = 5): Promise<Notice[]> {
     return [];
   }
 
-  return sortAcademicNotices((data as Notice[]) || []);
+  return (data as Notice[]) || [];
 }
 
 export async function getRecentNotices(limit: number = 5): Promise<Notice[]> {
@@ -528,7 +481,7 @@ export async function getRecentNotices(limit: number = 5): Promise<Notice[]> {
     return [];
   }
 
-  return sortAcademicNotices((data as Notice[]) || []);
+  return (data as Notice[]) || [];
 }
 
 
