@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound, redirect, permanentRedirect } from "next/navigation";
 import { MapPin, FileText, Link2 } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
@@ -31,6 +31,23 @@ export async function generateMetadata({
     return {
       title: "Notice Not Found",
     };
+  }
+
+  // --- 308 Permanent Redirect for merged duplicate notices inside metadata evaluation ---
+  if (notice.merged_into_notice_id) {
+    try {
+      const { data: canonicalNotice } = await supabase
+        .from("notices")
+        .select("slug")
+        .eq("id", notice.merged_into_notice_id)
+        .single();
+
+      if (canonicalNotice?.slug) {
+        permanentRedirect(`/jobs/${canonicalNotice.slug}`);
+      }
+    } catch {
+      // If redirect target not found, fall through
+    }
   }
 
   return {
@@ -73,7 +90,7 @@ export default async function NoticePage({ params }: PageProps) {
         .single();
 
       if (canonicalNotice?.slug) {
-        redirect(`/jobs/${canonicalNotice.slug}`);
+        permanentRedirect(`/jobs/${canonicalNotice.slug}`);
       }
     } catch {
       // If redirect target not found, fall through and render this notice normally
