@@ -98,15 +98,18 @@ export async function JobsSection() {
       ) : (
         <div className="mt-6 md:mt-8 grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* FEATURED NOTICE CARD (Col span 2) */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 relative group">
             {featuredNotice && (() => {
               const hoverClasses = getCategoryHoverClasses(featuredNotice.category);
               const formattedDate = getRelativeTime(featuredNotice.posted_at || featuredNotice.created_at);
 
               return (
-                <Link href={`/jobs/${featuredNotice.slug}`} className="block h-full">
-                  <article className={`group h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-border bg-card/70 p-4 sm:p-6 lg:p-8 overflow-hidden transition-all duration-300 dark:hover:bg-zinc-900/10 hover:bg-zinc-50/50 shadow-sm ${hoverClasses.border} min-h-fit sm:min-h-[340px]`}>
-                    <div className="flex gap-4">
+                <div className="h-full relative">
+                  {/* Card click overlay */}
+                  <Link href={`/jobs/${featuredNotice.slug}`} className="absolute inset-0 z-10" aria-label="View Notice Details" />
+
+                  <article className={`h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-border bg-card/70 p-4 sm:p-6 lg:p-8 overflow-hidden transition-all duration-300 dark:hover:bg-zinc-900/10 hover:bg-zinc-50/50 shadow-sm ${hoverClasses.border} min-h-fit sm:min-h-[340px]`}>
+                    <div className="flex gap-4 relative z-0">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-4 mb-4">
                           <span className={`inline-flex rounded-full border px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider shrink-0 whitespace-nowrap ${getCategoryStyles(featuredNotice.category)}`}>
@@ -191,10 +194,41 @@ export async function JobsSection() {
                             </div>
                           );
                         })()}
+
+                        {/* Sponsored Ad Banner to fill empty space */}
+                        <div className="mt-8 relative z-20 p-4 sm:p-5 rounded-2xl border border-border/60 bg-zinc-500/5 backdrop-blur-sm overflow-hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                          <div className="flex items-center gap-3">
+                            <div className="p-2.5 bg-brand/10 border border-brand/20 text-brand rounded-xl shrink-0 flex items-center justify-center">
+                              <GraduationCap className="h-5 w-5" />
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <span className="inline-flex rounded-full bg-brand/10 px-2 py-0.5 text-[9px] font-bold text-brand uppercase tracking-wider">
+                                  Preparation Pro
+                                </span>
+                                <span className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                                  Sponsored Ad
+                                </span>
+                              </div>
+                              <h4 className="mt-1 text-xs sm:text-sm font-extrabold text-foreground">
+                                APSC 2026 Mock Test Series
+                              </h4>
+                              <p className="text-[11px] text-muted-foreground mt-0.5 max-w-md">
+                                Access 25 full-length mock exams prepared by civil service mentors in Assam.
+                              </p>
+                            </div>
+                          </div>
+                          <Link
+                            href="/browse?category=Exam&search=apsc"
+                            className="shrink-0 rounded-xl bg-brand hover:bg-brand/90 text-primary-foreground px-4 py-2 text-xs font-bold transition-all shadow-md shadow-brand/10 text-center w-full sm:w-auto"
+                          >
+                            Start Free Mock
+                          </Link>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="mt-6 pt-5 border-t border-border flex items-center justify-between flex-wrap gap-3">
+                    <div className="mt-6 pt-5 border-t border-border flex items-center justify-between flex-wrap gap-3 relative z-20">
                       <span className="text-xs font-semibold text-muted uppercase tracking-wider transition-colors duration-200">
                         Source: {featuredNotice.source}
                       </span>
@@ -210,7 +244,7 @@ export async function JobsSection() {
                       </div>
                     </div>
                   </article>
-                </Link>
+                </div>
               );
             })()}
           </div>
