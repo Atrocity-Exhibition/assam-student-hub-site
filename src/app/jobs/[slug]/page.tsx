@@ -547,6 +547,108 @@ function parseDescriptionMarkdown(text: string) {
       continue;
     }
 
+    // Table parser
+    if (trimmed.startsWith("|") && trimmed.endsWith("|")) {
+      flushList();
+      
+      const tableLines: string[] = [];
+      while (i < lines.length && lines[i].trim().startsWith("|") && lines[i].trim().endsWith("|")) {
+        tableLines.push(lines[i].trim());
+        i++;
+      }
+      i--;
+
+      if (tableLines.length >= 2) {
+        const isSeparator = (str: string) => {
+          const cleaned = str.replace(/[|:\-\s]/g, "");
+          return cleaned.length === 0;
+        };
+
+        if (isSeparator(tableLines[1])) {
+          const headerCols = tableLines[0]
+            .split("|")
+            .slice(1, -1)
+            .map(c => c.trim());
+          
+          const alignments = tableLines[1]
+            .split("|")
+            .slice(1, -1)
+            .map(c => {
+              const s = c.trim();
+              const left = s.startsWith(":");
+              const right = s.endsWith(":");
+              if (left && right) return "center";
+              if (right) return "right";
+              return "left";
+            });
+
+          const bodyRows: string[][] = [];
+          for (let k = 2; k < tableLines.length; k++) {
+            const cols = tableLines[k]
+              .split("|")
+              .slice(1, -1)
+              .map(c => c.trim());
+            bodyRows.push(cols);
+          }
+
+          blocks.push(
+            <div key={`table-wrapper-${blockKey++}`} className="my-6 overflow-x-auto rounded-xl border border-border/50 bg-background/30 backdrop-blur-sm shadow-sm scrollbar-thin">
+              <table className="w-full text-left border-collapse text-xs sm:text-sm">
+                <thead>
+                  <tr className="border-b border-border bg-muted/20">
+                    {headerCols.map((col, idx) => {
+                      const align = alignments[idx] || "left";
+                      return (
+                        <th
+                          key={idx}
+                          className="px-4 py-3 font-bold text-foreground uppercase tracking-wider text-[11px] border-r border-border/30 last:border-r-0"
+                          style={{ textAlign: align as any }}
+                        >
+                          {parseInlineFormatting(col)}
+                        </th>
+                      );
+                    })}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border/30">
+                  {bodyRows.map((row, rowIdx) => (
+                    <tr
+                      key={rowIdx}
+                      className="hover:bg-emerald-500/5 transition-colors duration-150"
+                    >
+                      {headerCols.map((_, colIdx) => {
+                        const col = row[colIdx] || "";
+                        const align = alignments[colIdx] || "left";
+                        return (
+                          <td
+                            key={colIdx}
+                            className="px-4 py-3.5 text-foreground/80 border-r border-border/30 last:border-r-0 align-middle"
+                            style={{ textAlign: align as any }}
+                          >
+                            {parseInlineFormatting(col)}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          );
+          continue;
+        }
+      }
+
+      for (const tableLine of tableLines) {
+        blocks.push(
+          <p key={`p-fallback-${blockKey++}`} className="text-foreground/90 text-sm leading-relaxed mb-3">
+            {parseInlineFormatting(tableLine)}
+          </p>
+        );
+      }
+      continue;
+    }
+
     // Empty lines
     if (trimmed === "") {
       flushList();
