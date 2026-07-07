@@ -29,6 +29,9 @@ type PageProps = {
     source?: string;
     institution?: string;
     date?: string;
+    experience?: string;
+    salary?: string;
+    education?: string;
   }>;
 };
 
@@ -41,6 +44,9 @@ export default async function JobsPage({ searchParams }: PageProps) {
   const source = params.source || "";
   const institution = params.institution || "";
   const date = params.date || "";
+  const experience = params.experience || "";
+  const salary = params.salary || "";
+  const education = params.education || "";
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -128,6 +134,9 @@ export default async function JobsPage({ searchParams }: PageProps) {
             source={source}
             institution={institution}
             date={date}
+            experience={experience}
+            salary={salary}
+            education={education}
           />
         </Container>
 

@@ -85,6 +85,9 @@ type Props = {
   source?: string;
   institution?: string;
   date?: string;
+  experience?: string;
+  salary?: string;
+  education?: string;
 };
 
 const academicCategories = [
@@ -106,6 +109,9 @@ export async function NoticesList({
   source,
   institution,
   date,
+  experience,
+  salary,
+  education,
 }: Props) {
   const isOfficial = source === "official" ? true : source === "aggregator" ? false : undefined;
   const dateRange = date || undefined;
@@ -120,6 +126,9 @@ export async function NoticesList({
     isOfficial,
     dateRange,
     institutionSlug,
+    experience: experience || undefined,
+    salary: salary || undefined,
+    education: education || undefined,
   });
 
   const institutions = await getInstitutions();
@@ -134,6 +143,9 @@ export async function NoticesList({
     if (source) params.set("source", source);
     if (institution) params.set("institution", institution);
     if (date) params.set("date", date);
+    if (experience) params.set("experience", experience);
+    if (salary) params.set("salary", salary);
+    if (education) params.set("education", education);
     params.set("page", String(pageNum));
     return params.toString();
   };
@@ -236,7 +248,7 @@ export async function NoticesList({
           <p className="mt-3 text-zinc-600 dark:text-zinc-300 text-sm leading-relaxed">
             We couldn&apos;t find any announcements matching your current search or category filter. Try using different keywords, checking the spelling, or clearing filters.
           </p>
-          {(search || source || institution || date || (category !== "All" && category !== "academic" && category !== "recruitment")) && (
+          {(search || source || institution || date || experience || salary || education || (category !== "All" && category !== "academic" && category !== "recruitment")) && (
             <Link href={basePath}>
               <Button variant="secondary" size="sm" className="mt-6">
                 Clear Filters

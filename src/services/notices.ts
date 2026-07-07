@@ -84,6 +84,9 @@ type GetNoticesOptions = {
   excludeId?: number;
   isOfficial?: boolean;
   dateRange?: string;
+  experience?: string;
+  salary?: string;
+  education?: string;
 };
 
 const PAGE_SIZE = 12;
@@ -103,7 +106,14 @@ export async function getNotices(options?: GetNoticesOptions) {
   // ──────────────────────────────────────────────────────────────────────
   // SEARCH PATH: FTS → Fuzzy fallback → ilike fallback
   // ──────────────────────────────────────────────────────────────────────
-  const hasFilters = options?.isOfficial !== undefined || options?.dateRange || options?.institutionSlug || options?.institutionId;
+  const hasFilters =
+    options?.isOfficial !== undefined ||
+    options?.dateRange ||
+    options?.institutionSlug ||
+    options?.institutionId ||
+    options?.experience ||
+    options?.salary ||
+    options?.education;
 
   if (search.length >= FTS_MIN_LENGTH && !hasFilters) {
     const t0 = Date.now();
@@ -263,6 +273,16 @@ export async function getNotices(options?: GetNoticesOptions) {
       cutoff.setDate(cutoff.getDate() - 30);
       query = query.gte("posted_at", cutoff.toISOString());
     }
+  }
+
+  if (options?.experience) {
+    query = query.eq("metadata->>experience_level", options.experience);
+  }
+  if (options?.salary) {
+    query = query.eq("metadata->>salary_range", options.salary);
+  }
+  if (options?.education) {
+    query = query.eq("metadata->>education_level", options.education);
   }
 
   switch (options?.sort) {
