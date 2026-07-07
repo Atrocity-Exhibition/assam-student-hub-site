@@ -150,7 +150,7 @@ export default async function NoticePage({ params }: PageProps) {
             {/* MAIN CONTENT */}
             <div className="w-full min-w-0">
               <div className="flex flex-col sm:flex-row sm:items-start gap-4 mb-6">
-                {notice.institutions?.name && (
+                {notice.institutions?.name && notice.institutions.logo_url && (
                   <InstitutionLogo
                     logoUrl={notice.institutions.logo_url}
                     name={notice.institutions.name}

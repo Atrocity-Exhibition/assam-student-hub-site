@@ -144,11 +144,13 @@ export default async function InstitutionPage({ params, searchParams }: Props) {
             </div>
             
             <div className="flex flex-col sm:flex-row sm:items-start gap-6">
-              <InstitutionLogo
-                logoUrl={institution.logo_url}
-                name={institution.name}
-                className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-white dark:bg-white p-1 shadow-md border border-border/40 shrink-0"
-              />
+              {institution.logo_url && (
+                <InstitutionLogo
+                  logoUrl={institution.logo_url}
+                  name={institution.name}
+                  className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-white dark:bg-white p-1 shadow-md border border-border/40 shrink-0"
+                />
+              )}
               <div className="min-w-0 flex-1">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight">
                   {institution.name}
