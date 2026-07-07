@@ -196,8 +196,10 @@ export async function JobsSection() {
                           );
                         })()}
 
-                        {/* Sponsored Ad Banner to fill empty space */}
-                        <AdCard variant="inline-horizontal" index={featuredNotice.id} />
+                        {/* Sponsored Ad Banner to fill empty space (Desktop only) */}
+                        <div className="hidden lg:block">
+                          <AdCard variant="inline-horizontal" index={featuredNotice.id} />
+                        </div>
                       </div>
                     </div>
 
