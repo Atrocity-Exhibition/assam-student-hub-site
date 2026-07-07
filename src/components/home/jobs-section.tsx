@@ -4,6 +4,7 @@ import { getCategoryStyles, getCategoryHoverClasses } from "@/components/notices
 import { getRelativeTime, extractSalary, cleanDescription } from "@/lib/utils";
 import { Banknote, Users, Calendar, GraduationCap, FileText } from "lucide-react";
 import { InstitutionLogo } from "@/components/shared/institution-logo";
+import { AdCard } from "@/components/shared/ad-card";
 
 
 
@@ -196,35 +197,7 @@ export async function JobsSection() {
                         })()}
 
                         {/* Sponsored Ad Banner to fill empty space */}
-                        <div className="mt-8 relative z-20 p-4 sm:p-5 rounded-2xl border border-border/60 bg-zinc-500/5 backdrop-blur-sm overflow-hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                          <div className="flex items-center gap-3">
-                            <div className="p-2.5 bg-brand/10 border border-brand/20 text-brand rounded-xl shrink-0 flex items-center justify-center">
-                              <GraduationCap className="h-5 w-5" />
-                            </div>
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <span className="inline-flex rounded-full bg-brand/10 px-2 py-0.5 text-[9px] font-bold text-brand uppercase tracking-wider">
-                                  Preparation Pro
-                                </span>
-                                <span className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/60">
-                                  Sponsored Ad
-                                </span>
-                              </div>
-                              <h4 className="mt-1 text-xs sm:text-sm font-extrabold text-foreground">
-                                APSC 2026 Mock Test Series
-                              </h4>
-                              <p className="text-[11px] text-muted-foreground mt-0.5 max-w-md">
-                                Access 25 full-length mock exams prepared by civil service mentors in Assam.
-                              </p>
-                            </div>
-                          </div>
-                          <Link
-                            href="/browse?category=Exam&search=apsc"
-                            className="shrink-0 rounded-xl bg-brand hover:bg-brand/90 text-primary-foreground px-4 py-2 text-xs font-bold transition-all shadow-md shadow-brand/10 text-center w-full sm:w-auto"
-                          >
-                            Start Free Mock
-                          </Link>
-                        </div>
+                        <AdCard variant="inline-horizontal" index={featuredNotice.id} />
                       </div>
                     </div>
 

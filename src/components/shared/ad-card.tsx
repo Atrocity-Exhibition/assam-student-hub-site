@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { GraduationCap, FileSpreadsheet, BookOpen, Code, ExternalLink } from "lucide-react";
 
 type AdCardProps = {
-  variant?: "sidebar" | "grid" | "horizontal";
+  variant?: "sidebar" | "grid" | "horizontal" | "inline-horizontal";
   index?: number;
 };
 
@@ -196,11 +196,60 @@ export function AdCard({ variant = "sidebar", index = 0 }: AdCardProps) {
         </div>
       );
     }
+
+    if (variant === "inline-horizontal") {
+      return (
+        <div className="w-full relative overflow-hidden mt-6">
+          <div className="absolute top-0 right-0 text-[8px] font-bold text-muted-foreground/45 tracking-widest uppercase z-20">
+            Advertisement
+          </div>
+          <div className="pt-4 w-full">
+            <AdSenseAd clientId={clientId} slot={slotHorizontal} style={{ display: "block", width: "100%", minHeight: "90px" }} />
+          </div>
+        </div>
+      );
+    }
   }
 
   // Fallback to beautiful mock sponsored ads
   const ad = SPONSOR_ADS[index % SPONSOR_ADS.length];
   const Icon = IconMap[ad.iconName];
+
+  if (variant === "inline-horizontal") {
+    return (
+      <div className="mt-6 relative z-20 p-4 sm:p-5 rounded-2xl border border-border/60 bg-zinc-500/5 backdrop-blur-sm overflow-hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 w-full">
+        <div className={`absolute -right-10 -bottom-10 h-32 w-32 rounded-full bg-gradient-to-br ${ad.gradient} blur-2xl opacity-40`} />
+        
+        <div className="flex items-start gap-3 relative z-10">
+          <div className={`p-2.5 h-10 w-10 rounded-xl border shrink-0 flex items-center justify-center ${ad.accentColor}`}>
+            <Icon className="h-5 w-5" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className={`inline-flex rounded-full px-2.5 py-0.5 text-[9px] font-bold uppercase border ${ad.accentColor}`}>
+                {ad.badge}
+              </span>
+              <span className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                Sponsored Ad
+              </span>
+            </div>
+            <h4 className="mt-1 text-xs sm:text-sm font-extrabold text-foreground">
+              {ad.title}
+            </h4>
+            <p className="text-[11px] text-muted-foreground leading-normal mt-0.5 max-w-md">
+              {ad.description}
+            </p>
+          </div>
+        </div>
+        <Link
+          href={ad.url}
+          className={`shrink-0 rounded-xl px-4 py-2 text-xs font-bold transition-all shadow-md text-center w-full sm:w-auto relative z-10 ${ad.buttonBg}`}
+        >
+          {ad.cta}
+        </Link>
+      </div>
+    );
+  }
 
   if (variant === "horizontal") {
     return (
