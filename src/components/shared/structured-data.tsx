@@ -327,7 +327,19 @@ export function NoticeStructuredData({ notice, baseUrl = "https://assamstudenthu
   // Main entity schema: JobPosting or NewsArticle
   let mainEntitySchema: Record<string, unknown> | null = null;
 
-  if (categoryName.toLowerCase() === "recruitment") {
+  const catLower = categoryName.toLowerCase();
+  const titleLower = notice.title.toLowerCase();
+  const contentTypeLower = (notice.content_type || "").toLowerCase();
+  const isJobCategory =
+    ["recruitment", "job", "jobs", "vacancy", "careers", "career"].includes(catLower) ||
+    ["recruitment", "job", "jobs"].includes(contentTypeLower) ||
+    titleLower.includes("recruitment") ||
+    titleLower.includes("vacancy") ||
+    titleLower.includes("vacancies") ||
+    titleLower.includes("hiring") ||
+    titleLower.includes("posts");
+
+  if (isJobCategory) {
     const md = (notice.metadata || {}) as Record<string, any>;
     
     // Parse salary with a default baseline fallback if missing to clear GSC warnings
